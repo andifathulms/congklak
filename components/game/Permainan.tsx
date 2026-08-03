@@ -12,12 +12,14 @@ import {
   type GameRecord,
 } from '@/lib/engine/replay'
 import type { Kesulitan } from '@/lib/ai/search'
-import type { Ruleset } from '@/lib/rulesets'
+import { RULESETS, getRuleset, type Ruleset } from '@/lib/rulesets'
 import { t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
 import { KECEPATAN, usePenaburan, type Kecepatan } from '@/components/sow/usePenaburan'
 import { pratinjauTeks, ringkasPratinjau } from '@/components/preview/ringkas'
+import { PemilihAturan } from './PemilihAturan'
 import { useAi } from './useAi'
+import { bacaStatistik, catatHasil, dariRekaman, type Statistik } from './stats'
 
 export type Mode = 'hotseat' | 'ai'
 
@@ -29,9 +31,10 @@ const KESULITAN: readonly Kesulitan[] = ['mudah', 'sedang', 'sulit']
  * The move list is the game (invariant 11). State is held alongside it as
  * a cache, and undo replays a shorter list rather than unwinding anything.
  */
-export function Permainan({ ruleset, locale }: { ruleset: Ruleset; locale: Locale }) {
+export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale: Locale }) {
   const kata = t(locale)
 
+  const [ruleset, setRuleset] = useState<Ruleset>(awal)
   const [mode, setMode] = useState<Mode>('hotseat')
   const [kesulitan, setKesulitan] = useState<Kesulitan>('sedang')
   const [record, setRecord] = useState<GameRecord>(() => emptyRecord(ruleset.id))
@@ -142,6 +145,39 @@ export function Permainan({ ruleset, locale }: { ruleset: Ruleset; locale: Local
     [ruleset.id, player],
   )
 
+  const gantiAturan = useCallback(
+    (id: string) => {
+      // Aturan hanya boleh berganti di antara permainan. Mengganti di
+      // tengah jalan akan membuat daftar langkah tidak lagi cocok dengan
+      // ruleset-nya, dan daftar langkah plus id itulah permainannya.
+      if (busy || record.moves.length > 0) return
+      const next = getRuleset(id)
+      aiRef.current++
+      const fresh = createGame()
+      setRuleset(next)
+      setRecord(emptyRecord(next.id))
+      setState(fresh)
+      setBusy(false)
+      setBerpikir(false)
+      player.reset(fresh.board)
+    },
+    [busy, record.moves.length, player],
+  )
+
+  // Statistik dicatat sekali per permainan selesai, dari aliran event yang
+  // memang sudah ada — tidak ada yang dilacak selama bermain.
+  const dicatat = useRef<string | null>(null)
+  useEffect(() => {
+    if (state.status !== 'selesai' || state.hasil === null || busy) return
+    const kunci = `${ruleset.id}:${record.moves.join('')}`
+    if (dicatat.current === kunci) return
+    dicatat.current = kunci
+
+    const { steps } = replay(record, ruleset)
+    const { bankTerbesar, sambungTerpanjang } = dariRekaman(steps)
+    catatHasil({ rulesetId: ruleset.id, hasil: state.hasil, bankTerbesar, sambungTerpanjang })
+  }, [state.status, state.hasil, busy, record, ruleset])
+
   const pratinjau = useMemo(() => {
     if (previewed === null || busy || giliranAi) return null
     return ringkasPratinjau(state, previewed, ruleset)
@@ -153,6 +189,14 @@ export function Permainan({ ruleset, locale }: { ruleset: Ruleset; locale: Local
 
   return (
     <div className="flex flex-col gap-5">
+      <PemilihAturan
+        rulesets={RULESETS}
+        active={ruleset}
+        onChange={gantiAturan}
+        locale={locale}
+        disabled={busy || record.moves.length > 0}
+      />
+
       <div className="flex flex-wrap items-center gap-2">
         <Pilihan
           options={[
@@ -248,9 +292,12 @@ export function Permainan({ ruleset, locale }: { ruleset: Ruleset; locale: Local
 
       <Riwayat lines={player.ringkasan} kata={kata} />
 
-      <p className="font-mono text-xs text-ink/50">
-        {kata.kodePermainan}: {encodeRecord(record)}
-      </p>
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <p className="font-mono text-xs text-ink/50">
+          {kata.kodePermainan}: {encodeRecord(record)}
+        </p>
+        <PanelStatistik rulesetId={ruleset.id} kata={kata} versi={state.moveCount} />
+      </div>
     </div>
   )
 }
@@ -335,6 +382,35 @@ function Giliran({
         </span>
       )}
       {berpikir && <span className="font-sans text-sm text-ink/50">{kata.berpikir}</span>}
+    </p>
+  )
+}
+
+/**
+ * Local stats, per ruleset (PRD §8.7). Read after mount only — reading
+ * localStorage during render would make the server-rendered HTML and the
+ * first client render disagree.
+ */
+function PanelStatistik({
+  rulesetId,
+  kata,
+  versi,
+}: {
+  rulesetId: string
+  kata: ReturnType<typeof t>
+  versi: number
+}) {
+  const [stat, setStat] = useState<Statistik | null>(null)
+  useEffect(() => {
+    setStat(bacaStatistik(rulesetId))
+  }, [rulesetId, versi])
+
+  if (!stat || stat.dimainkan === 0) return null
+  return (
+    <p className="tnum font-mono text-xs text-ink/50">
+      {kata.statistik}: {stat.dimainkan} {kata.dimainkan.toLowerCase()} · {kata.menangA}{' '}
+      {stat.menangA} · {kata.seri.toLowerCase()} {stat.seri} · bank {stat.bankTerbesar} ·
+      sambung {stat.sambungTerpanjang}
     </p>
   )
 }

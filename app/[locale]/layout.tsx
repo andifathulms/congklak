@@ -24,9 +24,15 @@ export default function LocaleLayout({
           {kata.judul}
         </Link>
         <p className="font-sans text-sm text-ink/60">{kata.tagline}</p>
-        <nav className="ml-auto flex items-center gap-3 font-sans text-sm">
+        <nav className="ml-auto flex flex-wrap items-center gap-3 font-sans text-sm">
           <Link href={`/${params.locale}/aturan`} className="underline underline-offset-4">
             {kata.aturan}
+          </Link>
+          <Link href={`/${params.locale}/banding`} className="underline underline-offset-4">
+            {kata.banding}
+          </Link>
+          <Link href={`/${params.locale}/ulang`} className="underline underline-offset-4">
+            {kata.ulang}
           </Link>
           <Link href={`/${other}/main`} className="text-ink/60 underline underline-offset-4">
             {other.toUpperCase()}

@@ -54,6 +54,24 @@ interface Dict {
   readonly terverifikasi: string
   readonly skor: string
   readonly belumAdaLangkah: string
+  readonly perbedaanCount: string
+  readonly gantiSaatJalan: string
+  readonly banding: string
+  readonly bandingIntro: string
+  readonly simpangDi: string
+  readonly takAdaSimpang: string
+  readonly giliranKe: string
+  readonly acakUlang: string
+  readonly alasanPapan: string
+  readonly alasanSelesai: string
+  readonly alasanTakSah: string
+  readonly ulang: string
+  readonly muatKode: string
+  readonly kodeTakValid: string
+  readonly langkah: string
+  readonly statistik: string
+  readonly dimainkan: string
+  readonly menangA: string
 }
 
 const id: Dict = {
@@ -96,6 +114,24 @@ const id: Dict = {
   terverifikasi: 'terverifikasi',
   skor: 'Skor',
   belumAdaLangkah: 'Belum ada langkah.',
+  perbedaanCount: 'perbedaan tercatat',
+  gantiSaatJalan: 'Selesaikan atau mulai permainan baru untuk mengganti aturan.',
+  banding: 'Bandingkan aturan',
+  bandingIntro: 'Satu daftar langkah, dua ruleset. Di mana keduanya pertama kali berbeda?',
+  simpangDi: 'Simpang pertama di giliran',
+  takAdaSimpang: 'Tidak ada simpang pada daftar langkah ini.',
+  giliranKe: 'Giliran',
+  acakUlang: 'Acak permainan lain',
+  alasanPapan: 'Papan kedua aturan mulai berbeda.',
+  alasanSelesai: 'Satu aturan menyatakan permainan sudah selesai, satunya belum.',
+  alasanTakSah: 'Langkah itu tidak sah lagi di salah satu aturan.',
+  ulang: 'Putar ulang',
+  muatKode: 'Muat kode',
+  kodeTakValid: 'Kode permainan tidak bisa dibaca.',
+  langkah: 'Langkah',
+  statistik: 'Statistik',
+  dimainkan: 'Permainan',
+  menangA: 'Menang A',
 }
 
 const en: Dict = {
@@ -138,6 +174,24 @@ const en: Dict = {
   terverifikasi: 'verified',
   skor: 'Score',
   belumAdaLangkah: 'No moves yet.',
+  perbedaanCount: 'recorded divergences',
+  gantiSaatJalan: 'Finish or start a new game to change the ruleset.',
+  banding: 'Compare rulesets',
+  bandingIntro: 'One move list, two rulesets. Where do they first disagree?',
+  simpangDi: 'First divergence at turn',
+  takAdaSimpang: 'No divergence on this move list.',
+  giliranKe: 'Turn',
+  acakUlang: 'Try another game',
+  alasanPapan: 'The two rulesets\u2019 boards start to differ.',
+  alasanSelesai: 'One ruleset says the game is already over, the other does not.',
+  alasanTakSah: 'That move is no longer legal under one of the rulesets.',
+  ulang: 'Replay',
+  muatKode: 'Load code',
+  kodeTakValid: 'That game code could not be read.',
+  langkah: 'Move',
+  statistik: 'Stats',
+  dimainkan: 'Games',
+  menangA: 'A wins',
 }
 
 const DICTS: Record<Locale, Dict> = { id, en }
