@@ -2,10 +2,10 @@
   "id": "umum",
   "name": "Congklak Umum",
   "region": "Nusantara (bacaan umum)",
-  "aka": ["dakon", "congkak", "dentuman lamban", "aggalacang", "nogarata"],
-  "summary": "Bacaan yang paling sering dijumpai: menyebar berlawanan arah jarum jam, lumbung lawan dilewati, biji terakhir di lubang berisi berarti sambung (relay), di lumbung sendiri berarti jalan lagi, di lubang kosong sisi sendiri berarti menembak. Permainan berhenti ketika pemain yang mendapat giliran tidak punya langkah sah, dan biji sisa jatuh ke pemilik sisinya.",
+  "aka": ["dakon", "congkak", "sungka", "dentuman lamban", "aggalacang", "nogarata"],
+  "summary": "Bacaan yang paling luas dipakai. Tujuh biji per lubang, menyebar searah jarum jam, lumbung lawan selalu dilewati. Biji terakhir yang jatuh di lubang berisi — di sisi mana pun — diangkat dan disebar lagi; yang jatuh di lumbung sendiri memberi giliran lagi dan bebas memilih lubang; yang jatuh di lubang kosong sisi sendiri menembak isi lubang seberang. Permainan berhenti ketika pemain yang mendapat giliran tidak punya satu pun lubang berisi, dan biji sisa jatuh ke pemilik sisinya.",
   "presentation": {
-    "direction": "berlawanan-jarum-jam"
+    "direction": "searah-jarum-jam"
   },
   "options": {
     "relay": true,
@@ -19,39 +19,58 @@
   },
   "sources": [
     {
-      "title": "Permainan Rakyat Daerah Jawa Tengah",
-      "publisher": "Proyek Inventarisasi dan Dokumentasi Kebudayaan Daerah, Departemen Pendidikan dan Kebudayaan",
-      "year": 1983,
-      "locator": "bagian dakon",
-      "confidence": "perlu-cek",
-      "note": "Seri inventarisasi permainan rakyat per provinsi. Halaman persis dan rumusan aturannya belum dicek langsung terhadap terbitan aslinya."
+      "title": "Congkak — mancala game, rules and strategy",
+      "publisher": "gambiter.com, rujukan khusus permainan mancala",
+      "url": "https://gambiter.com/mancala/Congkak.html",
+      "confidence": "terverifikasi",
+      "note": "Situs rujukan khusus mancala, bukan sumber pemerintah atau akademik. Dipakai karena rumusannya paling rinci dan paling cocok dengan model mesin: tujuh biji per lubang, lumbung lawan dilewati, sambung berlaku di kedua sisi papan, giliran lagi kalau berhenti di lumbung sendiri, dan menembak isi lubang seberang saat berhenti di lubang kosong sisi sendiri."
     },
     {
-      "title": "Nama-nama daerah untuk congklak di Nusantara",
-      "publisher": "PRD.md §2, kutipan bersumber di repositori ini",
-      "confidence": "perlu-cek",
-      "locator": "PRD.md §2",
-      "note": "Dasar untuk daftar 'aka': congklak/dakon di Jawa, congkak di Sumatra, aggalacang/nogarata di Sulawesi, dentuman lamban di Lampung. Sumber asli kutipan itu belum ditelusuri kembali di sini."
+      "title": "Cara Bermain Congklak dan Aturannya, Lengkap dengan Nilai dan Asal Permainan",
+      "publisher": "detikEdu (media massa) — Fathia Ariana Salima",
+      "url": "https://www.detik.com/edu/detikpedia/d-7283239/cara-bermain-congklak-dan-aturannya-lengkap-dengan-nilai-dan-asal-permainan",
+      "year": 2024,
+      "confidence": "terverifikasi",
+      "note": "Media massa, bukan sumber kebudayaan resmi. Dicantumkan bukan sebagai dasar aturan yang dipakai, melainkan karena keterangannya soal menembak berlawanan dengan sumber pemerintah dan rujukan khusus — lihat daftar perbedaan. Yang sejalan hanyalah tujuh biji per lubang, arah searah jarum jam, dan giliran lagi kalau berhenti di lumbung sendiri."
     }
   ],
   "divergences": [
     {
       "rule": "Syarat berhenti",
       "thisPack": "Permainan berhenti saat pemain yang mendapat giliran tidak punya satu pun lubang berisi di sisinya.",
-      "otherReading": "Permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya.",
-      "note": "Lihat ruleset 'tiga-lubang' untuk bacaan yang satunya. PRD §3."
+      "otherReading": "Permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya, walau papan masih berisi.",
+      "sources": ["Congkak — mancala game, rules and strategy"],
+      "note": "Bacaan tiga lubang kosong ada pada ruleset 'jawa-sleman', bersumber dokumentasi kebudayaan Kabupaten Sleman."
     },
     {
-      "rule": "Menembak ke lubang seberang yang kosong",
+      "rule": "Sisi mana yang menembak",
+      "thisPack": "Biji terakhir di lubang kosong sisi sendiri menembak lubang seberang. Di lubang kosong sisi lawan, giliran habis tanpa tembakan.",
+      "otherReading": "Terbalik: berhenti di lubang kosong sisi sendiri justru mengakhiri giliran, dan yang menembak adalah berhenti di sisi lawan.",
+      "sources": [
+        "Cara Bermain Congklak dan Aturannya, Lengkap dengan Nilai dan Asal Permainan"
+      ],
+      "note": "Bacaan terbalik ini datang dari media massa dan berlawanan dengan dokumentasi kebudayaan Kabupaten Sleman maupun rujukan khusus mancala, yang keduanya sepakat menembak terjadi di sisi sendiri. Tidak diterapkan. Dicatat karena beredar luas, bukan karena setara bobotnya."
+    },
+    {
+      "rule": "Menembak saat lubang seberang kosong",
       "thisPack": "Biji terakhir tetap diambil ke lumbung walau lubang seberang kosong.",
       "otherReading": "Tidak ada tembakan sama sekali kalau lubang seberang kosong; biji ditinggal dan giliran habis.",
-      "note": "Sumber terbagi. Dimodelkan sebagai opsi menembak.requireOppositeNonEmpty."
+      "sources": [],
+      "note": "Tidak ada sumber yang dipakai di sini yang menyelesaikan kasus ini — keduanya hanya menyebut mengambil isi lubang seberang, tanpa mengatakan apa jadinya kalau seberangnya kosong. Dimodelkan sebagai opsi menembak.requireOppositeNonEmpty dan dipilih apa adanya, bukan karena ada sumbernya."
     },
     {
-      "rule": "Arah menyebar",
-      "thisPack": "Disajikan berlawanan arah jarum jam.",
-      "otherReading": "Sumber Jawa kerap menyebut searah jarum jam.",
-      "note": "Perbedaan orientasi papan, bukan perbedaan aturan. Mesin selalu menyebar menaik menurut indeks."
+      "rule": "Permainan beberapa babak",
+      "thisPack": "Satu babak saja.",
+      "otherReading": "Pemenang mengisi ulang lubangnya; lubang yang tak terisi menjadi 'terbakar' dan dilewati pada babak berikutnya, sampai satu pemain kehilangan seluruh lubangnya atau menyerah.",
+      "sources": ["Congkak — mancala game, rules and strategy"],
+      "note": "Nyata dan tradisional, tapi menambah satu lapis meta di atas permainannya. Ditunda dengan sengaja — PRD §4."
+    },
+    {
+      "rule": "Langkah pertama",
+      "thisPack": "Bergiliran sejak langkah pertama, pemain A lebih dulu.",
+      "otherReading": "Kedua pemain menabur serentak pada langkah pertama.",
+      "sources": ["Congkak — mancala game, rules and strategy"],
+      "note": "Merusak model giliran secara mendasar, jadi ditunda — PRD §4."
     }
   ]
 }

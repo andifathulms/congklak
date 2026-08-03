@@ -8,15 +8,22 @@ import { LumbungView } from './Lumbung'
  * The board is one continuous carved form with the holes as recesses in
  * it — not fourteen separate cards (PRD §11).
  *
- * Orientation. A's lubang run left to right along the bottom as 0..6, so
- * B's run right to left along the top as 14..8 and the two rows face each
- * other. A's lumbung sits at the right end, B's at the left. Sowing then
- * reads counterclockwise on screen, which is what the umum pack states —
- * and it stays a rendering choice, exactly as PRD §6 requires. The engine
- * only ever sows by increasing index.
+ * Orientation. A's lubang run right to left along the bottom as 0..6, with
+ * A's lumbung at the left end; B's run left to right along the top as
+ * 8..14, with B's lumbung at the right. Opposite holes sit one above the
+ * other: bottom position k is hole 6−k, top position k is hole 8+k, and
+ * opposite(6−k) = 8+k.
+ *
+ * That layout makes the sow read clockwise on screen — bottom-right, along
+ * to the left, up into the lumbung, across the top, down the right side.
+ * Both shipped packs' sources describe clockwise sowing, so a board that
+ * animated the other way would visibly contradict its own citation.
+ *
+ * It stays a rendering choice, exactly as PRD §6 requires: the engine only
+ * ever sows by increasing index, and direction is never encoded twice.
  */
-export const BARIS_ATAS = [14, 13, 12, 11, 10, 9, 8] as const
-export const BARIS_BAWAH = [0, 1, 2, 3, 4, 5, 6] as const
+export const BARIS_ATAS = [8, 9, 10, 11, 12, 13, 14] as const
+export const BARIS_BAWAH = [6, 5, 4, 3, 2, 1, 0] as const
 
 export function ownerOfHole(index: number): Player {
   return index <= 6 ? PLAYER_A : PLAYER_B
@@ -74,10 +81,10 @@ export function Papan({
     >
       <div className="grid grid-cols-[minmax(3.5rem,1fr)_7fr_minmax(3.5rem,1fr)] items-center gap-3 sm:gap-4">
         <LumbungView
-          owner={PLAYER_B}
-          biji={cells[LUMBUNG_B]}
-          active={active === LUMBUNG_B}
-          name={namaB}
+          owner={PLAYER_A}
+          biji={cells[LUMBUNG_A]}
+          active={active === LUMBUNG_A}
+          name={namaA}
         />
 
         <div className="grid grid-rows-2 gap-6 sm:gap-7">
@@ -86,10 +93,10 @@ export function Papan({
         </div>
 
         <LumbungView
-          owner={PLAYER_A}
-          biji={cells[LUMBUNG_A]}
-          active={active === LUMBUNG_A}
-          name={namaA}
+          owner={PLAYER_B}
+          biji={cells[LUMBUNG_B]}
+          active={active === LUMBUNG_B}
+          name={namaB}
         />
       </div>
     </div>

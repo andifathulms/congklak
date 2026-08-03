@@ -44,6 +44,12 @@ export const DivergenceSchema = z
     thisPack: z.string().min(3),
     /** Bacaan lain yang terdokumentasi. */
     otherReading: z.string().min(3),
+    /**
+     * Judul sumber dalam pack ini yang berbicara soal perbedaan ini.
+     * Sebuah perbedaan yang tidak bisa ditelusuri ke sumber hanyalah
+     * pendapat, dan pendapat bukan yang dijual proyek ini.
+     */
+    sources: z.array(z.string().min(3)).default([]),
     note: z.string().optional(),
   })
   .strict()

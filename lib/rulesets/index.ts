@@ -1,4 +1,5 @@
 import umum from '@/data/rulesets/umum.json'
+import jawaSleman from '@/data/rulesets/jawa-sleman.json'
 import { parseRuleset, type Ruleset } from './schema'
 
 /**
@@ -6,7 +7,7 @@ import { parseRuleset, type Ruleset } from './schema'
  * An array, never a map — engine-adjacent code must never depend on the
  * iteration order of an unordered collection.
  */
-const RAW_PACKS: readonly unknown[] = [umum]
+const RAW_PACKS: readonly unknown[] = [umum, jawaSleman]
 
 export const RULESETS: readonly Ruleset[] = RAW_PACKS.map(parseRuleset)
 
