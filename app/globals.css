@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+html,
+body {
+  background-color: theme('colors.mat');
+  color: theme('colors.ink');
+}
+
+/* Counts are the content — PRD §11. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
