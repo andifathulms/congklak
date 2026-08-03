@@ -25,6 +25,9 @@ export default function LocaleLayout({
         </Link>
         <p className="font-sans text-sm text-ink/60">{kata.tagline}</p>
         <nav className="ml-auto flex flex-wrap items-center gap-3 font-sans text-sm">
+          <Link href={`/${params.locale}/belajar`} className="underline underline-offset-4">
+            {kata.belajar}
+          </Link>
           <Link href={`/${params.locale}/aturan`} className="underline underline-offset-4">
             {kata.aturan}
           </Link>

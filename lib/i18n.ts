@@ -91,6 +91,15 @@ interface Dict {
   readonly koneksi_tersambung: string
   readonly koneksi_putus: string
   readonly koneksi_gagal: string
+  readonly belajar: string
+  readonly belajarIntro: string
+  readonly pilihLubang: string
+  readonly tepat: string
+  readonly belumTepat: string
+  readonly ulangiPosisi: string
+  readonly pelajaranBerikutnya: string
+  readonly mainSekarang: string
+  readonly belajarCatatan: string
 }
 
 const id: Dict = {
@@ -170,6 +179,15 @@ const id: Dict = {
   koneksi_tersambung: 'tersambung',
   koneksi_putus: 'terputus',
   koneksi_gagal: 'gagal tersambung',
+  belajar: 'Belajar',
+  belajarIntro: 'Tiga posisi papan sungguhan, bukan tiga paragraf. Aturan congklak gampang disebut dan susah dirasakan — jadi di sini kamu dikasih papan dan diminta mencari langkahnya.',
+  pilihLubang: 'Pilih salah satu lubang di barisan bawah.',
+  tepat: 'Nah, itu dia.',
+  belumTepat: 'Belum yang itu.',
+  ulangiPosisi: 'Ulangi posisi ini',
+  pelajaranBerikutnya: 'Pelajaran berikutnya',
+  mainSekarang: 'Main sekarang',
+  belajarCatatan: 'Posisi pelajaran memakai aturan Congklak Umum, dan sengaja berisi sedikit biji supaya papannya terbaca sebagai diagram.',
 }
 
 const en: Dict = {
@@ -249,6 +267,15 @@ const en: Dict = {
   koneksi_tersambung: 'connected',
   koneksi_putus: 'disconnected',
   koneksi_gagal: 'connection failed',
+  belajar: 'Learn',
+  belajarIntro: 'Three real board positions, not three paragraphs. Congklak\u2019s rules are simple to state and hard to feel \u2014 so here you are given a board and asked to find the move.',
+  pilihLubang: 'Pick one of the holes on the bottom row.',
+  tepat: 'That\u2019s the one.',
+  belumTepat: 'Not that one.',
+  ulangiPosisi: 'Reset this position',
+  pelajaranBerikutnya: 'Next lesson',
+  mainSekarang: 'Play now',
+  belajarCatatan: 'Lesson positions use the Congklak Umum ruleset, and deliberately hold few biji so the board reads as a diagram.',
 }
 
 const DICTS: Record<Locale, Dict> = { id, en }
