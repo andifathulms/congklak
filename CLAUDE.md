@@ -157,23 +157,32 @@ tests/
 
 ## Current state
 
-M5 done, plus the M6 items that were nearly free. Playable end to end: hotseat, AI, and P2P; two cited rulesets with a selector and a comparison view; replay from a game code; local stats.
+Every PRD milestone is in place: M0 through M6. Hotseat, AI, and P2P over both manual paste and a brokered short code; three cited rulesets with a selector and a comparison view; replay from a game code; learn mode; local stats.
 
-Verified by driving the built export in a real browser, not only by tests. That run found two bugs unit tests could not reach — an AI that never moved at any animated speed, and a stats panel that never appeared — both caused by React effect ordering rather than by anything in the engine. **Drive the app before believing a UI change works.**
+Verified by driving the built export in two real browsers, not only by tests. That is not optional here — **every UI bug found in this project was invisible to a green test suite and a clean static export**, and there have been five:
 
-Remaining, in the order they are worth doing:
+- The AI never moved at any animated speed (unstable effect dependency re-firing on every frame).
+- The stats panel never appeared (child effect ran before the parent wrote).
+- The brokered channel captured its connection by value, so the host's handshake was never sent.
+- PeerJS returned data in a different shape than it was sent, silently dropping the handshake.
+- The broker could hang forever with no code and no error.
 
-- **Brokered signalling (PeerJS).** Manual paste works and has no dependency. PeerJS is permitted for this layer only, and must stay optional — Layer 1 has to keep working when the broker is down.
-- **Learn mode** (PRD §8.6). Three interactive positions teaching relay, *menembak*, and the extra turn.
-- **A third ruleset.** Only with a source. The obvious candidates — the Malay simultaneous first move, multi-round burnt-house play — are PRD §4 non-goals, so a third pack needs a genuinely new sourced rule, not a renamed copy of `umum`. Better to ship two honest packs than three where one is padding.
+Run the app. Drive both sides of a connection. Do not trust a UI change because the tests pass.
+
+Remaining, all deliberate:
+
+- **Simultaneous first move**, **multi-round play with burnt houses**, and **five/nine/eleven-hole boards.** The first two are PRD §4 non-goals; the third needs a resizable topology, and the board is `Int8Array(16)` everywhere. All three are recorded as divergences in the packs that document them, so the deferral is visible rather than silent.
+- **A fourth ruleset**, only if a source turns up a rule the schema cannot already express. That is the bar `congkak-melayu` cleared; anything less is padding.
 
 Things worth knowing before touching this:
 
-- **The `umum` pack's sources are now verified, but weighted.** gambiter.com is a specialist mancala reference, not a government or academic source, and the pack says so. The Sleman documentation behind `jawa-sleman` is a government source but is one text mirrored across dozens of village sites, and its pages 403 direct fetching — the text was read through search indexing. All of that is in the source notes.
-- **The Sleman source contradicts itself** on when the game ends. Both readings are recorded rather than tidied away; the pack implements the one stated most firmly.
-- **`jawa-sleman`'s final sweep is an inference**, not a quote — the source never mentions seeds left on the board. Flagged as such in its divergence entry.
+- **Source weight is declared, not flattened.** Government (Sleman, Bantul, JKKN Malaysia), specialist reference (gambiter.com), and mass media (detikEdu) are distinguished in each source note. detikEdu inverts *menembak* relative to both other kinds and is recorded as a divergence, not implemented — recording a contradiction is not treating it as equally weighted.
+- **The Sleman source contradicts itself** on when the game ends. Both readings are recorded; the pack implements the one stated most firmly.
+- **`jawa-sleman`'s final sweep is an inference**, not a quote. Flagged as such in its divergence entry.
 - **The two final-sweep readings cannot diverge under the `tak-ada-langkah` terminal**, because the stuck side is by definition already empty. Only visible under `tiga-lubang-kosong`.
-- **The board renders clockwise because both sources say clockwise.** It rendered the other way at first, which visibly contradicted its own citation. A layout test pins this now.
-- **`evaluate()` must stay antisymmetric.** It is called from both sides of the search. Two separate bugs came from weighting one direction differently; if a term cannot be written antisymmetrically, it does not belong.
+- **The board renders clockwise because all three sources say clockwise.** It rendered the other way at first, contradicting its own citation. A layout test pins this.
+- **`evaluate()` must stay antisymmetric.** It is called from both sides of the search. Two separate bugs came from weighting one direction differently; a term that cannot be written antisymmetrically does not belong.
+- **Learn-mode lessons carry the outcome they claim, and the tests check it.** A lesson promising a capture that does not happen teaches the wrong rule.
+- **PeerJS must stay dynamically imported.** It is the only permitted network dependency and it is Layer 2 only. Manual paste has to keep working when the broker does not.
 
 **Note: Rantai should ship first.** This project reuses its architecture, and proving that architecture once is the point. Lumbung was built ahead of that at the owner's request; the patterns here are the ones Rantai was meant to establish, so they should be reconciled rather than diverged.

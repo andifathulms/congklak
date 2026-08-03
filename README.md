@@ -23,11 +23,14 @@ pnpm preview              # sajikan ./out di bawah basePath produksi
 | **M1** Mesin | Penaburan dengan sambung, menembak, giliran lagi, syarat akhir, aliran event |
 | **M2** Hotseat | Papan, animasi penaburan, kontrol kecepatan, menang dan seri |
 | **M3** AI + pratinjau | Minimax alpha-beta di worker, tiga tingkat kesulitan, pratinjau langkah |
-| **M4** Ruleset | Pack kedua (`jawa-sleman`), pemilih aturan, halaman banding, halaman sumber |
-| **M5** P2P | WebRTC tempel-manual, jabat tangan id aturan, hash tiap giliran |
-| **M6** sebagian | Penampil ulangan dari kode permainan, statistik lokal |
+| **M4** Ruleset | Tiga pack bersumber, pemilih aturan, halaman banding, halaman sumber |
+| **M5** P2P | WebRTC tempel-manual dan kode pendek lewat broker, jabat tangan id aturan, hash tiap giliran |
+| **M6** | Penampil ulangan dari kode permainan, mode belajar, statistik lokal |
 
-Belum ada: penyambungan lewat broker (PeerJS), mode belajar, dan ruleset ketiga.
+Semua milestone PRD sudah ada. Yang sengaja ditunda dan tercatat sebagai
+perbedaan di pack masing-masing: langkah pertama serentak, permainan beberapa
+babak dengan lubang terbakar, dan papan lima/sembilan/sebelas lubang — ketiganya
+non-goal PRD §4 atau butuh topologi yang bisa berubah ukuran.
 
 ## Aturan adalah data
 
@@ -36,9 +39,18 @@ dan digerbangi oleh build. Tidak ada satu pun cabang kode per daerah di dalam
 mesin — kalau sebuah varian butuh perilaku yang belum bisa diungkapkan skema,
 skemanya yang diperluas.
 
-Dua pack yang dikirim, `umum` dan `jawa-sleman`, hanya berbeda pada dua opsi —
-syarat berhenti dan sapu akhir — dan uji pemisahan menggagalkan build kalau
-daftar itu bertambah.
+Tiga pack yang dikirim berbeda hanya di tempat yang ada sumbernya, dan uji
+pemisahan menggagalkan build kalau daftar itu bertambah:
+
+| Pack | Berbeda dari `umum` pada |
+|---|---|
+| `umum` | — bacaan yang paling luas dipakai |
+| `jawa-sleman` | syarat berhenti (tiga lubang kosong) dan sapu akhir |
+| `congkak-melayu` | menembak hanya sesudah satu pusingan penuh |
+
+Ruleset ketiga ditambahkan justru karena penelusurannya menemukan aturan yang
+skemanya belum bisa ungkapkan — bukan sekadar untuk menggenapkan jumlah. Pack
+yang berbeda di tempat tanpa sumber bukan ruleset, hanya selera.
 
 Tiga hal yang dibawa tiap pack di luar aturan itu sendiri:
 
@@ -76,7 +88,8 @@ lib/engine/     mesin murni: papan, applyMove, penaburan, event, hash, putar ula
 lib/rulesets/   skema, pemuat
 lib/ai/         minimax, evaluasi — murni, jam disuntikkan pemanggil
 workers/        pencarian AI, tempat jamnya berada
-components/     papan, pemutar aliran event, pratinjau
+lib/learn/      posisi pelajaran, dengan klaim hasil yang diuji
+components/     papan, pemutar aliran event, pratinjau, sambungan, belajar
 data/rulesets/  pack JSON bersumber
 tests/          fixture per aturan, konservasi, sambung, determinisme, simulasi
 ```
