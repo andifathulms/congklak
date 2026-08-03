@@ -1,0 +1,57 @@
+{
+  "id": "umum",
+  "name": "Congklak Umum",
+  "region": "Nusantara (bacaan umum)",
+  "aka": ["dakon", "congkak", "dentuman lamban", "aggalacang", "nogarata"],
+  "summary": "Bacaan yang paling sering dijumpai: menyebar berlawanan arah jarum jam, lumbung lawan dilewati, biji terakhir di lubang berisi berarti sambung (relay), di lumbung sendiri berarti jalan lagi, di lubang kosong sisi sendiri berarti menembak. Permainan berhenti ketika pemain yang mendapat giliran tidak punya langkah sah, dan biji sisa jatuh ke pemilik sisinya.",
+  "presentation": {
+    "direction": "berlawanan-jarum-jam"
+  },
+  "options": {
+    "relay": true,
+    "extraTurnOnOwnLumbung": true,
+    "menembak": {
+      "enabled": true,
+      "requireOppositeNonEmpty": false
+    },
+    "terminal": "tak-ada-langkah",
+    "finalSweep": "pemilik-sisi"
+  },
+  "sources": [
+    {
+      "title": "Permainan Rakyat Daerah Jawa Tengah",
+      "publisher": "Proyek Inventarisasi dan Dokumentasi Kebudayaan Daerah, Departemen Pendidikan dan Kebudayaan",
+      "year": 1983,
+      "locator": "bagian dakon",
+      "confidence": "perlu-cek",
+      "note": "Seri inventarisasi permainan rakyat per provinsi. Halaman persis dan rumusan aturannya belum dicek langsung terhadap terbitan aslinya."
+    },
+    {
+      "title": "Nama-nama daerah untuk congklak di Nusantara",
+      "publisher": "PRD.md §2, kutipan bersumber di repositori ini",
+      "confidence": "perlu-cek",
+      "locator": "PRD.md §2",
+      "note": "Dasar untuk daftar 'aka': congklak/dakon di Jawa, congkak di Sumatra, aggalacang/nogarata di Sulawesi, dentuman lamban di Lampung. Sumber asli kutipan itu belum ditelusuri kembali di sini."
+    }
+  ],
+  "divergences": [
+    {
+      "rule": "Syarat berhenti",
+      "thisPack": "Permainan berhenti saat pemain yang mendapat giliran tidak punya satu pun lubang berisi di sisinya.",
+      "otherReading": "Permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya.",
+      "note": "Lihat ruleset 'tiga-lubang' untuk bacaan yang satunya. PRD §3."
+    },
+    {
+      "rule": "Menembak ke lubang seberang yang kosong",
+      "thisPack": "Biji terakhir tetap diambil ke lumbung walau lubang seberang kosong.",
+      "otherReading": "Tidak ada tembakan sama sekali kalau lubang seberang kosong; biji ditinggal dan giliran habis.",
+      "note": "Sumber terbagi. Dimodelkan sebagai opsi menembak.requireOppositeNonEmpty."
+    },
+    {
+      "rule": "Arah menyebar",
+      "thisPack": "Disajikan berlawanan arah jarum jam.",
+      "otherReading": "Sumber Jawa kerap menyebut searah jarum jam.",
+      "note": "Perbedaan orientasi papan, bukan perbedaan aturan. Mesin selalu menyebar menaik menurut indeks."
+    }
+  ]
+}
