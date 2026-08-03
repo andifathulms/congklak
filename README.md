@@ -23,9 +23,11 @@ pnpm preview              # sajikan ./out di bawah basePath produksi
 | **M1** Mesin | Penaburan dengan sambung, menembak, giliran lagi, syarat akhir, aliran event |
 | **M2** Hotseat | Papan, animasi penaburan, kontrol kecepatan, menang dan seri |
 | **M3** AI + pratinjau | Minimax alpha-beta di worker, tiga tingkat kesulitan, pratinjau langkah |
+| **M4** Ruleset | Pack kedua (`jawa-sleman`), pemilih aturan, halaman banding, halaman sumber |
+| **M5** P2P | WebRTC tempel-manual, jabat tangan id aturan, hash tiap giliran |
+| **M6** sebagian | Penampil ulangan dari kode permainan, statistik lokal |
 
-Belum ada: P2P (M5), penampil ulangan, mode belajar, statistik lokal (M6), dan
-ruleset kedua (M4).
+Belum ada: penyambungan lewat broker (PeerJS), mode belajar, dan ruleset ketiga.
 
 ## Aturan adalah data
 
@@ -34,13 +36,22 @@ dan digerbangi oleh build. Tidak ada satu pun cabang kode per daerah di dalam
 mesin — kalau sebuah varian butuh perilaku yang belum bisa diungkapkan skema,
 skemanya yang diperluas.
 
-Dua hal yang dibawa tiap pack di luar aturan itu sendiri:
+Dua pack yang dikirim, `umum` dan `jawa-sleman`, hanya berbeda pada dua opsi —
+syarat berhenti dan sapu akhir — dan uji pemisahan menggagalkan build kalau
+daftar itu bertambah.
 
-- **`confidence` pada tiap sumber** — `terverifikasi` atau `perlu-cek`. Dua sumber
-  pack `umum` saat ini bertanda **perlu-cek**: rumusannya belum diadu langsung
-  dengan terbitan aslinya. Ditampilkan apa adanya di halaman Aturan.
+Tiga hal yang dibawa tiap pack di luar aturan itu sendiri:
+
+- **`confidence` pada tiap sumber** — `terverifikasi` atau `perlu-cek`.
+  Ditampilkan apa adanya di halaman Aturan.
 - **`divergences`** — di mana pack ini sengaja berbeda dari bacaan lain yang
-  terdokumentasi. Saat sumber bertentangan, keduanya dicatat, bukan dipilih diam-diam.
+  terdokumentasi, lengkap dengan sumber yang berbicara soal itu. Saat sumber
+  bertentangan, keduanya dicatat, bukan dipilih diam-diam. Termasuk saat satu
+  sumber bertentangan dengan dirinya sendiri.
+- **Bobot sumber dinyatakan**, bukan diratakan. Sumber pemerintah, rujukan
+  khusus, dan media massa dibedakan di catatan masing-masing. Satu keterangan
+  media yang membalik aturan menembak dicatat sebagai perbedaan dan **tidak**
+  diterapkan, karena berlawanan dengan sumber pemerintah maupun rujukan khusus.
 
 Menambah pack: tulis JSON-nya, sertakan sumber, jalankan `pnpm rulesets:validate`.
 Tanpa sumber, build gagal.

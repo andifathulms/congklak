@@ -157,13 +157,23 @@ tests/
 
 ## Current state
 
-M3 done. Static export deploys, validator gates the build, engine passes its fixtures, hotseat and AI both playable, move preview live.
+M5 done, plus the M6 items that were nearly free. Playable end to end: hotseat, AI, and P2P; two cited rulesets with a selector and a comparison view; replay from a game code; local stats.
 
-Next: M4 — a second and third ruleset pack, the selector, and the comparison view that replays one move list under two rulesets. The engine already implements both terminal conditions and all three final-sweep options, so a new pack is data plus an isolation test, not code.
+Verified by driving the built export in a real browser, not only by tests. That run found two bugs unit tests could not reach — an AI that never moved at any animated speed, and a stats panel that never appeared — both caused by React effect ordering rather than by anything in the engine. **Drive the app before believing a UI change works.**
 
-Two things to settle before adding packs:
+Remaining, in the order they are worth doing:
 
-- **The `umum` pack's sources are marked `perlu-cek`.** They were written from general knowledge of the DepDikBud provincial *Permainan Rakyat* series, not checked against the originals. Verify them, or replace them, before treating the default as sourced. The confidence field exists so this is visible rather than implied.
-- **The two final-sweep readings are indistinguishable under the `tak-ada-langkah` terminal**, because the stuck side is by definition already empty. They only diverge under `tiga-lubang-kosong`. Worth knowing before designing the comparison view around them.
+- **Brokered signalling (PeerJS).** Manual paste works and has no dependency. PeerJS is permitted for this layer only, and must stay optional — Layer 1 has to keep working when the broker is down.
+- **Learn mode** (PRD §8.6). Three interactive positions teaching relay, *menembak*, and the extra turn.
+- **A third ruleset.** Only with a source. The obvious candidates — the Malay simultaneous first move, multi-round burnt-house play — are PRD §4 non-goals, so a third pack needs a genuinely new sourced rule, not a renamed copy of `umum`. Better to ship two honest packs than three where one is padding.
+
+Things worth knowing before touching this:
+
+- **The `umum` pack's sources are now verified, but weighted.** gambiter.com is a specialist mancala reference, not a government or academic source, and the pack says so. The Sleman documentation behind `jawa-sleman` is a government source but is one text mirrored across dozens of village sites, and its pages 403 direct fetching — the text was read through search indexing. All of that is in the source notes.
+- **The Sleman source contradicts itself** on when the game ends. Both readings are recorded rather than tidied away; the pack implements the one stated most firmly.
+- **`jawa-sleman`'s final sweep is an inference**, not a quote — the source never mentions seeds left on the board. Flagged as such in its divergence entry.
+- **The two final-sweep readings cannot diverge under the `tak-ada-langkah` terminal**, because the stuck side is by definition already empty. Only visible under `tiga-lubang-kosong`.
+- **The board renders clockwise because both sources say clockwise.** It rendered the other way at first, which visibly contradicted its own citation. A layout test pins this now.
+- **`evaluate()` must stay antisymmetric.** It is called from both sides of the search. Two separate bugs came from weighting one direction differently; if a term cannot be written antisymmetrically, it does not belong.
 
 **Note: Rantai should ship first.** This project reuses its architecture, and proving that architecture once is the point. Lumbung was built ahead of that at the owner's request; the patterns here are the ones Rantai was meant to establish, so they should be reconciled rather than diverged.
