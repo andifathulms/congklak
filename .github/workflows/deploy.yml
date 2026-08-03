@@ -1,0 +1,67 @@
+# Ruleset validation gates the deploy (invariant 8). `pnpm build` runs
+# rulesets:validate first, so an uncited pack fails here rather than
+# shipping.
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm rulesets:validate
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test:run
+
+  build:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # basePath harus sama dengan nama repositori, atau seluruh aset
+      # menggantung 404 di Pages.
+      - run: pnpm build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+      - name: Pastikan .nojekyll ada di akar keluaran
+        run: test -f out/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
