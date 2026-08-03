@@ -100,6 +100,14 @@ interface Dict {
   readonly pelajaranBerikutnya: string
   readonly mainSekarang: string
   readonly belajarCatatan: string
+  readonly caraSambung: string
+  readonly jalurBroker: string
+  readonly jalurManual: string
+  readonly jalurBrokerCatatan: string
+  readonly jalurManualCatatan: string
+  readonly brokerGagal: string
+  readonly kodeSambungan: string
+  readonly masukkanKode: string
 }
 
 const id: Dict = {
@@ -188,6 +196,14 @@ const id: Dict = {
   pelajaranBerikutnya: 'Pelajaran berikutnya',
   mainSekarang: 'Main sekarang',
   belajarCatatan: 'Posisi pelajaran memakai aturan Congklak Umum, dan sengaja berisi sedikit biji supaya papannya terbaca sebagai diagram.',
+  caraSambung: 'Cara menyambung',
+  jalurBroker: 'Kode pendek',
+  jalurManual: 'Tempel manual',
+  jalurBrokerCatatan: 'Tuan rumah dapat kode pendek, tamu mengetikkannya. Perkenalannya lewat server PeerJS umum — pihak ketiga. Sesudah tersambung, permainannya tetap langsung antar-perangkat: langkah dan hash tidak pernah lewat server itu.',
+  jalurManualCatatan: 'Tanpa server sama sekali. Kalian bertukar dua potong teks lewat jalur apa pun yang sudah kalian pakai. Lebih repot, tapi tidak bergantung pada siapa pun.',
+  brokerGagal: 'dialihkan ke tempel manual',
+  kodeSambungan: 'Kode sambungan',
+  masukkanKode: 'Masukkan kode tuan rumah',
 }
 
 const en: Dict = {
@@ -276,6 +292,14 @@ const en: Dict = {
   pelajaranBerikutnya: 'Next lesson',
   mainSekarang: 'Play now',
   belajarCatatan: 'Lesson positions use the Congklak Umum ruleset, and deliberately hold few biji so the board reads as a diagram.',
+  caraSambung: 'How to connect',
+  jalurBroker: 'Short code',
+  jalurManual: 'Manual paste',
+  jalurBrokerCatatan: 'The host gets a short code and the guest types it. The introduction runs through the public PeerJS server \u2014 a third party. Once connected the game is still device to device: moves and hashes never pass through that server.',
+  jalurManualCatatan: 'No server at all. You exchange two pieces of text over whatever channel you already use. More fiddly, but it depends on nobody.',
+  brokerGagal: 'falling back to manual paste',
+  kodeSambungan: 'Connection code',
+  masukkanKode: 'Enter the host\u2019s code',
 }
 
 const DICTS: Record<Locale, Dict> = { id, en }

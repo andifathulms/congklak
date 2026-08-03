@@ -13,6 +13,7 @@ import {
   type Saluran,
   type StatusKoneksi,
 } from '@/lib/net/manual'
+import { brokerTamu, brokerTuanRumah, type SisiBroker } from '@/lib/net/broker'
 import { RULESETS, getRuleset, type Ruleset } from '@/lib/rulesets'
 import { t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
@@ -27,6 +28,14 @@ export function Tanding({ locale }: { locale: Locale }) {
   const kata = t(locale)
 
   const [ruleset, setRuleset] = useState<Ruleset>(RULESETS[0])
+  /**
+   * Dua lapisan pengenalan. Broker lebih enak dipakai; tempel manual tidak
+   * bergantung pada apa pun. Kalau broker gagal — servernya mati, impor
+   * dinamisnya tidak sampai, jaringannya memblokir — kita jatuh ke manual
+   * dan mengatakannya, bukan membiarkan layarnya menggantung.
+   */
+  const [jalur, setJalur] = useState<'broker' | 'manual'>('broker')
+  const [kodeBroker, setKodeBroker] = useState('')
   const [peran, setPeran] = useState<Peran | null>(null)
   const [koneksi, setKoneksi] = useState<StatusKoneksi>('baru')
   const [tawaran, setTawaran] = useState('')
@@ -142,6 +151,24 @@ export function Tanding({ locale }: { locale: Locale }) {
         },
       }
 
+      // Lewat broker, tuan rumah cukup mengumumkan satu kode pendek dan
+      // tamu memanggilnya. Kalau lapisan itu gagal dengan alasan apa pun,
+      // kita turun ke tempel manual dan mengatakannya — bukan berhenti.
+      if (jalur === 'broker' && sebagai === 'tuan-rumah') {
+        try {
+          const sisi = await brokerTuanRumah(handler)
+          brokerRef.current = sisi
+          saluran.current = sisi.saluran()
+          setKodeBroker(sisi.kode)
+          return
+        } catch (error) {
+          setGalat(
+            `${error instanceof Error ? error.message : String(error)} — ${kata.brokerGagal}`,
+          )
+          setJalur('manual')
+        }
+      }
+
       try {
         if (sebagai === 'tuan-rumah') {
           const sisi = await mulaiTuanRumah(handler)
@@ -156,10 +183,32 @@ export function Tanding({ locale }: { locale: Locale }) {
         setKoneksi('gagal')
       }
     },
-    [ruleset.id, onPesan],
+    [ruleset.id, onPesan, jalur, kata.brokerGagal],
   )
 
+  /** Tamu memanggil kode tuan rumah lewat broker. */
+  const panggilKode = useCallback(async () => {
+    setGalat(null)
+    try {
+      const sisi = await brokerTamu(tempel, {
+        onPesan,
+        onStatus: (s: StatusKoneksi) => {
+          setKoneksi(s)
+          if (s === 'tersambung') {
+            saluran.current?.kirim(encodePesan(halo(sesiRef.current!)))
+          }
+        },
+      })
+      brokerRef.current = sisi
+      saluran.current = sisi.saluran()
+    } catch (error) {
+      setGalat(`${error instanceof Error ? error.message : String(error)} — ${kata.brokerGagal}`)
+      setJalur('manual')
+    }
+  }, [tempel, onPesan, kata.brokerGagal])
+
   const hostRef = useRef<Awaited<ReturnType<typeof mulaiTuanRumah>> | null>(null)
+  const brokerRef = useRef<SisiBroker | null>(null)
 
   const terimaTempelan = useCallback(async () => {
     setGalat(null)
@@ -226,6 +275,29 @@ export function Tanding({ locale }: { locale: Locale }) {
             ))}
           </select>
         </label>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
+            {kata.caraSambung}
+          </span>
+          {(['broker', 'manual'] as const).map((j) => (
+            <button
+              key={j}
+              type="button"
+              onClick={() => setJalur(j)}
+              aria-pressed={jalur === j}
+              className={[
+                'rounded-full px-3 py-1 font-sans text-xs transition',
+                jalur === j ? 'bg-ink text-mat' : 'border border-teak/30 text-ink/70',
+              ].join(' ')}
+            >
+              {j === 'broker' ? kata.jalurBroker : kata.jalurManual}
+            </button>
+          ))}
+        </div>
+        <p className="max-w-prose font-sans text-xs text-ink/55">
+          {jalur === 'broker' ? kata.jalurBrokerCatatan : kata.jalurManualCatatan}
+        </p>
+
         <div className="flex gap-2">
           <button
             type="button"
@@ -258,6 +330,40 @@ export function Tanding({ locale }: { locale: Locale }) {
           <span className="font-mono text-xs text-ink/60">{kata[`koneksi_${koneksi}`]}</span>
         </p>
 
+        {/* Jalur broker: satu kode pendek yang cukup dibacakan. */}
+        {kodeBroker && (
+          <div className="flex flex-col gap-1">
+            <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
+              {kata.kodeSambungan}
+            </span>
+            <p className="tnum select-all font-display text-3xl font-bold tracking-[0.2em]">
+              {kodeBroker}
+            </p>
+          </div>
+        )}
+
+        {jalur === 'broker' && peran === 'tamu' && sesi?.status !== 'siap' && (
+          <label className="flex flex-col gap-1">
+            <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
+              {kata.masukkanKode}
+            </span>
+            <input
+              value={tempel}
+              onChange={(e) => setTempel(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && panggilKode()}
+              className="w-48 rounded-full border border-teak/40 bg-mat px-4 py-2 font-mono text-lg tracking-widest"
+              aria-label={kata.kodeSambungan}
+            />
+            <button
+              type="button"
+              onClick={panggilKode}
+              className="mt-1 self-start rounded-full bg-teak px-4 py-1.5 font-sans text-sm text-seedA"
+            >
+              {kata.sambung}
+            </button>
+          </label>
+        )}
+
         {tawaran && (
           <label className="flex flex-col gap-1">
             <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
@@ -273,7 +379,7 @@ export function Tanding({ locale }: { locale: Locale }) {
           </label>
         )}
 
-        {sesi?.status !== 'siap' && (
+        {jalur === 'manual' && sesi?.status !== 'siap' && (
           <label className="flex flex-col gap-1">
             <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
               {peran === 'tuan-rumah' ? kata.tempelJawaban : kata.tempelTawaran}
