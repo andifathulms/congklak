@@ -43,6 +43,13 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
   const [busy, setBusy] = useState(false)
   const [previewed, setPreviewed] = useState<number | null>(null)
   const [berpikir, setBerpikir] = useState(false)
+  /**
+   * Dinaikkan sesudah statistik ditulis. Panel statistik adalah anak, dan
+   * efek anak berjalan sebelum efek induk — tanpa penanda ini panel
+   * membaca localStorage tepat sebelum hasil permainan ditulis ke sana,
+   * lalu tidak pernah membaca lagi, jadi statistik tidak pernah muncul.
+   */
+  const [statVersi, setStatVersi] = useState(0)
 
   const player = usePenaburan(state.board, kecepatan)
   const { pikirkan } = useAi(ruleset.id)
@@ -75,34 +82,58 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
     [busy, giliranAi, state.status, jalankan],
   )
 
-  // Giliran AI. Pencarian berjalan di worker, jadi utas utama tetap bebas
-  // dan animasi giliran sebelumnya tidak tersendat.
+  /**
+   * Giliran AI. Pencarian berjalan di worker, jadi utas utama tetap bebas
+   * dan animasi giliran sebelumnya tidak tersendat.
+   *
+   * Efek ini hanya boleh bergantung pada hal yang berubah sekali per
+   * giliran. usePenaburan mengembalikan objek baru tiap render, jadi
+   * `jalankan` ikut berganti identitas tiap bingkai animasi; kalau efek
+   * ini bergantung padanya, tiap bingkai membatalkan pencarian yang
+   * sedang jalan dan memulai yang baru — dan pada kecepatan animasi apa
+   * pun AI tidak pernah sempat selesai berpikir. Karena itu semuanya
+   * lewat ref, dan pemicunya adalah nomor giliran.
+   */
   const aiRef = useRef(0)
+  const jalankanRef = useRef(jalankan)
+  const stateRef = useRef(state)
+  const pikirkanRef = useRef(pikirkan)
   useEffect(() => {
-    if (!giliranAi || busy) return
+    jalankanRef.current = jalankan
+    stateRef.current = state
+    pikirkanRef.current = pikirkan
+  })
+
+  useEffect(() => {
+    if (!giliranAi || busy) {
+      setBerpikir(false)
+      return
+    }
     let batal = false
     const token = ++aiRef.current
+    const posisi = stateRef.current
     setBerpikir(true)
 
-    pikirkan(state, kesulitan, state.moveCount * 31 + record.moves.length)
+    pikirkanRef
+      .current(posisi, kesulitan, posisi.moveCount * 31 + 7)
       .then((response) => {
         if (batal || token !== aiRef.current) return
         setBerpikir(false)
-        jalankan(response.move)
+        jalankanRef.current(response.move)
       })
       .catch(() => {
-        if (batal) return
+        if (batal || token !== aiRef.current) return
         setBerpikir(false)
         // Kalau worker gagal, papan tidak boleh menggantung: mainkan
         // langkah sah pertama daripada membekukan permainan.
-        const fallback = currentLegalMoves(state)[0]
-        if (fallback !== undefined) jalankan(fallback)
+        const fallback = currentLegalMoves(stateRef.current)[0]
+        if (fallback !== undefined) jalankanRef.current(fallback)
       })
 
     return () => {
       batal = true
     }
-  }, [giliranAi, busy, state, kesulitan, record.moves.length, pikirkan, jalankan])
+  }, [giliranAi, busy, kesulitan, state.moveCount])
 
   const baru = useCallback(() => {
     aiRef.current++
@@ -176,6 +207,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
     const { steps } = replay(record, ruleset)
     const { bankTerbesar, sambungTerpanjang } = dariRekaman(steps)
     catatHasil({ rulesetId: ruleset.id, hasil: state.hasil, bankTerbesar, sambungTerpanjang })
+    setStatVersi((v) => v + 1)
   }, [state.status, state.hasil, busy, record, ruleset])
 
   const pratinjau = useMemo(() => {
@@ -205,12 +237,14 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
           ]}
           value={mode}
           onChange={gantiMode}
+          label={kata.mode}
         />
         {mode === 'ai' && (
           <Pilihan
             options={KESULITAN.map((k) => [k, kata[k]] as const)}
             value={kesulitan}
             onChange={setKesulitan}
+            label={kata.kesulitan}
           />
         )}
       </div>
@@ -286,6 +320,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
             options={KECEPATAN.map((k) => [k, kata[k]] as const)}
             value={kecepatan}
             onChange={setKecepatan}
+            label={kata.kecepatan}
           />
         </span>
       </div>
@@ -296,7 +331,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
         <p className="font-mono text-xs text-ink/50">
           {kata.kodePermainan}: {encodeRecord(record)}
         </p>
-        <PanelStatistik rulesetId={ruleset.id} kata={kata} versi={state.moveCount} />
+        <PanelStatistik rulesetId={ruleset.id} kata={kata} versi={statVersi} />
       </div>
     </div>
   )
@@ -306,25 +341,34 @@ function Pilihan<T extends string>({
   options,
   value,
   onChange,
+  label,
 }: {
   options: readonly (readonly [T, string])[]
   value: T
   onChange: (next: T) => void
+  /**
+   * Nama grup, wajib. Beberapa pilihan memakai kata yang sama — "Sedang"
+   * ada di kesulitan dan di kecepatan — jadi tanpa nama grup keduanya
+   * tidak bisa dibedakan oleh pembaca layar maupun oleh siapa pun yang
+   * menavigasi dengan papan tik.
+   */
+  label: string
 }) {
   return (
-    <span className="flex items-center gap-1">
-      {options.map(([key, label]) => (
+    <span role="group" aria-label={label} className="flex items-center gap-1">
+      {options.map(([key, teks]) => (
         <button
           key={key}
           type="button"
           onClick={() => onChange(key)}
           aria-pressed={value === key}
+          aria-label={`${label}: ${teks}`}
           className={[
             'rounded-full px-3 py-1 font-sans text-xs transition',
             value === key ? 'bg-ink text-mat' : 'border border-teak/30 text-ink/70',
           ].join(' ')}
         >
-          {label}
+          {teks}
         </button>
       ))}
     </span>
