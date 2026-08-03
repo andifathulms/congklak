@@ -28,6 +28,9 @@ export default function LocaleLayout({
           <Link href={`/${params.locale}/aturan`} className="underline underline-offset-4">
             {kata.aturan}
           </Link>
+          <Link href={`/${params.locale}/tanding`} className="underline underline-offset-4">
+            {kata.tanding}
+          </Link>
           <Link href={`/${params.locale}/banding`} className="underline underline-offset-4">
             {kata.banding}
           </Link>

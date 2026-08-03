@@ -72,6 +72,23 @@ interface Dict {
   readonly statistik: string
   readonly dimainkan: string
   readonly menangA: string
+  readonly tanding: string
+  readonly tandingIntro: string
+  readonly jadiTuanRumah: string
+  readonly jadiTamu: string
+  readonly salinTawaran: string
+  readonly salinJawaban: string
+  readonly tempelTawaran: string
+  readonly tempelJawaban: string
+  readonly sambung: string
+  readonly giliranmu: string
+  readonly giliranLawan: string
+  readonly tanpaTurn: string
+  readonly koneksi_baru: string
+  readonly koneksi_menunggu: string
+  readonly koneksi_tersambung: string
+  readonly koneksi_putus: string
+  readonly koneksi_gagal: string
 }
 
 const id: Dict = {
@@ -132,6 +149,23 @@ const id: Dict = {
   statistik: 'Statistik',
   dimainkan: 'Permainan',
   menangA: 'Menang A',
+  tanding: 'Tanding',
+  tandingIntro: 'Dua perangkat, satu permainan. Yang melintas hanya langkah dan hash — papan tidak pernah dikirim. Kedua sisi harus memakai aturan yang sama; kalau tidak, sambungan ditolak.',
+  jadiTuanRumah: 'Jadi tuan rumah',
+  jadiTamu: 'Jadi tamu',
+  salinTawaran: 'Salin kode ini, kirim ke lawan',
+  salinJawaban: 'Salin jawaban ini, kirim balik ke tuan rumah',
+  tempelTawaran: 'Tempel kode dari tuan rumah',
+  tempelJawaban: 'Tempel jawaban dari tamu',
+  sambung: 'Sambungkan',
+  giliranmu: 'Giliranmu',
+  giliranLawan: 'Giliran lawan',
+  tanpaTurn: 'Tanpa relay TURN. Sebagian sambungan — terutama kalau kedua sisi di balik NAT ketat — memang akan gagal, dan itu tidak bisa diperbaiki dari sisi ini.',
+  koneksi_baru: 'belum tersambung',
+  koneksi_menunggu: 'menunggu lawan',
+  koneksi_tersambung: 'tersambung',
+  koneksi_putus: 'terputus',
+  koneksi_gagal: 'gagal tersambung',
 }
 
 const en: Dict = {
@@ -192,6 +226,23 @@ const en: Dict = {
   statistik: 'Stats',
   dimainkan: 'Games',
   menangA: 'A wins',
+  tanding: 'Play online',
+  tandingIntro: 'Two devices, one game. Only moves and hashes cross the wire — the board is never sent. Both sides must be on the same ruleset, or the connection is refused.',
+  jadiTuanRumah: 'Host',
+  jadiTamu: 'Join',
+  salinTawaran: 'Copy this code and send it to your opponent',
+  salinJawaban: 'Copy this answer and send it back to the host',
+  tempelTawaran: 'Paste the code from the host',
+  tempelJawaban: 'Paste the answer from the guest',
+  sambung: 'Connect',
+  giliranmu: 'Your turn',
+  giliranLawan: 'Opponent\u2019s turn',
+  tanpaTurn: 'No TURN relay. Some connections \u2014 particularly when both sides sit behind strict NAT \u2014 will simply fail, and that cannot be fixed from this end.',
+  koneksi_baru: 'not connected',
+  koneksi_menunggu: 'waiting for opponent',
+  koneksi_tersambung: 'connected',
+  koneksi_putus: 'disconnected',
+  koneksi_gagal: 'connection failed',
 }
 
 const DICTS: Record<Locale, Dict> = { id, en }
