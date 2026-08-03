@@ -76,6 +76,17 @@ export const OptionsSchema = z
          * simply end the turn. PRD §3.
          */
         requireOppositeNonEmpty: z.boolean(),
+
+        /**
+         * Malay congkak allows menembak only after a full lap — the sow
+         * must have passed the player's own rumah and come back round to
+         * their own side. Landing in an empty own hole before that is
+         * simply *mati*: the turn ends with no capture.
+         *
+         * Sumber: JKKN Malaysia — "selepas melepasi rumah sendiri dan
+         * kembali ke kawasan sendiri". Lihat pack congkak-melayu.
+         */
+        requireLapCompleted: z.boolean(),
       })
       .strict(),
 

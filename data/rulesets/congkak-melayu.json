@@ -1,0 +1,75 @@
+{
+  "id": "congkak-melayu",
+  "name": "Congkak Melayu",
+  "region": "Semenanjung Melayu (Malaysia, Riau, Sumatra pesisir)",
+  "aka": ["congkak", "dakon"],
+  "summary": "Bacaan Melayu. Lubang kecil disebut kampung, lumbung disebut rumah atau ibu. Menyebar searah jarum jam, rumah lawan dilewati, biji terakhir di rumah sendiri memberi giliran tambahan. Yang membedakan: menembak hanya boleh sesudah satu pusingan penuh — sesudah biji melewati rumah sendiri lalu kembali ke kawasan sendiri. Mendarat di kampung kosong sendiri sebelum itu hanyalah mati; giliran habis tanpa tembakan.",
+  "presentation": {
+    "direction": "searah-jarum-jam"
+  },
+  "options": {
+    "relay": true,
+    "extraTurnOnOwnLumbung": true,
+    "menembak": {
+      "enabled": true,
+      "requireOppositeNonEmpty": false,
+      "requireLapCompleted": true
+    },
+    "terminal": "tak-ada-langkah",
+    "finalSweep": "pemilik-sisi"
+  },
+  "sources": [
+    {
+      "title": "Congkak — Gerbang Maklumat Seni Budaya",
+      "publisher": "Jabatan Kebudayaan dan Kesenian Negara (JKKN), Kementerian Pelancongan, Seni dan Budaya Malaysia",
+      "url": "https://pemetaanbudaya.jkkn.gov.my/senibudaya/detail/1344",
+      "locator": "bagian cara bermain",
+      "confidence": "terverifikasi",
+      "note": "Sumber pemerintah Malaysia. Menyatakan papan tujuh kampung sebagai yang paling lazim (ada juga lima dan sembilan), tujuh biji per kampung, menyebar searah jarum jam, rumah lawan dilewati, giliran tambahan kalau biji terakhir jatuh di rumah sendiri, dan syarat menembak: 'selepas melepasi rumah sendiri dan kembali ke kawasan sendiri'."
+    },
+    {
+      "title": "Congkak — mancala game, rules and strategy",
+      "publisher": "gambiter.com, rujukan khusus permainan mancala",
+      "url": "https://gambiter.com/mancala/Congkak.html",
+      "confidence": "terverifikasi",
+      "note": "Rujukan khusus, bukan sumber pemerintah. Dipakai untuk hal yang tidak dirinci JKKN: sambung berlaku saat biji terakhir mendarat di kampung berisi, dan babak berakhir ketika satu pemain tidak lagi punya buah di kampungnya, dengan biji sisa jatuh ke lawannya."
+    }
+  ],
+  "divergences": [
+    {
+      "rule": "Syarat menembak",
+      "thisPack": "Hanya boleh menembak sesudah satu pusingan penuh — biji sudah melewati rumah sendiri lalu kembali ke kawasan sendiri. Sebelum itu, mendarat di kampung kosong sendiri berarti mati.",
+      "otherReading": "Boleh menembak kapan saja biji terakhir mendarat di lubang kosong sisi sendiri, tanpa syarat pusingan.",
+      "sources": ["Congkak — Gerbang Maklumat Seni Budaya"],
+      "note": "Inilah satu-satunya opsi tempat pack ini berbeda dari 'umum'. Perbedaannya besar dalam permainan: tembakan jadi jauh lebih jarang dan pembukaan pendek hampir tidak pernah menghasilkan tangkapan. Sumber Jawa tidak menyebut syarat pusingan sama sekali."
+    },
+    {
+      "rule": "Cakupan satu pusingan",
+      "thisPack": "Dihitung untuk seluruh giliran, lintas sambung: sekali biji melewati rumah sendiri, syaratnya terpenuhi sampai giliran itu habis.",
+      "otherReading": "Bisa juga dibaca ulang tiap kali lubang diangkat pada sambungan, jadi tiap potongan rantai harus melewati rumah sendiri lagi.",
+      "sources": [],
+      "note": "Sumbernya berbicara tentang 'satu pusingan penuh' oleh pemain, bukan per angkatan, jadi yang dipakai bacaan seluruh giliran. Tidak ada sumber di sini yang menyelesaikan kasus sambungan secara tegas."
+    },
+    {
+      "rule": "Langkah pertama",
+      "thisPack": "Bergiliran sejak langkah pertama, pemain A lebih dulu.",
+      "otherReading": "Kedua pemain menabur serentak pada langkah pertama — dinyatakan tegas dalam tradisi Melayu.",
+      "sources": ["Congkak — mancala game, rules and strategy"],
+      "note": "Merusak model giliran secara mendasar. Ditunda dengan sengaja — PRD §4."
+    },
+    {
+      "rule": "Permainan beberapa babak dan kampung terbakar",
+      "thisPack": "Satu babak saja.",
+      "otherReading": "Sesudah satu babak, tiap pemain mengisi ulang kampungnya dari rumahnya sendiri; kampung yang bijinya tidak cukup dianggap 'terbakar' dan dilewati pada babak-babak berikutnya.",
+      "sources": ["Congkak — mancala game, rules and strategy"],
+      "note": "Nyata dan tradisional, tapi menambah satu lapis meta di atas permainannya. Ditunda — PRD §4."
+    },
+    {
+      "rule": "Jumlah kampung per baris",
+      "thisPack": "Tujuh kampung per baris, 98 biji.",
+      "otherReading": "JKKN menyebut papan lima, tujuh, dan sembilan kampung; tujuh yang paling lazim di Malaysia.",
+      "sources": ["Congkak — Gerbang Maklumat Seni Budaya"],
+      "note": "Papan lima dan sembilan butuh topologi yang bisa berubah ukuran, dan itu belum ada."
+    }
+  ]
+}

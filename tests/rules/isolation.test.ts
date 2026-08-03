@@ -10,6 +10,7 @@ import { createRng } from '@/lib/rng'
 
 const umum = getRuleset('umum')
 const sleman = getRuleset('jawa-sleman')
+const melayu = getRuleset('congkak-melayu')
 
 /** Semua kunci opsi tempat dua pack boleh berbeda. */
 function optionKeys(r: Ruleset): Record<string, string> {
@@ -18,6 +19,7 @@ function optionKeys(r: Ruleset): Record<string, string> {
     extraTurnOnOwnLumbung: String(r.options.extraTurnOnOwnLumbung),
     'menembak.enabled': String(r.options.menembak.enabled),
     'menembak.requireOppositeNonEmpty': String(r.options.menembak.requireOppositeNonEmpty),
+    'menembak.requireLapCompleted': String(r.options.menembak.requireLapCompleted),
     terminal: r.options.terminal,
     finalSweep: r.options.finalSweep,
   }
@@ -39,6 +41,20 @@ describe('pemisahan ruleset', () => {
     expect(bedanya(umum, sleman)).toEqual(['finalSweep', 'terminal'])
   })
 
+  it('umum dan congkak-melayu hanya berbeda pada syarat satu pusingan', () => {
+    // Satu opsi, satu sumber. Pack yang berbeda di tempat yang tidak ada
+    // sumbernya bukan ruleset, hanya selera.
+    expect(bedanya(umum, melayu)).toEqual(['menembak.requireLapCompleted'])
+  })
+
+  it('congkak-melayu berbeda dari jawa-sleman di ketiga tempat itu sekaligus', () => {
+    expect(bedanya(melayu, sleman)).toEqual([
+      'finalSweep',
+      'menembak.requireLapCompleted',
+      'terminal',
+    ])
+  })
+
   it('setiap perbedaan yang disengaja tercatat di daftar divergences', () => {
     for (const pack of RULESETS) {
       expect(pack.divergences.length).toBeGreaterThan(0)
@@ -52,8 +68,8 @@ describe('pemisahan ruleset', () => {
     }
   })
 
-  it('kedua pack menyajikan arah yang sama dengan yang dinyatakan sumbernya', () => {
-    // Kedua sumber menyebut menyebar searah jarum jam.
+  it('setiap pack menyajikan arah yang sama dengan yang dinyatakan sumbernya', () => {
+    // Ketiga sumber utama menyebut menyebar searah jarum jam.
     for (const pack of RULESETS) {
       expect(pack.presentation.direction).toBe('searah-jarum-jam')
     }
@@ -118,7 +134,11 @@ describe('pemisahan ruleset', () => {
   })
 
   it('id pack stabil — id muncul di kode permainan dan jabat tangan P2P', () => {
-    expect(RULESETS.map((r) => r.id).sort()).toEqual(['jawa-sleman', 'umum'])
+    expect(RULESETS.map((r) => r.id).sort()).toEqual([
+      'congkak-melayu',
+      'jawa-sleman',
+      'umum',
+    ])
   })
 })
 

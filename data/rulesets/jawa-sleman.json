@@ -2,7 +2,10 @@
   "id": "jawa-sleman",
   "name": "Dakon Sleman",
   "region": "Sleman, Daerah Istimewa Yogyakarta",
-  "aka": ["dakon", "congklak"],
+  "aka": [
+    "dakon",
+    "congklak"
+  ],
   "summary": "Bacaan dari dokumentasi kebudayaan kalurahan se-Kabupaten Sleman. Lumbung disebut gunung, lubang kecilnya disebut sawah. Menyebar searah jarum jam. Biji terakhir di gunung sendiri memberi giliran lagi dan bebas memilih lubang; di lubang kosong sisi sendiri menembak isi lubang seberang, lalu giliran pindah ke lawan. Yang membedakan: permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya, dan yang dihitung hanyalah isi kedua gunung.",
   "presentation": {
     "direction": "searah-jarum-jam"
@@ -12,7 +15,8 @@
     "extraTurnOnOwnLumbung": true,
     "menembak": {
       "enabled": true,
-      "requireOppositeNonEmpty": false
+      "requireOppositeNonEmpty": false,
+      "requireLapCompleted": false
     },
     "terminal": "tiga-lubang-kosong",
     "finalSweep": "dibuang"
@@ -41,28 +45,36 @@
       "rule": "Syarat berhenti",
       "thisPack": "Permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya, walau papan masih berisi.",
       "otherReading": "Permainan berjalan sampai pemain yang mendapat giliran tidak punya satu pun lubang berisi.",
-      "sources": ["Dakon / Congklak — data kebudayaan kalurahan se-Kabupaten Sleman"],
+      "sources": [
+        "Dakon / Congklak — data kebudayaan kalurahan se-Kabupaten Sleman"
+      ],
       "note": "Sumbernya menyebut keduanya dalam satu tarikan napas: permainan selesai kalau ada tiga lubang kosong di satu sisi, 'biji tidak tersisa di lubang daerah permainan sendiri maupun lawan'. Dua syarat itu tidak mungkin berlaku bersamaan — tiga lubang kosong hampir selalu terjadi jauh sebelum papan habis. Yang dipakai di sini syarat tiga lubang kosong, karena itu yang dinyatakan paling tegas dan berulang. Pertentangan di dalam satu sumber ini dicatat, bukan dirapikan."
     },
     {
       "rule": "Biji sisa di papan saat berhenti",
       "thisPack": "Tidak masuk hitungan. Yang dihitung hanya isi kedua gunung.",
       "otherReading": "Biji sisa disapu ke lumbung pemilik sisinya lebih dulu, baru dihitung.",
-      "sources": ["Dakon / Congklak — data kebudayaan kalurahan se-Kabupaten Sleman"],
+      "sources": [
+        "Dakon / Congklak — data kebudayaan kalurahan se-Kabupaten Sleman"
+      ],
       "note": "Ini kesimpulan, bukan kutipan. Sumbernya mengatakan permainan selesai lalu 'terjadi perhitungan biji di gunung/lumbungnya masing-masing', dan tidak pernah menyinggung biji yang masih tergeletak di papan. Karena syarat berhentinya memang menyisakan biji, satu-satunya bacaan yang runtut adalah biji sisa tidak dihitung. Kalau ada sumber yang menyatakan sebaliknya, opsi finalSweep tinggal diganti."
     },
     {
       "rule": "Jumlah lubang per baris",
       "thisPack": "Tujuh lubang per baris, 98 biji.",
       "otherReading": "Sumber yang sama menyebut papan bisa berbaris tujuh, sembilan, atau sebelas lubang, dengan biji sebanyak jumlah lubang per barisnya.",
-      "sources": ["Dakon / Congklak — data kebudayaan kalurahan se-Kabupaten Sleman"],
+      "sources": [
+        "Dakon / Congklak — data kebudayaan kalurahan se-Kabupaten Sleman"
+      ],
       "note": "Papan tujuh lubang yang dipakai di sini. Papan sembilan dan sebelas lubang butuh topologi yang bisa berubah ukuran, dan itu belum ada."
     },
     {
       "rule": "Langkah pertama",
       "thisPack": "Bergiliran sejak langkah pertama, pemain A lebih dulu.",
       "otherReading": "Kedua pemain mulai serentak, sama-sama mengangkat satu lubang di sisinya.",
-      "sources": ["Dakon / Congklak — data kebudayaan kalurahan se-Kabupaten Sleman"],
+      "sources": [
+        "Dakon / Congklak — data kebudayaan kalurahan se-Kabupaten Sleman"
+      ],
       "note": "Dinyatakan tegas oleh sumber ini, dan tetap tidak diterapkan: model giliran v1 tidak menampungnya — PRD §4."
     },
     {
@@ -71,6 +83,13 @@
       "otherReading": "Tidak menembak sama sekali kalau seberangnya kosong.",
       "sources": [],
       "note": "Tidak diselesaikan oleh sumber mana pun di sini. Disamakan dengan pack 'umum' supaya kedua pack hanya berbeda di tempat yang memang ada sumbernya."
+    },
+    {
+      "rule": "Syarat satu pusingan sebelum menembak",
+      "thisPack": "Tidak ada syarat pusingan. Biji terakhir di lubang kosong sisi sendiri langsung menembak.",
+      "otherReading": "Menembak hanya sah sesudah biji melewati lumbung sendiri lalu kembali ke sisi sendiri; sebelum itu hanya mati.",
+      "sources": [],
+      "note": "Syarat pusingan dinyatakan sumber pemerintah Malaysia dan ada pada ruleset 'congkak-melayu'. Sumber yang dipakai pack ini tidak menyebutnya sama sekali — jadi ketiadaannya di sini adalah apa yang sumbernya katakan, bukan pilihan diam-diam."
     }
   ]
 }

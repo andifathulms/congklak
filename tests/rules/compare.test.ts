@@ -62,7 +62,7 @@ describe('perbandingan ruleset', () => {
     // berhentinya sama, jadi simpangnya harus 'papan-berbeda'.
     const longgar = umum
     const ketat = withOptions(umum, {
-      menembak: { enabled: true, requireOppositeNonEmpty: true },
+      menembak: { enabled: true, requireOppositeNonEmpty: true, requireLapCompleted: false },
     })
 
     const rng = createRng(21)

@@ -2,7 +2,14 @@
   "id": "umum",
   "name": "Congklak Umum",
   "region": "Nusantara (bacaan umum)",
-  "aka": ["dakon", "congkak", "sungka", "dentuman lamban", "aggalacang", "nogarata"],
+  "aka": [
+    "dakon",
+    "congkak",
+    "sungka",
+    "dentuman lamban",
+    "aggalacang",
+    "nogarata"
+  ],
   "summary": "Bacaan yang paling luas dipakai. Tujuh biji per lubang, menyebar searah jarum jam, lumbung lawan selalu dilewati. Biji terakhir yang jatuh di lubang berisi — di sisi mana pun — diangkat dan disebar lagi; yang jatuh di lumbung sendiri memberi giliran lagi dan bebas memilih lubang; yang jatuh di lubang kosong sisi sendiri menembak isi lubang seberang. Permainan berhenti ketika pemain yang mendapat giliran tidak punya satu pun lubang berisi, dan biji sisa jatuh ke pemilik sisinya.",
   "presentation": {
     "direction": "searah-jarum-jam"
@@ -12,7 +19,8 @@
     "extraTurnOnOwnLumbung": true,
     "menembak": {
       "enabled": true,
-      "requireOppositeNonEmpty": false
+      "requireOppositeNonEmpty": false,
+      "requireLapCompleted": false
     },
     "terminal": "tak-ada-langkah",
     "finalSweep": "pemilik-sisi"
@@ -39,7 +47,9 @@
       "rule": "Syarat berhenti",
       "thisPack": "Permainan berhenti saat pemain yang mendapat giliran tidak punya satu pun lubang berisi di sisinya.",
       "otherReading": "Permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya, walau papan masih berisi.",
-      "sources": ["Congkak — mancala game, rules and strategy"],
+      "sources": [
+        "Congkak — mancala game, rules and strategy"
+      ],
       "note": "Bacaan tiga lubang kosong ada pada ruleset 'jawa-sleman', bersumber dokumentasi kebudayaan Kabupaten Sleman."
     },
     {
@@ -62,15 +72,26 @@
       "rule": "Permainan beberapa babak",
       "thisPack": "Satu babak saja.",
       "otherReading": "Pemenang mengisi ulang lubangnya; lubang yang tak terisi menjadi 'terbakar' dan dilewati pada babak berikutnya, sampai satu pemain kehilangan seluruh lubangnya atau menyerah.",
-      "sources": ["Congkak — mancala game, rules and strategy"],
+      "sources": [
+        "Congkak — mancala game, rules and strategy"
+      ],
       "note": "Nyata dan tradisional, tapi menambah satu lapis meta di atas permainannya. Ditunda dengan sengaja — PRD §4."
     },
     {
       "rule": "Langkah pertama",
       "thisPack": "Bergiliran sejak langkah pertama, pemain A lebih dulu.",
       "otherReading": "Kedua pemain menabur serentak pada langkah pertama.",
-      "sources": ["Congkak — mancala game, rules and strategy"],
+      "sources": [
+        "Congkak — mancala game, rules and strategy"
+      ],
       "note": "Merusak model giliran secara mendasar, jadi ditunda — PRD §4."
+    },
+    {
+      "rule": "Syarat satu pusingan sebelum menembak",
+      "thisPack": "Tidak ada syarat pusingan. Biji terakhir di lubang kosong sisi sendiri langsung menembak.",
+      "otherReading": "Menembak hanya sah sesudah biji melewati lumbung sendiri lalu kembali ke sisi sendiri; sebelum itu hanya mati.",
+      "sources": [],
+      "note": "Syarat pusingan dinyatakan sumber pemerintah Malaysia dan ada pada ruleset 'congkak-melayu'. Sumber yang dipakai pack ini tidak menyebutnya sama sekali — jadi ketiadaannya di sini adalah apa yang sumbernya katakan, bukan pilihan diam-diam."
     }
   ]
 }

@@ -70,6 +70,14 @@ export function sow(
   let seedDrops = 0
   let extraTurn = false
 
+  /**
+   * Sudah melewati lumbung sendiri dalam giliran ini. Dipakai ruleset yang
+   * mensyaratkan satu pusingan penuh sebelum boleh menembak. Dihitung
+   * lintas sambung — satu giliran adalah satu rangkaian pusingan, bukan
+   * dihitung ulang tiap kali lubang diangkat.
+   */
+  let sudahSatuPusingan = false
+
   let hand = board[from]
   board[from] = 0
   events.push({ type: 'scoop', index: from, biji: hand, player })
@@ -86,6 +94,7 @@ export function sow(
       seedDrops += 1
 
       if (at === lumbungSendiri) {
+        sudahSatuPusingan = true
         events.push({ type: 'bank', index: at, biji: board[at], sisa: hand, player })
       } else {
         events.push({ type: 'sow', index: at, biji: board[at], sisa: hand })
@@ -120,7 +129,15 @@ export function sow(
 
     // 3. Lubang yang tadinya kosong. Di sisi sendiri berarti menembak;
     //    di sisi lawan giliran habis begitu saja.
-    if (opts.menembak.enabled && isOwnHole(at, player)) {
+    // Sebagian tradisi hanya mengizinkan menembak sesudah satu pusingan
+    // penuh; sebelum itu mendarat di lubang kosong sendiri hanyalah mati.
+    // Sumber: JKKN Malaysia, lihat pack congkak-melayu.
+    const bolehMenembak =
+      opts.menembak.enabled &&
+      isOwnHole(at, player) &&
+      (!opts.menembak.requireLapCompleted || sudahSatuPusingan)
+
+    if (bolehMenembak) {
       const seberang = opposite(at)
       const dariSeberang = board[seberang]
 

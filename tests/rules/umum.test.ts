@@ -132,7 +132,7 @@ describe('menembak', () => {
   it('bacaan lain: tidak menembak sama sekali kalau seberang kosong', () => {
     // Opsi menembak.requireOppositeNonEmpty — bukan cabang kode per daerah.
     const ketat = withOptions(rules, {
-      menembak: { enabled: true, requireOppositeNonEmpty: true },
+      menembak: { enabled: true, requireOppositeNonEmpty: true, requireLapCompleted: false },
     })
     const state = stateFrom(
       [
