@@ -18,6 +18,14 @@ interface Dict {
   readonly judul: string
   readonly tagline: string
   readonly hotseat: string
+  readonly lawanAi: string
+  readonly ai: string
+  readonly mudah: string
+  readonly sulit: string
+  readonly berpikir: string
+  readonly diTangan: string
+  readonly pratinjau: string
+  readonly pratinjauPetunjuk: string
   readonly giliran: string
   readonly pemain: string
   readonly menang: string
@@ -52,6 +60,14 @@ const id: Dict = {
   judul: 'Lumbung',
   tagline: 'Congklak dengan aturan kedaerahan yang eksplisit dan bersumber.',
   hotseat: 'Satu perangkat, dua pemain',
+  lawanAi: 'Lawan AI',
+  ai: 'AI',
+  mudah: 'Mudah',
+  sulit: 'Sulit',
+  berpikir: 'AI sedang berpikir…',
+  diTangan: 'biji di tangan',
+  pratinjau: 'Lubang',
+  pratinjauPetunjuk: 'Arahkan ke lubangmu untuk melihat ke mana rantainya berakhir.',
   giliran: 'Giliran',
   pemain: 'Pemain',
   menang: 'menang',
@@ -86,6 +102,14 @@ const en: Dict = {
   judul: 'Lumbung',
   tagline: 'Congklak with its regional rulesets made explicit and cited.',
   hotseat: 'One device, two players',
+  lawanAi: 'Versus AI',
+  ai: 'AI',
+  mudah: 'Easy',
+  sulit: 'Hard',
+  berpikir: 'AI is thinking…',
+  diTangan: 'biji in hand',
+  pratinjau: 'Hole',
+  pratinjauPetunjuk: 'Point at one of your holes to see where the chain ends.',
   giliran: 'Turn',
   pemain: 'Player',
   menang: 'wins',
