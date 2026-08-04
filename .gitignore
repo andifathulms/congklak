@@ -5,3 +5,9 @@ out/
 next-env.d.ts
 .DS_Store
 .env*.local
+
+# Brand asset masters — every size, colour variant and lockup the design
+# tool emits. The site ships a small subset of these, and that subset is
+# committed under public/. Keep the two in step by hand: nothing in the
+# build reads from here.
+exports/
