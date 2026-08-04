@@ -18,6 +18,10 @@ import { RULESETS, getRuleset, type Ruleset } from '@/lib/rulesets'
 import { t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
 import { usePenaburan } from '@/components/sow/usePenaburan'
+import { Panel } from '@/components/ui/Panel'
+import { Salin } from '@/components/ui/Salin'
+import { Segmen } from '@/components/ui/Segmen'
+import { Tombol } from '@/components/ui/Tombol'
 
 /**
  * Two devices, one game. Moves and hashes cross the wire and nothing else
@@ -260,13 +264,15 @@ export function Tanding({ locale }: { locale: Locale }) {
   if (!peran) {
     return (
       <div className="flex flex-col gap-4">
-        <p className="max-w-prose font-sans text-sm text-ink/70">{kata.tandingIntro}</p>
-        <label className="flex items-center gap-2 font-sans text-sm">
-          <span className="text-ink/60">{kata.rulesetAktif}</span>
+        {/* Menyambung punya tiga keputusan: aturan mana, lewat jalur apa,
+            dan jadi siapa. Sebelumnya ketiganya mengalir sebagai satu
+            tumpukan tanpa urutan; sekarang dinomori. */}
+        <Panel judul={`1 · ${kata.rulesetAktif}`}>
           <select
             value={ruleset.id}
             onChange={(e) => setRuleset(getRuleset(e.target.value))}
-            className="rounded-full border border-teak/40 bg-mat px-3 py-1.5 text-sm"
+            aria-label={kata.rulesetAktif}
+            className="rounded-full bg-mat-low px-3 py-1.5 font-sans text-sm text-ink ring-1 ring-inset ring-mat-edge"
           >
             {RULESETS.map((r) => (
               <option key={r.id} value={r.id}>
@@ -274,149 +280,181 @@ export function Tanding({ locale }: { locale: Locale }) {
               </option>
             ))}
           </select>
-        </label>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
-            {kata.caraSambung}
-          </span>
-          {(['broker', 'manual'] as const).map((j) => (
-            <button
-              key={j}
-              type="button"
-              onClick={() => setJalur(j)}
-              aria-pressed={jalur === j}
-              className={[
-                'rounded-full px-3 py-1 font-sans text-xs transition',
-                jalur === j ? 'bg-ink text-mat' : 'border border-teak/30 text-ink/70',
-              ].join(' ')}
-            >
-              {j === 'broker' ? kata.jalurBroker : kata.jalurManual}
-            </button>
-          ))}
-        </div>
-        <p className="max-w-prose font-sans text-xs text-ink/55">
-          {jalur === 'broker' ? kata.jalurBrokerCatatan : kata.jalurManualCatatan}
-        </p>
+          {/* Kedua sisi harus memakai aturan yang sama, dan itu diperiksa
+              saat berkenalan — bukan diperbaiki diam-diam nanti. */}
+          <p className="mt-2 max-w-prose font-sans text-xs leading-relaxed text-ink/55">
+            {kata.tandingIntro}
+          </p>
+        </Panel>
 
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => mulai('tuan-rumah')}
-            className="rounded-full bg-teak px-4 py-2 font-sans text-sm text-seedA"
-          >
-            {kata.jadiTuanRumah}
-          </button>
-          <button
-            type="button"
-            onClick={() => mulai('tamu')}
-            className="rounded-full border border-teak/40 px-4 py-2 font-sans text-sm"
-          >
-            {kata.jadiTamu}
-          </button>
-        </div>
-        <p className="max-w-prose font-sans text-xs text-ink/50">{kata.tanpaTurn}</p>
+        <Panel judul={`2 · ${kata.caraSambung}`} className="flex flex-col gap-2.5">
+          <Segmen
+            options={[
+              ['broker', kata.jalurBroker],
+              ['manual', kata.jalurManual],
+            ]}
+            value={jalur}
+            onChange={setJalur}
+            label={kata.caraSambung}
+          />
+          <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/55">
+            {jalur === 'broker' ? kata.jalurBrokerCatatan : kata.jalurManualCatatan}
+          </p>
+        </Panel>
+
+        <Panel judul={`3 · ${kata.tanding}`}>
+          <div className="flex flex-wrap gap-2">
+            <Tombol bobot="utama" onClick={() => mulai('tuan-rumah')}>
+              {kata.jadiTuanRumah}
+            </Tombol>
+            <Tombol onClick={() => mulai('tamu')}>{kata.jadiTamu}</Tombol>
+          </div>
+        </Panel>
+
+        <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/50">
+          {kata.tanpaTurn}
+        </p>
       </div>
     )
   }
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-3 rounded-2xl border border-teak/20 bg-mat/60 p-3">
-        <p className="font-sans text-sm">
-          <span className="text-ink/60">{peran === 'tuan-rumah' ? kata.jadiTuanRumah : kata.jadiTamu}</span>
-          {' · '}
-          <span className="font-mono text-xs">{ruleset.name}</span>
-          {' · '}
-          <span className="font-mono text-xs text-ink/60">{kata[`koneksi_${koneksi}`]}</span>
-        </p>
+      <Panel className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-sm">
+          <span className="font-medium">
+            {peran === 'tuan-rumah' ? kata.jadiTuanRumah : kata.jadiTamu}
+          </span>
+          <span aria-hidden className="text-ink/25">
+            ·
+          </span>
+          <span className="font-mono text-xs text-ink/60">{ruleset.name}</span>
+          {/* Status sambungan dibaca sekilas, jadi ia punya penanda sendiri
+              — bukan potongan ketiga dari sebuah kalimat. */}
+          <span
+            className={[
+              'ml-auto inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-sans text-xs',
+              koneksi === 'tersambung'
+                ? 'bg-teak/15 text-ink/80'
+                : koneksi === 'putus' || koneksi === 'gagal'
+                  ? 'bg-seedB/15 text-seedB'
+                  : 'bg-mat-low text-ink/60',
+            ].join(' ')}
+          >
+            <span
+              aria-hidden
+              className={[
+                'h-1.5 w-1.5 rounded-full',
+                koneksi === 'tersambung'
+                  ? 'bg-teak'
+                  : koneksi === 'putus' || koneksi === 'gagal'
+                    ? 'bg-seedB'
+                    : 'bg-ink/35',
+              ].join(' ')}
+            />
+            {kata[`koneksi_${koneksi}`]}
+          </span>
+        </div>
 
         {/* Jalur broker: satu kode pendek yang cukup dibacakan. */}
         {kodeBroker && (
           <div className="flex flex-col gap-1">
-            <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
+            <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
               {kata.kodeSambungan}
             </span>
-            <p className="tnum select-all font-display text-3xl font-bold tracking-[0.2em]">
-              {kodeBroker}
-            </p>
+            <span className="flex flex-wrap items-center gap-3">
+              <span className="tnum select-all font-display text-3xl font-bold tracking-[0.2em]">
+                {kodeBroker}
+              </span>
+              <Salin teks={kodeBroker} locale={locale} />
+            </span>
           </div>
         )}
 
         {jalur === 'broker' && peran === 'tamu' && sesi?.status !== 'siap' && (
-          <label className="flex flex-col gap-1">
-            <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
+          <label className="flex flex-col gap-1.5">
+            <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
               {kata.masukkanKode}
             </span>
-            <input
-              value={tempel}
-              onChange={(e) => setTempel(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && panggilKode()}
-              className="w-48 rounded-full border border-teak/40 bg-mat px-4 py-2 font-mono text-lg tracking-widest"
-              aria-label={kata.kodeSambungan}
-            />
-            <button
-              type="button"
-              onClick={panggilKode}
-              className="mt-1 self-start rounded-full bg-teak px-4 py-1.5 font-sans text-sm text-seedA"
-            >
-              {kata.sambung}
-            </button>
+            <span className="flex flex-wrap items-center gap-2">
+              <input
+                value={tempel}
+                onChange={(e) => setTempel(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && panggilKode()}
+                className="w-48 rounded-full bg-mat-low px-4 py-2 font-mono text-lg tracking-widest text-ink ring-1 ring-inset ring-mat-edge"
+                aria-label={kata.kodeSambungan}
+              />
+              <Tombol bobot="utama" onClick={panggilKode}>
+                {kata.sambung}
+              </Tombol>
+            </span>
           </label>
         )}
 
-        {tawaran && (
-          <label className="flex flex-col gap-1">
-            <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
-              {peran === 'tuan-rumah' ? kata.salinTawaran : kata.salinJawaban}
+        {/* Sesudah tersambung, blok teks perkenalan tidak berguna lagi —
+            dan ia besar, jadi ia akan menutupi status sambungan. */}
+        {tawaran && sesi?.status !== 'siap' && (
+          <label className="flex flex-col gap-1.5">
+            <span className="flex flex-wrap items-center justify-between gap-2">
+              <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
+                {peran === 'tuan-rumah' ? kata.salinTawaran : kata.salinJawaban}
+              </span>
+              {/* Blok teks ini panjang dan harus utuh; menyeretnya dengan
+                  tangan adalah cara sambungan salah tersalin. */}
+              <Salin teks={tawaran} locale={locale} />
             </span>
             <textarea
               readOnly
               value={tawaran}
               onFocus={(e) => e.currentTarget.select()}
               rows={3}
-              className="w-full rounded-xl border border-teak/30 bg-mat p-2 font-mono text-[10px]"
+              className="w-full rounded-xl bg-mat-low p-2 font-mono text-[10px] leading-relaxed text-ink/80 ring-1 ring-inset ring-mat-edge"
             />
           </label>
         )}
 
         {jalur === 'manual' && sesi?.status !== 'siap' && (
-          <label className="flex flex-col gap-1">
-            <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
+          <label className="flex flex-col gap-1.5">
+            <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
               {peran === 'tuan-rumah' ? kata.tempelJawaban : kata.tempelTawaran}
             </span>
             <textarea
               value={tempel}
               onChange={(e) => setTempel(e.target.value)}
               rows={3}
-              className="w-full rounded-xl border border-teak/30 bg-mat p-2 font-mono text-[10px]"
+              className="w-full rounded-xl bg-mat-low p-2 font-mono text-[10px] leading-relaxed text-ink ring-1 ring-inset ring-mat-edge"
             />
-            <button
-              type="button"
-              onClick={terimaTempelan}
-              className="self-start rounded-full bg-teak px-4 py-1.5 font-sans text-sm text-seedA"
-            >
+            <Tombol bobot="utama" className="self-start" onClick={terimaTempelan}>
               {kata.sambung}
-            </button>
+            </Tombol>
           </label>
         )}
 
-        {galat && <p className="font-sans text-sm text-seedB">{galat}</p>}
+        {galat && (
+          <p role="alert" className="font-sans text-sm text-seedB">
+            {galat}
+          </p>
+        )}
 
         {sesi?.status === 'halt' && sesi.alasanHalt && (
           // Desync dilaporkan ke kedua pemain, dan tidak ada sisi yang
-          // diam-diam dipercaya untuk memperbaikinya.
+          // diam-diam dipercaya untuk memperbaikinya. Ditandai tamarind,
+          // bukan brass: brass hanya milik lubang aktif dan tembakan.
           <p
             role="alert"
-            className="rounded-xl border border-brass bg-brass/15 p-3 font-sans text-sm"
+            className="rounded-panel bg-seedB/10 p-3 font-sans text-sm ring-1 ring-inset ring-seedB/50"
           >
             {alasanTeks(sesi.alasanHalt)}
           </p>
         )}
-      </div>
+      </Panel>
 
       {sesi?.status === 'siap' && (
         <>
-          <p className="font-display text-lg font-bold" role="status">
+          <p
+            className="rounded-panel bg-mat-high p-3 font-display text-lg font-bold shadow-raise ring-1 ring-mat-edge/60"
+            role="status"
+          >
             {giliranku ? kata.giliranmu : kata.giliranLawan}
           </p>
           <Papan
