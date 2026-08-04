@@ -3,10 +3,19 @@
 import Link from 'next/link'
 import type { Ruleset } from '@/lib/rulesets'
 import { t, type Locale } from '@/lib/i18n'
+import { Panel } from '@/components/ui/Panel'
+import { Segmen } from '@/components/ui/Segmen'
+import { Lencana } from '@/components/ui/Lencana'
 
 /**
  * Which ruleset is active, and one tap to where it came from (PRD §8.3).
  * There is no anonymous ruleset anywhere in this app.
+ *
+ * This is the differentiator, so it gets to look like one: the choice sits
+ * in a proper control, the region and the recorded divergences are stated
+ * next to it, and anything still needing checking is said in brass rather
+ * than buried. The board screen used to repeat all of this in a sentence
+ * above the panel; the panel is the one place it belongs.
  */
 export function PemilihAturan({
   rulesets,
@@ -25,52 +34,47 @@ export function PemilihAturan({
   const perluCek = active.sources.filter((s) => s.confidence === 'perlu-cek').length
 
   return (
-    <div className="flex flex-col gap-2 rounded-2xl border border-teak/20 bg-mat/60 p-3">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="font-sans text-xs uppercase tracking-widest text-ink/50">
-          {kata.rulesetAktif}
-        </span>
-        {rulesets.map((r) => (
-          <button
-            key={r.id}
-            type="button"
-            disabled={disabled}
-            onClick={() => onChange(r.id)}
-            aria-pressed={r.id === active.id}
-            title={r.region}
-            className={[
-              'rounded-full px-3 py-1 font-sans text-xs transition disabled:opacity-40',
-              r.id === active.id ? 'bg-ink text-mat' : 'border border-teak/30 text-ink/70',
-            ].join(' ')}
-          >
-            {r.name}
-          </button>
-        ))}
+    <Panel
+      judul={kata.rulesetAktif}
+      aksi={
         <Link
-          href={`/${locale}/aturan`}
-          className="ml-auto font-sans text-xs underline underline-offset-4"
+          href={`/${locale}/aturan#${active.id}`}
+          className="rounded font-sans text-xs text-ink/60 underline underline-offset-4 transition hover:text-ink"
         >
           {kata.sumber} →
         </Link>
-      </div>
+      }
+      className="flex flex-col gap-2.5"
+    >
+      <Segmen
+        options={rulesets.map((r) => [r.id, r.name] as const)}
+        value={active.id}
+        onChange={onChange}
+        label={kata.rulesetAktif}
+        disabled={disabled}
+      />
 
-      <p className="font-sans text-xs text-ink/60">
-        <span className="font-mono text-ink/45">{active.region}</span>
-        {' · '}
-        {active.divergences.length} {kata.perbedaanCount}
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+        <span className="font-mono text-xs text-ink/50">{active.region}</span>
+        <span aria-hidden className="text-ink/25">
+          ·
+        </span>
+        <Link
+          href={`/${locale}/aturan#${active.id}`}
+          className="rounded font-sans text-xs text-ink/60 underline decoration-teak/30 underline-offset-4 transition hover:text-ink"
+        >
+          {active.divergences.length} {kata.perbedaanCount}
+        </Link>
         {perluCek > 0 && (
-          <>
-            {' · '}
-            <span className="rounded-full bg-brass/20 px-2 py-0.5">
-              {perluCek} {kata.perluCek}
-            </span>
-          </>
+          <Lencana nada="perhatian">
+            {perluCek} {kata.perluCek}
+          </Lencana>
         )}
-      </p>
+      </div>
 
       {/* Mengganti aturan mengubah permainan, jadi katakan begitu, bukan
           diam-diam mereset papan di belakang pemain. */}
       {disabled && <p className="font-sans text-xs text-ink/45">{kata.gantiSaatJalan}</p>}
-    </div>
+    </Panel>
   )
 }

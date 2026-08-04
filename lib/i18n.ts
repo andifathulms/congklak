@@ -50,6 +50,8 @@ interface Dict {
   readonly cepat: string
   readonly langsung: string
   readonly aturan: string
+  readonly aturanIntro: string
+  readonly dipakaiDiSini: string
   readonly sumber: string
   readonly perbedaan: string
   readonly kembali: string
@@ -155,6 +157,8 @@ const id: Dict = {
   cepat: 'Cepat',
   langsung: 'Langsung',
   aturan: 'Aturan',
+  aturanIntro: 'Congklak dimainkan di banyak daerah dengan aturan yang memang berbeda, dan sumber-sumbernya saling bertentangan. Setiap pak di bawah ini menyebutkan daerahnya, sumbernya, dan — yang paling penting — di mana sumbernya tidak sepakat. Yang bertentangan dicatat, bukan dipilih diam-diam.',
+  dipakaiDiSini: 'Dipakai di pak ini',
   sumber: 'Sumber',
   perbedaan: 'Di mana sumber berbeda',
   kembali: 'Kembali ke papan',
@@ -260,6 +264,8 @@ const en: Dict = {
   cepat: 'Fast',
   langsung: 'Instant',
   aturan: 'Rules',
+  aturanIntro: 'Congklak is played across many regions under rules that genuinely differ, and the sources contradict each other. Each pack below names its region, its sources, and — the part that matters — where those sources disagree. Contradictions are recorded, not quietly resolved.',
+  dipakaiDiSini: 'This pack does',
   sumber: 'Sources',
   perbedaan: 'Where the sources disagree',
   kembali: 'Back to the board',
