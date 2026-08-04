@@ -72,6 +72,7 @@ interface Dict {
   readonly banding: string
   readonly bandingIntro: string
   readonly simpangDi: string
+  readonly berbeda: string
   readonly takAdaSimpang: string
   readonly giliranKe: string
   readonly acakUlang: string
@@ -180,6 +181,7 @@ const id: Dict = {
   banding: 'Bandingkan aturan',
   bandingIntro: 'Satu daftar langkah, dua ruleset. Di mana keduanya pertama kali berbeda?',
   simpangDi: 'Simpang pertama di giliran',
+  berbeda: 'berbeda',
   takAdaSimpang: 'Tidak ada simpang pada daftar langkah ini.',
   giliranKe: 'Giliran',
   acakUlang: 'Acak permainan lain',
@@ -288,6 +290,7 @@ const en: Dict = {
   banding: 'Compare rulesets',
   bandingIntro: 'One move list, two rulesets. Where do they first disagree?',
   simpangDi: 'First divergence at turn',
+  berbeda: 'differs',
   takAdaSimpang: 'No divergence on this move list.',
   giliranKe: 'Turn',
   acakUlang: 'Try another game',

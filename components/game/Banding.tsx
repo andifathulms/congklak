@@ -8,6 +8,8 @@ import { RULESETS, getRuleset } from '@/lib/rulesets'
 import { createRng } from '@/lib/rng'
 import { t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
+import { Panel } from '@/components/ui/Panel'
+import { Tombol } from '@/components/ui/Tombol'
 
 /**
  * Replay one move list under two rulesets and mark the first divergence
@@ -46,35 +48,49 @@ export function Banding({ locale }: { locale: Locale }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="max-w-prose font-sans text-sm text-ink/70">{kata.bandingIntro}</p>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <PilihPack label="A" value={kiriId} onChange={setKiriId} />
-        <PilihPack label="B" value={kananId} onChange={setKananId} />
-        <button
-          type="button"
+      <Panel className="flex flex-wrap items-end gap-3">
+        <PilihPack label={`${kata.aturan} 1`} value={kiriId} onChange={setKiriId} />
+        <span aria-hidden className="pb-2 font-display text-lg text-ink/30">
+          ↔
+        </span>
+        <PilihPack label={`${kata.aturan} 2`} value={kananId} onChange={setKananId} />
+        <Tombol
+          className="ml-auto"
           onClick={() => {
             setSeed((s) => s + 1)
             setLihat(null)
           }}
-          className="rounded-full border border-teak/40 px-4 py-1.5 font-sans text-sm transition hover:bg-teak/10"
         >
           {kata.acakUlang}
-        </button>
-      </div>
+        </Tombol>
+      </Panel>
 
-      <div className="rounded-2xl border border-teak/20 bg-mat/60 p-4">
+      {/* Simpang adalah isi halaman ini, jadi ia yang paling berat di layar.
+          Bukan brass: brass hanya untuk lubang aktif dan tembakan (§11). */}
+      <div
+        className={[
+          'rounded-panel p-4 ring-1',
+          hasil.simpangDi >= 0
+            ? 'bg-ink text-mat ring-ink'
+            : 'bg-mat-high text-ink shadow-raise ring-mat-edge/60',
+        ].join(' ')}
+      >
         {hasil.simpangDi >= 0 ? (
           <>
-            <p className="font-display text-lg font-bold">
+            <p className="tnum font-display text-lg font-bold">
               {kata.simpangDi} {hasil.simpangDi + 1}
             </p>
-            {alasanTeks && <p className="font-sans text-sm text-ink/70">{alasanTeks}</p>}
+            {alasanTeks && <p className="font-sans text-sm text-mat/75">{alasanTeks}</p>}
           </>
         ) : (
           <p className="font-display text-lg">{kata.takAdaSimpang}</p>
         )}
-        <p className="mt-1 font-mono text-xs text-ink/45">
+        <p
+          className={[
+            'mt-2 font-mono text-xs',
+            hasil.simpangDi >= 0 ? 'text-mat/55' : 'text-ink/45',
+          ].join(' ')}
+        >
           {kiri.name} · {kiri.options.terminal} / {kiri.options.finalSweep}
           {'   ↔   '}
           {kanan.name} · {kanan.options.terminal} / {kanan.options.finalSweep}
@@ -82,9 +98,29 @@ export function Banding({ locale }: { locale: Locale }) {
       </div>
 
       {hasil.steps.length > 0 && (
-        <label className="flex items-center gap-3 font-sans text-sm">
-          <span className="whitespace-nowrap text-ink/60">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-panel bg-mat-high p-3 shadow-raise ring-1 ring-mat-edge/60">
+          <span className="tnum whitespace-nowrap font-display text-sm font-medium">
             {kata.giliranKe} {langkahKe + 1}/{hasil.steps.length}
+          </span>
+          <span className="flex items-center gap-1">
+            <Tombol
+              bobot="sunyi"
+              className="px-3"
+              aria-label={`${kata.giliranKe} −1`}
+              disabled={langkahKe === 0}
+              onClick={() => setLihat(Math.max(0, langkahKe - 1))}
+            >
+              ←
+            </Tombol>
+            <Tombol
+              bobot="sunyi"
+              className="px-3"
+              aria-label={`${kata.giliranKe} +1`}
+              disabled={langkahKe === hasil.steps.length - 1}
+              onClick={() => setLihat(Math.min(hasil.steps.length - 1, langkahKe + 1))}
+            >
+              →
+            </Tombol>
           </span>
           <input
             type="range"
@@ -92,26 +128,18 @@ export function Banding({ locale }: { locale: Locale }) {
             max={hasil.steps.length - 1}
             value={langkahKe}
             onChange={(e) => setLihat(Number(e.target.value))}
-            className="w-full accent-brass"
+            className="w-full flex-1 accent-teak"
             aria-label={kata.giliranKe}
           />
-        </label>
+        </div>
       )}
 
+      {/* Dua papan bertumpuk, tidak berdampingan: papannya lebar, dan
+          lubang yang harus dibandingkan itu yang persis di atas-bawahnya. */}
       {step && (
-        <div className="grid gap-5 lg:grid-cols-2">
-          <SisiPapan
-            nama={kiri.name}
-            state={step.kiri}
-            sama={step.sama}
-            kata={kata}
-          />
-          <SisiPapan
-            nama={kanan.name}
-            state={step.kanan}
-            sama={step.sama}
-            kata={kata}
-          />
+        <div className="flex flex-col gap-5">
+          <SisiPapan nama={kiri.name} state={step.kiri} sama={step.sama} kata={kata} />
+          <SisiPapan nama={kanan.name} state={step.kanan} sama={step.sama} kata={kata} />
         </div>
       )}
     </div>
@@ -128,12 +156,12 @@ function PilihPack({
   onChange: (id: string) => void
 }) {
   return (
-    <label className="flex items-center gap-2 font-sans text-sm">
-      <span className="text-ink/50">{label}</span>
+    <label className="flex flex-col gap-1 font-sans text-sm">
+      <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-full border border-teak/40 bg-mat px-3 py-1.5 font-sans text-sm"
+        className="rounded-full bg-mat-low px-3 py-1.5 font-sans text-sm text-ink ring-1 ring-inset ring-mat-edge"
       >
         {RULESETS.map((r) => (
           <option key={r.id} value={r.id}>
@@ -161,14 +189,15 @@ function SisiPapan({
       <h2 className="flex items-baseline gap-2 font-display text-base font-bold">
         {nama}
         {!sama && (
-          // brass menandai simpang, sejalan dengan pemakaiannya di papan.
-          <span className="rounded-full bg-brass/25 px-2 py-0.5 font-sans text-xs">
-            {kata.simpangDi.toLowerCase()}
+          // Penanda simpang memakai tinta pekat, bukan brass — brass tetap
+          // milik lubang aktif dan tembakan saja (PRD §11).
+          <span className="rounded-full bg-ink px-2 py-0.5 font-sans text-xs font-medium text-mat">
+            {kata.berbeda}
           </span>
         )}
       </h2>
       {state === null ? (
-        <p className="rounded-2xl border border-teak/20 p-6 font-sans text-sm text-ink/55">
+        <p className="rounded-panel bg-mat-low/60 p-6 font-sans text-sm text-ink/55 ring-1 ring-inset ring-mat-edge">
           {kata.alasanTakSah}
         </p>
       ) : (
@@ -182,10 +211,13 @@ function SisiPapan({
             namaA={`${kata.pemain} A`}
             namaB={`${kata.pemain} B`}
           />
-          <p className="tnum font-sans text-sm text-ink/70">
-            {kata.skor} {scoreOf(state.board, PLAYER_A)}–{scoreOf(state.board, PLAYER_B)}
+          <p className="flex flex-wrap items-baseline gap-x-3 font-sans text-sm text-ink/70">
+            <span className="tnum font-display text-lg font-bold text-ink">
+              {scoreOf(state.board, PLAYER_A)}–{scoreOf(state.board, PLAYER_B)}
+            </span>
+            <span className="text-ink/50">{kata.skor}</span>
             {state.status === 'selesai' && (
-              <span className="ml-2 text-ink/50">
+              <span className="font-medium text-ink">
                 {state.hasil === 'seri'
                   ? kata.seri
                   : `${kata.pemain} ${state.hasil === 'a' ? 'A' : 'B'} ${kata.menang}`}
