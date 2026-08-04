@@ -1,6 +1,12 @@
 # Ruleset validation gates the deploy (invariant 8). `pnpm build` runs
 # rulesets:validate first, so an uncited pack fails here rather than
 # shipping.
+#
+# Action versions and node-version are two separate things, and both were
+# stale. The actions each declare their own JS runtime: five of the six
+# here declared node20, which the runners now force onto node24 while
+# warning about it. node-version is what actually runs our build and
+# tests, and Node 20 went end-of-life in April 2026.
 name: deploy
 
 on:
@@ -21,11 +27,11 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm rulesets:validate
@@ -37,11 +43,11 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       # basePath harus sama dengan nama repositori, atau seluruh aset
@@ -51,8 +57,8 @@ jobs:
           BASE_PATH: /${{ github.event.repository.name }}
       - name: Pastikan .nojekyll ada di akar keluaran
         run: test -f out/.nojekyll
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: out
 
@@ -64,4 +70,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
