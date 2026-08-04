@@ -75,11 +75,17 @@ export function Papan({
 
   return (
     <div
-      className="rounded-[2.5rem] bg-teak p-4 shadow-[0_18px_40px_rgba(36,28,20,0.35),inset_0_2px_0_rgba(240,231,212,0.12)] sm:p-6"
+      // `on-teak` switches the global focus ring to seedA: an ink ring is
+      // invisible against the wood.
+      className="on-teak rounded-board bg-teak bg-grain p-3 shadow-carve ring-1 ring-teak-rim/40 sm:p-6"
       role="group"
       aria-label="Papan congklak"
     >
-      <div className="grid grid-cols-[minmax(3.5rem,1fr)_7fr_minmax(3.5rem,1fr)] items-center gap-3 sm:gap-4">
+      <div className="grid grid-cols-[minmax(2.75rem,1fr)_7fr_minmax(2.75rem,1fr)] items-center gap-2 sm:grid-cols-[minmax(4rem,1fr)_7fr_minmax(4rem,1fr)] sm:gap-5">
+        {/* A's lumbung stays at the left end and B's at the right: that is
+            what makes the sow read clockwise on screen, and all three packs'
+            sources describe clockwise sowing. Swapping these would put the
+            board in visible contradiction with its own citation. */}
         <LumbungView
           owner={PLAYER_A}
           biji={cells[LUMBUNG_A]}
@@ -87,9 +93,9 @@ export function Papan({
           name={namaA}
         />
 
-        <div className="grid grid-rows-2 gap-6 sm:gap-7">
-          <div className="grid grid-cols-7 gap-2 sm:gap-3">{BARIS_ATAS.map(hole)}</div>
-          <div className="grid grid-cols-7 gap-2 sm:gap-3">{BARIS_BAWAH.map(hole)}</div>
+        <div className="grid grid-rows-2 gap-3 sm:gap-4">
+          <div className="grid grid-cols-7 gap-1.5 sm:gap-3">{BARIS_ATAS.map(hole)}</div>
+          <div className="grid grid-cols-7 gap-1.5 sm:gap-3">{BARIS_BAWAH.map(hole)}</div>
         </div>
 
         <LumbungView

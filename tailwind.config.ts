@@ -66,6 +66,18 @@ const config: Config = {
         /** A panel raised off the mat. Light, or it competes with the board. */
         raise: '0 1px 2px rgba(36,28,20,0.06), 0 8px 20px -14px rgba(36,28,20,0.35)',
       },
+      backgroundImage: {
+        /**
+         * A single length of hardwood, hollowed (PRD §11): grain running the
+         * length of the board, and the light falling on it from above. Both
+         * are needed for the slab to read as carved rather than as a brown
+         * rectangle.
+         */
+        grain:
+          'repeating-linear-gradient(91deg, rgba(58,38,23,0.05) 0 1px, rgba(58,38,23,0) 1px 13px), repeating-linear-gradient(89.4deg, rgba(58,38,23,0.045) 0 1px, rgba(58,38,23,0) 1px 31px), radial-gradient(130% 90% at 50% -10%, rgba(240,231,212,0.15), rgba(240,231,212,0) 58%)',
+        /** The inside of a recess: darkest at the bottom, where hands never reach. */
+        pit: 'radial-gradient(85% 75% at 50% 22%, rgba(0,0,0,0.34), rgba(0,0,0,0) 70%)',
+      },
       keyframes: {
         /** A seed landing: §11's small settle, and nothing louder. */
         settle: {
