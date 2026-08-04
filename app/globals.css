@@ -11,7 +11,7 @@
 
 html,
 body {
-  background-color: theme('colors.mat');
+  background-color: theme('colors.mat.DEFAULT');
   color: theme('colors.ink');
 }
 
@@ -30,4 +30,36 @@ body {
 .font-display {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.015em;
+}
+
+/* One focus ring for the whole app, on ink — brass is reserved for the
+   active hole and captures (PRD §11), so it cannot also mean "focused".
+   The offset colour follows whatever the element sits on. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid theme('colors.ink');
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* On the board the ring must read against dark teak, not against the mat. */
+.on-teak :where(a, button, [tabindex]):focus-visible {
+  outline-color: theme('colors.seedA');
+}
+
+::selection {
+  background-color: theme('colors.brass' / 30%);
+}
+
+/* PRD §8.1: reduced motion resolves instantly, and the written summary of
+   the sow carries what the animation would have shown. Nothing here may
+   loop or travel. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
