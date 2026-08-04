@@ -139,7 +139,10 @@ tests/
 - Integers only in the engine, including AI evaluation weights. No floats anywhere.
 - Ruleset ids stable and readable: `jawa-sleman`, `umum`, `sumatra`. They appear in shared game codes and in P2P handshakes — renaming breaks existing links.
 - Comments cite the source of any rule they implement. `// aturan tiga lubang kosong — sumber: <citation>` is the highest-value comment style here.
-- Tailwind utilities inline; semantic tokens in `tailwind.config.ts` — `mat`, `teak`, `hollow`, `ink`, `seedA`, `seedB`, `brass`. Never raw hex in components. **`brass` marks the active hole and captures only.** See PRD §11.
+- Tailwind utilities inline; semantic tokens in `tailwind.config.ts` — `mat`, `teak`, `hollow`, `ink`, `seedA`, `seedB`, `brass`, each with steps within the hue (`mat-high`, `mat-low`, `mat-edge`, `teak-rim`, `teak-grain`, `hollow-deep`) plus named elevations (`shadow-carve`, `recess`, `bank`, `raise`) and the wood (`bg-grain`, `bg-pit`). Never raw hex in components; a new *step* belongs in the config, a new *hue* does not exist. See PRD §11.
+- **`brass` marks the active hole and captures only.** Not focus (that is `ink`, or `seedA` inside `.on-teak`), not a correct answer in learn mode, not a desync (that is `seedB`), not a ruleset divergence (that is `bg-ink text-mat`). Every one of those had borrowed it.
+- Reach for `components/ui/` before writing a control: `Segmen` (any set of choices — the group name is required, since "Sedang" is both a difficulty and a speed), `Tombol`/`TautanTombol` (`utama` / `kedua` / `sunyi`, and weight must track consequence), `Panel`, `Lencana` (source confidence), `Salin` (any code a human would otherwise select by hand). `components/shell/Kepala` is the page header; no page writes its own back link, because the nav marks the current section.
+- The board is one DOM at every size. On phones it stands upright — a rigid quarter turn, so the sow still reads clockwise and opposite holes still sit beside each other. Do not fork it into a second mobile board.
 
 ## Testing rules
 
@@ -166,8 +169,10 @@ Verified by driving the built export in two real browsers, not only by tests. Th
 - The brokered channel captured its connection by value, so the host's handshake was never sent.
 - PeerJS returned data in a different shape than it was sent, silently dropping the handshake.
 - The broker could hang forever with no code and no error.
+- The three typefaces the PRD specifies were named as CSS variables that nothing ever loaded, so every one fell through to the system UI face — a design system that existed only on paper, and no test could see it.
+- The board collapsed to 160px on a phone, because `mx-auto` on a flex item cancels the stretch.
 
-Run the app. Drive both sides of a connection. Do not trust a UI change because the tests pass.
+Run the app. Drive both sides of a connection. Measure the rendered page — several of the above were only visible with a ruler on real output, not by reading the CSS. Do not trust a UI change because the tests pass.
 
 Remaining, all deliberate:
 
