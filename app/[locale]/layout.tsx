@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Navigasi } from '@/components/shell/Navigasi'
+import { TandaPembuat } from '@/components/shell/TandaPembuat'
 import { LOCALES, isLocale, t } from '@/lib/i18n'
 
 export function generateStaticParams() {
@@ -44,13 +45,20 @@ export default function LocaleLayout({
 
       <main className="flex-1 py-6 sm:py-8">{children}</main>
 
+      {/* Satu jahitan saja: garis atas footer ini. Tanda pembuat memakai
+          baris bawah yang sudah ada — berseberangan dengan keterangan
+          proyek, bukan digabung dengannya, karena yang satu kredit pribadi
+          dan yang satu keterangan tentang datanya. */}
       <footer className="mt-8 border-t border-mat-edge/70 py-5">
         <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/50">
           {kata.tagline}
         </p>
-        <p className="mt-1.5 font-mono text-[11px] text-ink/40">
-          Aturan adalah data bersumber, bukan kode.
-        </p>
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+          <p className="font-mono text-[11px] text-ink/40">
+            Aturan adalah data bersumber, bukan kode.
+          </p>
+          <TandaPembuat />
+        </div>
       </footer>
     </div>
   )
