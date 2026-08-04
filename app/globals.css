@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui;
-  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
-}
+/*
+ * --font-display, --font-sans and --font-mono are set by `next/font` on
+ * <html> in app/layout.tsx. They used to be declared here as bare family
+ * names with nothing loading them, which meant all three resolved to the
+ * system UI face.
+ */
 
 html,
 body {
@@ -14,7 +15,19 @@ body {
   color: theme('colors.ink');
 }
 
-/* Counts are the content — PRD §11. */
+body {
+  /* Prose reads at a slightly open measure; the board sits on top of it. */
+  text-rendering: optimizeLegibility;
+}
+
+/* Counts are the content — PRD §11. Seeds per hole, seeds banked and
+   scores all change while sitting in place, so their glyphs must not
+   shift width underneath the reader. */
 .tnum {
   font-variant-numeric: tabular-nums;
+}
+
+.font-display {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
 }
