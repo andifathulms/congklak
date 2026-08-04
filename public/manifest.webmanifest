@@ -1,0 +1,16 @@
+{
+  "name": "Congklak — aturan kedaerahan yang bersumber",
+  "short_name": "Congklak",
+  "description": "Congklak / dakon dengan ruleset kedaerahan yang eksplisit, bersumber, dan bisa dipilih.",
+  "lang": "id",
+  "display": "standalone",
+  "background_color": "#E4DDCD",
+  "theme_color": "#E4DDCD",
+  "start_url": "id/main/",
+  "scope": "./",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

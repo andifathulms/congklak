@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { Navigasi } from '@/components/shell/Navigasi'
 import { TandaPembuat } from '@/components/shell/TandaPembuat'
 import { LOCALES, isLocale, t } from '@/lib/i18n'
+import { BASE } from '../layout'
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))
@@ -27,15 +28,35 @@ export default function LocaleLayout({
       */}
       <header className="sticky top-0 z-20 -mx-4 border-b border-mat-edge/70 bg-mat/90 px-4 backdrop-blur-sm sm:-mx-8 sm:px-8">
         <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pb-2 pt-3 sm:pt-4">
-          <Link
-            href={`/${params.locale}/main`}
-            className="group flex items-baseline gap-2.5 rounded-lg"
-          >
+          <Link href={`/${params.locale}/main`} className="group flex items-center gap-2.5 rounded-lg">
+            {/*
+              The mark, at the size the brand rules ask for: below 40px it
+              has to be the four-seed form, never seven seeds shrunk down —
+              and that is exactly what favicon.svg is, so the tab icon and
+              the header mark stay the same file.
+
+              Plain <img>, not next/image: it is a fixed-colour brand mark
+              at a fixed size, and images are unoptimized in a static export
+              anyway. The path carries the basePath by hand, since nothing
+              rewrites a src string.
+            */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- images are
+                unoptimized in a static export, so next/image would add a
+                component and change nothing about what ships. */}
+            <img
+              src={`${BASE}/favicon.svg`}
+              alt=""
+              width={28}
+              height={28}
+              // No CSS rounding: the mark draws its own corner radius, and
+              // clipping it again only shaves the wood.
+              className="h-7 w-7 shrink-0"
+            />
             <span className="font-display text-xl font-bold tracking-tight">{kata.judul}</span>
             {/* Nama daerah lain untuk permainan yang sama, bukan pengulangan
                 judulnya: congklak di Jawa juga disebut dakon, dan congkak di
                 Sumatera dan semenanjung. */}
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/45">
+            <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-ink/45 sm:inline">
               dakon · congkak
             </span>
           </Link>
