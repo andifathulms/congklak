@@ -13,7 +13,7 @@ import {
   type Saluran,
   type StatusKoneksi,
 } from '@/lib/net/manual'
-import { brokerTamu, brokerTuanRumah, type SisiBroker } from '@/lib/net/broker'
+import { brokerTamu, brokerTuanRumah, miripKode, type SisiBroker } from '@/lib/net/broker'
 import { RULESETS, getRuleset, type Ruleset } from '@/lib/rulesets'
 import { t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
@@ -193,6 +193,13 @@ export function Tanding({ locale }: { locale: Locale }) {
   /** Tamu memanggil kode tuan rumah lewat broker. */
   const panggilKode = useCallback(async () => {
     setGalat(null)
+    // Mistyping a code once is normal, so retrying has to be clean. The
+    // previous attempt's peer keeps its own error handler alive, and it
+    // would go on reporting "gagal" over a connection that has since
+    // succeeded — the second attempt looking broken because the first one
+    // was still talking.
+    brokerRef.current?.tutup()
+    brokerRef.current = null
     try {
       const sisi = await brokerTamu(tempel, {
         onPesan,
@@ -216,6 +223,14 @@ export function Tanding({ locale }: { locale: Locale }) {
 
   const terimaTempelan = useCallback(async () => {
     setGalat(null)
+    // Kode pendek yang ditempel ke kotak manual bukan kesalahan pemain: dua
+    // orang memilih caranya sendiri-sendiri, dan yang satu mengirimkan apa
+    // yang dilihatnya. Katakan persis apa yang harus dilakukan, jangan
+    // teruskan keluhan pengurai JSON.
+    if (miripKode(tempel)) {
+      setGalat(kata.iniKodePendek)
+      return
+    }
     try {
       if (peran === 'tuan-rumah') {
         await hostRef.current?.terimaJawaban(tempel)
@@ -232,10 +247,12 @@ export function Tanding({ locale }: { locale: Locale }) {
         saluran.current = sisi.saluran()
         setTawaran(sisi.jawaban)
       }
-    } catch (error) {
-      setGalat(error instanceof Error ? error.message : String(error))
+    } catch {
+      // Apa pun bentuk kegagalannya di bawah sana, bagi pemain artinya satu
+      // hal: teks yang ditempel tidak utuh.
+      setGalat(kata.tempelanTakTerbaca)
     }
-  }, [peran, tempel, onPesan])
+  }, [peran, tempel, onPesan, kata.iniKodePendek, kata.tempelanTakTerbaca])
 
   const akuPemain = peran === 'tuan-rumah' ? PLAYER_A : PLAYER_B
   const giliranku = sesi?.status === 'siap' && state.status === 'berjalan' && state.toMove === akuPemain
@@ -297,6 +314,12 @@ export function Tanding({ locale }: { locale: Locale }) {
             onChange={setJalur}
             label={kata.caraSambung}
           />
+          {/* Ini bukan selera masing-masing: dua orang yang memilih cara
+              berbeda tidak akan pernah bertemu, dan sebelumnya tidak ada
+              apa pun di layar yang mengatakannya. */}
+          <p className="max-w-prose font-sans text-xs font-medium leading-relaxed text-ink/75">
+            {kata.caraHarusSama}
+          </p>
           <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/55">
             {jalur === 'broker' ? kata.jalurBrokerCatatan : kata.jalurManualCatatan}
           </p>
@@ -430,9 +453,23 @@ export function Tanding({ locale }: { locale: Locale }) {
           </label>
         )}
 
-        {galat && (
-          <p role="alert" className="font-sans text-sm text-seedB">
-            {galat}
+        {/*
+          Sebuah sambungan yang gagal dulu hanya mengubah satu keping kecil
+          dari "belum tersambung" jadi "gagal tersambung", tanpa satu kata
+          pun tentang apa yang harus dilakukan. Yang dirasakan pemain: tombol
+          Sambungkan ditekan, lalu tidak terjadi apa-apa.
+
+          brokerTamu tidak melempar untuk kode yang salah — ia selesai begitu
+          soket brokernya terbuka, dan kegagalan memanggil kode itu datang
+          belakangan lewat onStatus. Jadi pesannya harus datang dari status,
+          bukan dari blok catch.
+        */}
+        {(galat || koneksi === 'gagal') && (
+          <p
+            role="alert"
+            className="rounded-panel bg-seedB/10 p-3 font-sans text-sm leading-relaxed text-ink ring-1 ring-inset ring-seedB/40"
+          >
+            {galat ?? kata.sambungGagal}
           </p>
         )}
 

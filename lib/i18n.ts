@@ -123,6 +123,10 @@ interface Dict {
   readonly brokerGagal: string
   readonly kodeSambungan: string
   readonly masukkanKode: string
+  readonly caraHarusSama: string
+  readonly sambungGagal: string
+  readonly iniKodePendek: string
+  readonly tempelanTakTerbaca: string
 }
 
 const id: Dict = {
@@ -234,6 +238,10 @@ const id: Dict = {
   brokerGagal: 'dialihkan ke tempel manual',
   kodeSambungan: 'Kode sambungan',
   masukkanKode: 'Masukkan kode tuan rumah',
+  caraHarusSama: 'Kedua pemain harus memakai cara yang sama.',
+  sambungGagal: 'Belum tersambung. Periksa lagi kodenya, dan pastikan tuan rumah masih membuka halaman ini — kodenya hilang begitu halamannya ditutup.',
+  iniKodePendek: 'Itu kode pendek, bukan teks perkenalan. Pilih "Kode pendek" di atas, lalu masukkan kodenya di sana.',
+  tempelanTakTerbaca: 'Teks itu tidak terbaca sebagai perkenalan. Salin lagi seluruhnya — biasanya ada bagian yang terpotong.',
 }
 
 const en: Dict = {
@@ -345,6 +353,10 @@ const en: Dict = {
   brokerGagal: 'falling back to manual paste',
   kodeSambungan: 'Connection code',
   masukkanKode: 'Enter the host\u2019s code',
+  caraHarusSama: 'Both players must use the same method.',
+  sambungGagal: 'Not connected. Check the code, and make sure the host still has this page open \u2014 the code disappears when they close it.',
+  iniKodePendek: 'That is a short code, not an introduction blob. Choose \u201cShort code\u201d above and enter it there instead.',
+  tempelanTakTerbaca: 'That text could not be read as an introduction. Copy the whole thing again \u2014 usually a piece of it got cut off.',
 }
 
 const DICTS: Record<Locale, Dict> = { id, en }

@@ -26,6 +26,19 @@ const AWALAN = 'lumbung-'
 /** Tanpa huruf dan angka yang mudah tertukar saat dibacakan atau disalin. */
 const ABJAD = '23456789abcdefghjkmnpqrstuvwxyz'
 
+/**
+ * True for something shaped like a short code rather than a manual-paste
+ * introduction.
+ *
+ * The two routes produce very different strings, and a player pastes
+ * whatever their friend sent them into whichever box is in front of them.
+ * Feeding a short code to the manual path used to surface the JSON parser's
+ * own complaint — "Unexpected token 'ß'" — which tells a player nothing.
+ */
+export function miripKode(teks: string): boolean {
+  return new RegExp(`^[${ABJAD}]{8}$`).test(teks.trim().toLowerCase())
+}
+
 export function buatKode(): string {
   const bytes = new Uint8Array(8)
   crypto.getRandomValues(bytes)
