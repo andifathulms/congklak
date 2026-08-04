@@ -18,8 +18,15 @@ interface Dict {
   readonly judul: string
   readonly tagline: string
   readonly papan: string
+  readonly salin: string
+  readonly tersalin: string
+  readonly permainan: string
+  readonly animasi: string
+  readonly unggul: string
+  readonly imbang: string
   readonly bahasa: string
   readonly hotseat: string
+  readonly duaPemain: string
   readonly lawanAi: string
   readonly ai: string
   readonly mudah: string
@@ -116,8 +123,15 @@ const id: Dict = {
   judul: 'Lumbung',
   tagline: 'Congklak dengan aturan kedaerahan yang eksplisit dan bersumber.',
   papan: 'Papan',
+  salin: 'Salin',
+  tersalin: 'Tersalin',
+  permainan: 'Permainan',
+  animasi: 'Animasi',
+  unggul: 'unggul',
+  imbang: 'Imbang',
   bahasa: 'Bahasa',
   hotseat: 'Satu perangkat, dua pemain',
+  duaPemain: 'Dua pemain',
   lawanAi: 'Lawan AI',
   ai: 'AI',
   mudah: 'Mudah',
@@ -214,8 +228,15 @@ const en: Dict = {
   judul: 'Lumbung',
   tagline: 'Congklak with its regional rulesets made explicit and cited.',
   papan: 'Board',
+  salin: 'Copy',
+  tersalin: 'Copied',
+  permainan: 'Game',
+  animasi: 'Animation',
+  unggul: 'ahead by',
+  imbang: 'Level',
   bahasa: 'Language',
   hotseat: 'One device, two players',
+  duaPemain: 'Two players',
   lawanAi: 'Versus AI',
   ai: 'AI',
   mudah: 'Easy',
