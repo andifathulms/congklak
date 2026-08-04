@@ -37,7 +37,7 @@ const mono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Lumbung — congklak dengan aturan yang bersumber',
+  title: 'Congklak — dengan aturan kedaerahan yang bersumber',
   description:
     'Congklak / dakon dengan ruleset kedaerahan yang eksplisit, bersumber, dan bisa dipilih.',
 }

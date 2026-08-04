@@ -1,9 +1,9 @@
-# PRD — Lumbung
+# PRD — Congklak
 
 **Congklak / dakon, with the regional rule variants made explicit, cited, and selectable — instead of one anonymous ruleset presented as "the" rules.**
 
 > *lumbung* — the large end hole where seeds are banked; a granary. Also called *gunung* or *rumah*.
-> Alternate names if preferred: **Dakon**, **Congklak**. The slug is used throughout as `lumbung`.
+> The app is called **Congklak**; *dakon* and *congkak* are the same game elsewhere in the archipelago. *lumbung* remains the term for the granary hole itself, in code and in UI.
 
 | | |
 |---|---|

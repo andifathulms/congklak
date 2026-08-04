@@ -1,6 +1,6 @@
-# Lumbung
+# Congklak
 
-Congklak / dakon, with the regional rule variants made explicit, cited, and
+Congklak / dakon / congkak, with the regional rule variants made explicit, cited, and
 selectable — instead of one anonymous ruleset presented as "the" rules.
 
 Static site. No backend, no accounts, no analytics. See [PRD.md](PRD.md) for scope

@@ -6,7 +6,7 @@ import { createServer } from 'node:http'
 import { readFile, stat } from 'node:fs/promises'
 import { join, extname, normalize } from 'node:path'
 
-const BASE_PATH = process.env.BASE_PATH ?? '/lumbung'
+const BASE_PATH = process.env.BASE_PATH ?? '/congklak'
 const PORT = Number(process.env.PORT ?? 4173)
 const ROOT = new URL('../out/', import.meta.url).pathname
 

@@ -1,4 +1,4 @@
-# CLAUDE.md — Lumbung
+# CLAUDE.md — Congklak
 
 Congklak / dakon with selectable, cited regional rulesets. Hotseat, AI opponent, WebRTC peer-to-peer. Static site, GitHub Pages, no backend.
 
@@ -9,6 +9,8 @@ Read `PRD.md` before starting any task. It fixes scope; this file describes how 
 1. **Seed conservation.** There are exactly 98 seeds. After every single event of every sow, all 16 positions must sum to 98. A relay loop that drops or duplicates a seed is the classic mancala bug and it is completely silent — the game plays on, wrongly.
 2. **Determinism.** `applyMove` must give byte-identical results on any device. Replay, undo, AI search, and P2P sync all rest on it.
 3. **There is no single "correct" congklak.** Regional variants genuinely differ and published sources contradict each other. Rulesets are cited data; the app names the active one and shows where variants diverge. Never present one ruleset as the rules.
+
+**The app is called Congklak.** *lumbung* stays the name of the granary hole — in identifiers, comments and UI — as does every other traditional term (invariant 19). Renaming the product did not rename the vocabulary, and must not.
 
 **Sibling project:** Rantai. Same engine architecture, same event-stream renderer, same hotseat → AI → P2P layering. Follow those patterns rather than inventing new ones.
 

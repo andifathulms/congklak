@@ -126,7 +126,7 @@ interface Dict {
 }
 
 const id: Dict = {
-  judul: 'Lumbung',
+  judul: 'Congklak',
   tagline: 'Congklak dengan aturan kedaerahan yang eksplisit dan bersumber.',
   papan: 'Papan',
   salin: 'Salin',
@@ -237,7 +237,7 @@ const id: Dict = {
 }
 
 const en: Dict = {
-  judul: 'Lumbung',
+  judul: 'Congklak',
   tagline: 'Congklak with its regional rulesets made explicit and cited.',
   papan: 'Board',
   salin: 'Copy',

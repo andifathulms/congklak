@@ -31,8 +31,11 @@ export default function LocaleLayout({
             className="group flex items-baseline gap-2.5 rounded-lg"
           >
             <span className="font-display text-xl font-bold tracking-tight">{kata.judul}</span>
+            {/* Nama daerah lain untuk permainan yang sama, bukan pengulangan
+                judulnya: congklak di Jawa juga disebut dakon, dan congkak di
+                Sumatera dan semenanjung. */}
             <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/45">
-              congklak · dakon
+              dakon · congkak
             </span>
           </Link>
           <Navigasi locale={params.locale} />

@@ -3,7 +3,7 @@
  * basePath must match the repository name, or asset URLs break on Pages.
  * Set BASE_PATH='' locally to serve from the root.
  */
-const basePath = process.env.BASE_PATH ?? '/lumbung'
+const basePath = process.env.BASE_PATH ?? '/congklak'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
