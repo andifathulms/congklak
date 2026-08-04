@@ -9,6 +9,7 @@ import { getRuleset } from '@/lib/rulesets'
 import { t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
 import { usePenaburan } from '@/components/sow/usePenaburan'
+import { Tombol, TautanTombol } from '@/components/ui/Tombol'
 
 const rules = getRuleset(PELAJARAN_RULESET)
 
@@ -85,26 +86,40 @@ export function Belajar({ locale }: { locale: Locale }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <nav className="flex flex-wrap items-center gap-2" aria-label={kata.belajar}>
+      {/* Tiga posisi, dan mana yang sedang dikerjakan: sebuah langkah, bukan
+          sebaris tombol yang semuanya terlihat sama. */}
+      <nav className="flex flex-wrap items-center gap-1.5" aria-label={kata.belajar}>
         {PELAJARAN.map((p, i) => (
           <button
             key={p.id}
             type="button"
             onClick={() => muat(i)}
-            aria-current={i === ke}
+            aria-current={i === ke ? 'step' : undefined}
             className={[
-              'rounded-full px-3 py-1 font-sans text-xs transition',
-              i === ke ? 'bg-ink text-mat' : 'border border-teak/30 text-ink/70',
+              'flex items-center gap-2 rounded-full py-1 pl-1 pr-3 font-sans text-xs transition',
+              i === ke
+                ? 'bg-mat-high text-ink shadow-raise ring-1 ring-teak/30'
+                : 'text-ink/55 hover:bg-mat-high hover:text-ink',
             ].join(' ')}
           >
-            {i + 1}. {p.judul[locale]}
+            <span
+              className={[
+                'tnum flex h-5 w-5 items-center justify-center rounded-full font-display text-[11px] font-bold',
+                i === ke ? 'bg-teak text-seedA' : 'bg-mat-low text-ink/55',
+              ].join(' ')}
+            >
+              {i + 1}
+            </span>
+            {p.judul[locale]}
           </button>
         ))}
       </nav>
 
       <div>
         <h2 className="font-display text-2xl font-bold">{pelajaran.judul[locale]}</h2>
-        <p className="mt-1 max-w-prose font-sans text-ink/80">{pelajaran.ajakan[locale]}</p>
+        <p className="mt-1 max-w-prose font-sans leading-relaxed text-ink/80">
+          {pelajaran.ajakan[locale]}
+        </p>
       </div>
 
       <Papan
@@ -118,56 +133,48 @@ export function Belajar({ locale }: { locale: Locale }) {
         namaB={`${kata.pemain} B`}
       />
 
+      {/* Tinggi tetap: kotak jawaban yang muncul tiba-tiba akan mendorong
+          papan ke atas tepat saat pemain sedang melihatnya. */}
       <div aria-live="polite" className="min-h-24">
-        {jawab === 'belum' && (
-          <p className="font-sans text-sm text-ink/50">{kata.pilihLubang}</p>
-        )}
-        {jawab === 'tepat' && (
-          <div className="rounded-2xl border border-brass bg-brass/10 p-3">
-            <p className="font-display text-base font-bold">{kata.tepat}</p>
-            <p className="mt-1 max-w-prose font-sans text-sm text-ink/85">
-              {pelajaran.kenapa[locale]}
+        {jawab === 'belum' && <p className="font-sans text-sm text-ink/50">{kata.pilihLubang}</p>}
+        {jawab !== 'belum' && (
+          // Benar dan meleset dibedakan oleh bobot, bukan oleh brass —
+          // brass hanya untuk lubang aktif dan tembakan (PRD §11).
+          <div
+            className={[
+              'rounded-panel p-3.5 ring-1',
+              jawab === 'tepat'
+                ? 'bg-mat-high shadow-raise ring-teak/40'
+                : 'bg-mat-low/60 ring-mat-edge',
+            ].join(' ')}
+          >
+            <p className="font-display text-base font-bold">
+              {jawab === 'tepat' ? kata.tepat : kata.belumTepat}
             </p>
-          </div>
-        )}
-        {jawab === 'meleset' && (
-          <div className="rounded-2xl border border-teak/30 p-3">
-            <p className="font-display text-base font-bold">{kata.belumTepat}</p>
-            <p className="mt-1 max-w-prose font-sans text-sm text-ink/85">
-              {pelajaran.meleset[locale]}
+            <p className="mt-1 max-w-prose font-sans text-sm leading-relaxed text-ink/85">
+              {jawab === 'tepat' ? pelajaran.kenapa[locale] : pelajaran.meleset[locale]}
             </p>
           </div>
         )}
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={ulangi}
-          className="rounded-full border border-teak/40 px-4 py-2 font-sans text-sm transition hover:bg-teak/10"
-        >
-          {kata.ulangiPosisi}
-        </button>
+        <Tombol onClick={ulangi}>{kata.ulangiPosisi}</Tombol>
         {jawab === 'tepat' && ke < PELAJARAN.length - 1 && (
-          <button
-            type="button"
-            onClick={() => muat(ke + 1)}
-            className="rounded-full bg-teak px-4 py-2 font-sans text-sm text-seedA transition hover:brightness-110"
-          >
+          <Tombol bobot="utama" onClick={() => muat(ke + 1)}>
             {kata.pelajaranBerikutnya}
-          </button>
+          </Tombol>
         )}
         {jawab === 'tepat' && ke === PELAJARAN.length - 1 && (
-          <a
-            href={`/${locale}/main/`}
-            className="rounded-full bg-teak px-4 py-2 font-sans text-sm text-seedA transition hover:brightness-110"
-          >
+          <TautanTombol href={`/${locale}/main`} bobot="utama">
             {kata.mainSekarang}
-          </a>
+          </TautanTombol>
         )}
       </div>
 
-      <p className="max-w-prose font-mono text-xs text-ink/45">{kata.belajarCatatan}</p>
+      <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/45">
+        {kata.belajarCatatan}
+      </p>
     </div>
   )
 }

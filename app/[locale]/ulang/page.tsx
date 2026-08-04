@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Ulang } from '@/components/game/Ulang'
+import { Kepala } from '@/components/shell/Kepala'
 import { LOCALES, isLocale, t } from '@/lib/i18n'
 
 export function generateStaticParams() {
@@ -12,16 +12,10 @@ export default function UlangPage({ params }: { params: { locale: string } }) {
   const kata = t(params.locale)
 
   return (
-    <div className="flex flex-col gap-5">
-      <Link
-        href={`/${params.locale}/main`}
-        className="font-sans text-sm underline underline-offset-4"
-      >
-        ← {kata.kembali}
-      </Link>
-      <h1 className="font-display text-3xl font-bold">{kata.ulang}</h1>
+    <div className="flex flex-col gap-6">
       {/* Sebuah permainan adalah daftar langkah plus id aturan, jadi kode
           pendek dari layar papan sudah cukup untuk memutarnya kembali. */}
+      <Kepala judul={kata.ulang} intro={kata.ulangIntro} />
       <Ulang locale={params.locale} />
     </div>
   )

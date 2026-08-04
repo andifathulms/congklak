@@ -79,6 +79,7 @@ interface Dict {
   readonly alasanSelesai: string
   readonly alasanTakSah: string
   readonly ulang: string
+  readonly ulangIntro: string
   readonly muatKode: string
   readonly kodeTakValid: string
   readonly langkah: string
@@ -186,6 +187,7 @@ const id: Dict = {
   alasanSelesai: 'Satu aturan menyatakan permainan sudah selesai, satunya belum.',
   alasanTakSah: 'Langkah itu tidak sah lagi di salah satu aturan.',
   ulang: 'Putar ulang',
+  ulangIntro: 'Sebuah permainan adalah daftar langkahnya plus id aturannya — tidak ada papan yang disimpan. Tempelkan kode dari layar papan, lalu telusuri permainannya langkah demi langkah.',
   muatKode: 'Muat kode',
   kodeTakValid: 'Kode permainan tidak bisa dibaca.',
   langkah: 'Langkah',
@@ -293,6 +295,7 @@ const en: Dict = {
   alasanSelesai: 'One ruleset says the game is already over, the other does not.',
   alasanTakSah: 'That move is no longer legal under one of the rulesets.',
   ulang: 'Replay',
+  ulangIntro: 'A game is its move list plus its ruleset id — no board is ever stored. Paste a code from the board screen and step through the game move by move.',
   muatKode: 'Load code',
   kodeTakValid: 'That game code could not be read.',
   langkah: 'Move',

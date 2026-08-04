@@ -49,7 +49,7 @@ export function Lubang({
       : previewed
         ? 'ring-2 ring-seedA/45'
         : playable
-          ? 'ring-1 ring-teak-rim/70'
+          ? 'ring-2 ring-teak-rim'
           : 'ring-0'
 
   return (
@@ -66,11 +66,15 @@ export function Lubang({
         onBlur={playable ? () => onPreview?.(null) : undefined}
         className={[
           'relative flex aspect-square w-full items-center justify-center rounded-full',
-          'bg-hollow bg-pit shadow-recess transition duration-150',
+          'bg-pit shadow-recess transition duration-150',
           cincin,
+          // Lubang yang bisa ditabur duduk sedikit lebih terang dari kayu
+          // yang tidak bisa disentuh. Di mode belajar sering hanya dua dari
+          // empat belas lubang yang sah, dan tanpa beda ini tidak ada apa
+          // pun di layar yang mengatakan yang mana.
           playable
-            ? 'cursor-pointer hover:-translate-y-px hover:bg-hollow-deep active:translate-y-0'
-            : 'cursor-default',
+            ? 'cursor-pointer bg-hollow hover:-translate-y-px hover:brightness-110 active:translate-y-0'
+            : 'cursor-default bg-hollow-deep',
         ].join(' ')}
       >
         <TumpukanBiji biji={biji} owner={owner} />
