@@ -364,12 +364,27 @@ function PanelStatistik({
   }, [rulesetId, versi])
 
   if (!stat || stat.dimainkan === 0) return null
+
+  // Angkanya yang jadi isi, bukan kalimatnya: dulu semuanya dirangkai jadi
+  // satu baris mono yang harus dibaca kata per kata untuk menemukan satu
+  // bilangan.
+  const angka: readonly (readonly [string, number])[] = [
+    [kata.dimainkan, stat.dimainkan],
+    [kata.menangA, stat.menangA],
+    [kata.seri, stat.seri],
+    [kata.bankTerbesar, stat.bankTerbesar],
+    [kata.sambungTerpanjang, stat.sambungTerpanjang],
+  ]
+
   return (
-    <p className="tnum font-mono text-xs text-ink/50">
-      {kata.statistik}: {stat.dimainkan} {kata.dimainkan.toLowerCase()} · {kata.menangA}{' '}
-      {stat.menangA} · {kata.seri.toLowerCase()} {stat.seri} · bank {stat.bankTerbesar} ·
-      sambung {stat.sambungTerpanjang}
-    </p>
+    <dl className="flex flex-wrap items-baseline gap-x-4 gap-y-1" aria-label={kata.statistik}>
+      {angka.map(([label, nilai]) => (
+        <div key={label} className="flex items-baseline gap-1.5">
+          <dt className="font-sans text-[11px] text-ink/45">{label}</dt>
+          <dd className="tnum font-display text-sm font-semibold text-ink/75">{nilai}</dd>
+        </div>
+      ))}
+    </dl>
   )
 }
 

@@ -85,6 +85,8 @@ interface Dict {
   readonly kodeTakValid: string
   readonly langkah: string
   readonly statistik: string
+  readonly bankTerbesar: string
+  readonly sambungTerpanjang: string
   readonly dimainkan: string
   readonly menangA: string
   readonly tanding: string
@@ -194,6 +196,8 @@ const id: Dict = {
   kodeTakValid: 'Kode permainan tidak bisa dibaca.',
   langkah: 'Langkah',
   statistik: 'Statistik',
+  bankTerbesar: 'Bank terbesar',
+  sambungTerpanjang: 'Sambung terpanjang',
   dimainkan: 'Permainan',
   menangA: 'Menang A',
   tanding: 'Tanding',
@@ -303,6 +307,8 @@ const en: Dict = {
   kodeTakValid: 'That game code could not be read.',
   langkah: 'Move',
   statistik: 'Stats',
+  bankTerbesar: 'Biggest bank',
+  sambungTerpanjang: 'Longest relay',
   dimainkan: 'Games',
   menangA: 'A wins',
   tanding: 'Play online',
