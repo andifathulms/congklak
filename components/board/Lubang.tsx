@@ -53,7 +53,7 @@ export function Lubang({
           : 'ring-0'
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="relative flex flex-col items-center gap-1">
       <button
         type="button"
         disabled={!playable}
@@ -82,11 +82,16 @@ export function Lubang({
       </button>
 
       {/* Ukiran angka pada kayu: cukup terbaca untuk dihitung, cukup samar
-          untuk tidak bersaing dengan biji di dalam lubang. */}
+          untuk tidak bersaing dengan biji di dalam lubang.
+
+          Di papan yang berdiri, angka duduk di bibir bawah lubang, bukan di
+          bawahnya: tujuh baris masing-masing menuntut satu baris tambahan
+          akan menambah tinggi papan seperempat layar. */}
       <span
         aria-hidden
         className={[
-          'tnum font-display text-[11px] leading-none transition-colors',
+          'tnum absolute bottom-0.5 font-display text-[11px] leading-none transition-colors',
+          'sm:static sm:bottom-auto',
           active ? 'font-bold text-brass' : playable ? 'text-seedA/60' : 'text-seedA/35',
         ].join(' ')}
       >

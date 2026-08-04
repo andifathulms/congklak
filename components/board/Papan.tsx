@@ -77,33 +77,55 @@ export function Papan({
     <div
       // `on-teak` switches the global focus ring to seedA: an ink ring is
       // invisible against the wood.
-      className="on-teak rounded-board bg-teak bg-grain p-3 shadow-carve ring-1 ring-teak-rim/40 sm:p-6"
+      // w-full is load-bearing next to mx-auto: as a flex item, an auto
+      // cross-axis margin cancels the stretch, and the board collapses to
+      // its content width.
+      className="on-teak mx-auto w-full max-w-[10.5rem] rounded-board bg-teak bg-grain p-3 shadow-carve ring-1 ring-teak-rim/40 sm:max-w-none sm:p-6"
       role="group"
       aria-label="Papan congklak"
     >
-      <div className="grid grid-cols-[minmax(2.75rem,1fr)_7fr_minmax(2.75rem,1fr)] items-center gap-2 sm:grid-cols-[minmax(4rem,1fr)_7fr_minmax(4rem,1fr)] sm:gap-5">
+      {/*
+        On a phone the board stands upright. Laid out lengthwise, fourteen
+        holes and two lumbung across 390px leaves each hole about 34px —
+        under any reasonable touch target, with biji too small to count.
+        Standing it up is a rigid quarter turn of the whole figure, so the
+        sow still reads clockwise and opposite holes still sit beside each
+        other: A's lumbung at the top, A's row down the left, B's row down
+        the right, B's lumbung at the bottom.
+
+        One DOM either way. The rows are the same elements, laid out as
+        columns and placed explicitly, so there is no second copy of the
+        board for a screen reader or the keyboard to walk through.
+      */}
+      <div className="grid grid-cols-2 items-center gap-2 sm:grid-cols-[minmax(3.5rem,1fr)_7fr_minmax(3.5rem,1fr)] sm:grid-rows-2 sm:gap-x-4 sm:gap-y-4 md:grid-cols-[minmax(5.5rem,1fr)_7fr_minmax(5.5rem,1fr)] md:gap-x-5">
         {/* A's lumbung stays at the left end and B's at the right: that is
             what makes the sow read clockwise on screen, and all three packs'
             sources describe clockwise sowing. Swapping these would put the
             board in visible contradiction with its own citation. */}
-        <LumbungView
-          owner={PLAYER_A}
-          biji={cells[LUMBUNG_A]}
-          active={active === LUMBUNG_A}
-          name={namaA}
-        />
-
-        <div className="grid grid-rows-2 gap-3 sm:gap-4">
-          <div className="grid grid-cols-7 gap-1.5 sm:gap-3">{BARIS_ATAS.map(hole)}</div>
-          <div className="grid grid-cols-7 gap-1.5 sm:gap-3">{BARIS_BAWAH.map(hole)}</div>
+        <div className="col-span-2 sm:col-span-1 sm:col-start-1 sm:row-span-2 sm:row-start-1">
+          <LumbungView
+            owner={PLAYER_A}
+            biji={cells[LUMBUNG_A]}
+            active={active === LUMBUNG_A}
+            name={namaA}
+          />
         </div>
 
-        <LumbungView
-          owner={PLAYER_B}
-          biji={cells[LUMBUNG_B]}
-          active={active === LUMBUNG_B}
-          name={namaB}
-        />
+        <div className="col-start-2 row-start-2 grid grid-cols-1 gap-2 sm:col-start-2 sm:row-start-1 sm:grid-cols-7 sm:gap-3">
+          {BARIS_ATAS.map(hole)}
+        </div>
+        <div className="col-start-1 row-start-2 grid grid-cols-1 gap-2 sm:col-start-2 sm:row-start-2 sm:grid-cols-7 sm:gap-3">
+          {BARIS_BAWAH.map(hole)}
+        </div>
+
+        <div className="col-span-2 sm:col-span-1 sm:col-start-3 sm:row-span-2 sm:row-start-1">
+          <LumbungView
+            owner={PLAYER_B}
+            biji={cells[LUMBUNG_B]}
+            active={active === LUMBUNG_B}
+            name={namaB}
+          />
+        </div>
       </div>
     </div>
   )

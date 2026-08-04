@@ -25,8 +25,12 @@ export function LumbungView({
   return (
     <div
       className={[
-        'flex h-full min-h-[8.5rem] w-full flex-col items-center justify-center gap-1.5',
-        'rounded-[45%] bg-hollow bg-pit px-2 py-6 shadow-bank transition-shadow',
+        // Berdiri di ponsel, memanjang di layar lebar — bentuknya mengikuti
+        // arah papannya, dan tetap satu cekungan yang lebih dalam dari lubang.
+        'flex h-full w-full items-center justify-center gap-2.5 rounded-[45%]',
+        'min-h-[4.25rem] flex-row px-4 py-3',
+        'sm:min-h-[8.5rem] sm:flex-col sm:gap-1.5 sm:px-2 sm:py-6',
+        'bg-hollow bg-pit shadow-bank transition-shadow',
         active ? 'ring-[3px] ring-brass ring-offset-2 ring-offset-teak-grain' : 'ring-0',
       ].join(' ')}
       role="status"
@@ -38,7 +42,12 @@ export function LumbungView({
       {/* Bentuk biji, bukan hanya warna, yang menandai sisi siapa ini. */}
       <span className="flex max-w-full items-center gap-1.5 px-1">
         <Biji owner={owner} size={8} />
-        <span className="truncate font-sans text-[10px] uppercase tracking-widest text-seedA/60">
+        {/* Papan yang berdiri punya lumbung selebar layar, jadi namanya muat.
+            Papan yang memanjang tidak: kolomnya sempit dan namanya terpotong
+            jadi "PEMAI…", yang tidak memberi tahu siapa pun apa pun. Di sana
+            bentuk biji yang menandai sisi, papan skor tepat di atas menyebut
+            namanya, dan aria-label tetap lengkap di keduanya. */}
+        <span className="truncate font-sans text-[10px] uppercase tracking-widest text-seedA/60 sm:hidden">
           {name}
         </span>
       </span>

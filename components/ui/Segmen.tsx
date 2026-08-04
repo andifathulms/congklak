@@ -44,7 +44,9 @@ export function Segmen<T extends string>({
       <div
         role="group"
         aria-label={label}
-        className="flex min-w-0 items-center gap-0.5 rounded-full bg-mat-low p-0.5 ring-1 ring-inset ring-mat-edge/60"
+        // Membungkus, bukan memotong: nama aturan yang terpotong jadi
+        // "Congklak U…" menghapus satu-satunya hal yang membedakannya.
+        className="flex min-w-0 flex-wrap items-center gap-0.5 rounded-[1.25rem] bg-mat-low p-0.5 ring-1 ring-inset ring-mat-edge/60"
       >
         {options.map(([key, teks]) => {
           const dipilih = value === key
@@ -57,7 +59,7 @@ export function Segmen<T extends string>({
               aria-pressed={dipilih}
               aria-label={`${label}: ${teks}`}
               className={[
-                'truncate rounded-full font-sans transition disabled:opacity-40',
+                'rounded-full font-sans transition disabled:opacity-40',
                 pad,
                 dipilih
                   ? 'bg-mat-high font-medium text-ink shadow-raise'
