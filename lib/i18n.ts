@@ -17,6 +17,8 @@ export function isLocale(value: string): value is Locale {
 interface Dict {
   readonly judul: string
   readonly tagline: string
+  readonly papan: string
+  readonly bahasa: string
   readonly hotseat: string
   readonly lawanAi: string
   readonly ai: string
@@ -113,6 +115,8 @@ interface Dict {
 const id: Dict = {
   judul: 'Lumbung',
   tagline: 'Congklak dengan aturan kedaerahan yang eksplisit dan bersumber.',
+  papan: 'Papan',
+  bahasa: 'Bahasa',
   hotseat: 'Satu perangkat, dua pemain',
   lawanAi: 'Lawan AI',
   ai: 'AI',
@@ -209,6 +213,8 @@ const id: Dict = {
 const en: Dict = {
   judul: 'Lumbung',
   tagline: 'Congklak with its regional rulesets made explicit and cited.',
+  papan: 'Board',
+  bahasa: 'Language',
   hotseat: 'One device, two players',
   lawanAi: 'Versus AI',
   ai: 'AI',
