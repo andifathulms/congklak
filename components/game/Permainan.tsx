@@ -291,7 +291,13 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
       {/* Yang sering disentuh saat bermain duduk langsung di bawah papan;
           yang jarang — mode dan kesulitan — turun ke panel di bawahnya. */}
       <div className="flex flex-wrap items-center gap-2">
-        <Tombol bobot="utama" onClick={baru}>
+        {/* "Permainan baru" berhenti jadi tombol utama. Sebelum ada langkah
+            yang dimainkan ia tidak melakukan apa-apa, dan ia adalah hal
+            paling menonjol di layar — memberi bobot penuh pada satu-satunya
+            tindakan yang belum berguna. Tindakan pertama yang sebenarnya
+            ada di papan; ini baru menonjol setelah ada permainan untuk
+            dimulai ulang. */}
+        <Tombol bobot={record.moves.length > 0 ? 'utama' : 'kedua'} onClick={baru}>
           {kata.permainanBaru}
         </Tombol>
         <Tombol onClick={urung} disabled={busy || record.moves.length === 0}>
