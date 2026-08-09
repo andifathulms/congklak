@@ -9,14 +9,72 @@
  * system UI face.
  */
 
+:root {
+  /*
+   * TYPE — one scale, seven steps, ~1.25 between the reading sizes.
+   *
+   * The app had eight sizes that were not a scale: 10, 11, 12, 14, 16, 20,
+   * 30, 36, picked per component. Nothing a visitor actually read reached
+   * 16px, so size carried no hierarchy at all and opacity carried it
+   * instead — which is how the contrast problem below got started.
+   *
+   * --step-1 is the floor for anything that is *read*. The two steps under
+   * it are for data labels and micro-labels only: counts engraved on the
+   * board, uppercase group names. Nothing below 12px exists any more.
+   */
+  --step-000: 0.75rem; /* 12px — board counts, chips */
+  --step-00: 0.8125rem; /* 13px — uppercase micro-labels */
+  --step-0: 0.875rem; /* 14px — controls */
+  --step-1: 1rem; /* 16px — body, and the floor for prose */
+  --step-2: 1.25rem; /* 20px — lead, small headings */
+  --step-3: 1.625rem; /* 26px — section headings */
+  --step-4: 2.125rem; /* 34px — page title */
+
+  /*
+   * COLOUR — the wood and mat identity is unchanged; what changes is that
+   * every text tone here is a measured value rather than an opacity guess.
+   *
+   * There are exactly two text tones on the mat, because a third cannot
+   * exist: any tone lighter than --fg-muted drops under 4.5:1 on mat-low,
+   * the darkest surface text sits on. Hierarchy comes from size and weight
+   * instead — which is what the type scale above is for.
+   *
+   * Ratios are against the worst surface each tone is used on.
+   */
+  --fg: #241c14; /* on mat 12.41:1 · on mat-low 10.72:1 */
+  --fg-muted: #575047; /* on mat 5.87:1 · on mat-high 6.63:1 · on mat-low 5.12:1 */
+
+  /* On the board. Counts sit on teak, which is the tightest of the three
+     wood surfaces — anything dimmer than full seed fails there. */
+  --fg-wood: #f0e7d4; /* on teak 5.36:1 · on hollow 8.03:1 · on hollow-deep 11.63:1 */
+  --fg-wood-muted: #ccc0ae; /* on hollow 5.50:1 · on hollow-deep 7.97:1 */
+
+  /* Links and quiet accents. Teak clears 4.5 on every mat surface; its
+     darker grain step is there for small text that needs more. */
+  --accent: #7b5533; /* on mat 4.87:1 · on mat-high 5.49:1 */
+  --accent-strong: #66442a; /* on mat-high 7.22:1 */
+
+  /* SPACE — the rhythm the page is built on, so vertical spacing is a
+     decision made once rather than per component. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+}
+
 html,
 body {
   background-color: theme('colors.mat.DEFAULT');
-  color: theme('colors.ink');
+  color: var(--fg);
 }
 
 body {
-  /* Prose reads at a slightly open measure; the board sits on top of it. */
+  /* Body copy is 16px. Everything smaller is a label, not a sentence. */
+  font-size: var(--step-1);
+  line-height: 1.55;
   text-rendering: optimizeLegibility;
 }
 

@@ -41,6 +41,43 @@ const config: Config = {
         seedA: '#F0E7D4',
         seedB: '#8E3B2E',
         brass: '#A8863C',
+
+        /**
+         * Text tones, from the CSS variables in globals.css. These are the
+         * only colours text should ever use: `text-fg` and `text-fg-muted`
+         * on the mat, `text-fg-wood` and `text-fg-wood-muted` on the board.
+         *
+         * They are deliberately not opacity steps of `ink`. Text built out
+         * of `text-ink/45` looked like hierarchy and was actually a
+         * contrast failure — 21 of the app's 34 text styles sat under
+         * 4.5:1. A named tone can be measured once and trusted.
+         */
+        fg: {
+          DEFAULT: 'var(--fg)',
+          muted: 'var(--fg-muted)',
+          wood: 'var(--fg-wood)',
+          'wood-muted': 'var(--fg-wood-muted)',
+        },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          strong: 'var(--accent-strong)',
+        },
+      },
+      /**
+       * One scale. `text-xs` and up are reading sizes; `text-2xs` exists
+       * only for counts on the board and the odd chip, and nothing is
+       * smaller than that.
+       */
+      fontSize: {
+        '2xs': ['var(--step-000)', { lineHeight: '1.35' }],
+        xs: ['var(--step-00)', { lineHeight: '1.45' }],
+        sm: ['var(--step-0)', { lineHeight: '1.5' }],
+        base: ['var(--step-1)', { lineHeight: '1.55' }],
+        lg: ['var(--step-2)', { lineHeight: '1.4' }],
+        xl: ['var(--step-3)', { lineHeight: '1.25' }],
+        '2xl': ['var(--step-3)', { lineHeight: '1.2' }],
+        '3xl': ['var(--step-4)', { lineHeight: '1.15' }],
+        '4xl': ['var(--step-4)', { lineHeight: '1.1' }],
       },
       fontFamily: {
         display: ['var(--font-display)', 'ui-sans-serif', 'system-ui'],
