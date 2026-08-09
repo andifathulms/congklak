@@ -21,6 +21,7 @@ export function Navigasi({ locale }: { locale: Locale }) {
   const tautan = [
     { href: `/${locale}/main`, label: kata.papan },
     { href: `/${locale}/belajar`, label: kata.belajar },
+    { href: `/${locale}/teka`, label: kata.teka },
     { href: `/${locale}/aturan`, label: kata.aturan },
     { href: `/${locale}/banding`, label: kata.banding },
     { href: `/${locale}/tanding`, label: kata.tanding },

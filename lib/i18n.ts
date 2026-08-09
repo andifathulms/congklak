@@ -137,6 +137,19 @@ interface Dict {
   readonly koneksi_putus: string
   readonly koneksi_gagal: string
   readonly belajar: string
+  readonly teka: string
+  readonly tekaIntro: string
+  readonly tekaSasaran: string
+  readonly tekaBerhasil: string
+  readonly tekaBelum: string
+  readonly tekaCapai: string
+  readonly tekaCapaiLagi: string
+  readonly tekaPetunjuk: string
+  readonly tekaLihatPetunjuk: string
+  readonly tekaBerikutnya: string
+  readonly tekaUlangi: string
+  readonly tekaSelesai: string
+  readonly tekaCatatan: string
   readonly belajarIntro: string
   readonly pilihLubang: string
   readonly tepat: string
@@ -282,6 +295,19 @@ const id: Dict = {
   koneksi_putus: 'terputus',
   koneksi_gagal: 'gagal tersambung',
   belajar: 'Belajar',
+  teka: 'Teka-teki',
+  tekaIntro: 'Aturannya sudah kamu tahu; yang tersisa adalah membaca rantainya sebelum ditabur. Lima posisi, masing-masing punya tepat satu langkah yang berhasil.',
+  tekaSasaran: 'Sasaran',
+  tekaBerhasil: 'Kena.',
+  tekaBelum: 'Belum sampai.',
+  tekaCapai: 'Langkah itu menghasilkan {n}, sasarannya {target}.',
+  tekaCapaiLagi: 'Biji terakhirmu tidak berhenti tepat di lumbung sendiri.',
+  tekaPetunjuk: 'Petunjuk',
+  tekaLihatPetunjuk: 'Lihat petunjuk',
+  tekaBerikutnya: 'Teka-teki berikutnya',
+  tekaUlangi: 'Ulangi posisi ini',
+  tekaSelesai: 'Kelima-limanya selesai. Sekarang lawan AI-nya.',
+  tekaCatatan: 'Semua posisi dimainkan di bawah aturan Congklak Umum. "Tabung tiga belas biji" belum jadi pertanyaan yang utuh sebelum disebut bacaan menembak siapa yang berlaku.',
   belajarIntro: 'Tiga posisi papan sungguhan, bukan tiga paragraf. Aturan congklak gampang disebut dan susah dirasakan — jadi di sini kamu dikasih papan dan diminta mencari langkahnya.',
   pilihLubang: 'Pilih salah satu lubang di barisan bawah.',
   tepat: 'Nah, itu dia.',
@@ -427,6 +453,19 @@ const en: Dict = {
   koneksi_putus: 'disconnected',
   koneksi_gagal: 'connection failed',
   belajar: 'Learn',
+  teka: 'Puzzles',
+  tekaIntro: 'You know the rules; what is left is reading the chain before you sow it. Five positions, each with exactly one move that works.',
+  tekaSasaran: 'Target',
+  tekaBerhasil: 'Got it.',
+  tekaBelum: 'Not quite.',
+  tekaCapai: 'That move produced {n}; the target is {target}.',
+  tekaCapaiLagi: 'Your last biji did not stop exactly in your own lumbung.',
+  tekaPetunjuk: 'Hint',
+  tekaLihatPetunjuk: 'Show a hint',
+  tekaBerikutnya: 'Next puzzle',
+  tekaUlangi: 'Reset this position',
+  tekaSelesai: 'All five done. Now go and play the AI.',
+  tekaCatatan: 'Every position is played under the Congklak Umum ruleset. \u201cBank thirteen seeds\u201d is not a well-formed question until you say whose reading of menembak is in force.',
   belajarIntro: 'Three real board positions, not three paragraphs. Congklak\u2019s rules are simple to state and hard to feel \u2014 so here you are given a board and asked to find the move.',
   pilihLubang: 'Pick one of the holes on the bottom row.',
   tepat: 'That\u2019s the one.',
