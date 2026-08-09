@@ -1,4 +1,5 @@
 import { t, type Locale } from '@/lib/i18n'
+import { Kepala } from './Kepala'
 
 /**
  * What this is, above the board, in the first screen.
@@ -17,12 +18,10 @@ export function Pembuka({ locale }: { locale: Locale }) {
   const kata = t(locale)
   const nilai = [kata.nilai1, kata.nilai2, kata.nilai3]
 
+  // Judulnya lewat Kepala, sama seperti setiap halaman lain — supaya ada
+  // satu definisi judul halaman, bukan dua yang pelan-pelan berbeda.
   return (
-    <header className="flex flex-col gap-3">
-      <h1 className="max-w-[22ch] font-display text-xl font-bold leading-tight sm:max-w-none sm:text-2xl">
-        {kata.beranda}
-      </h1>
-      <p className="max-w-prose font-sans leading-relaxed text-fg-muted">{kata.berandaIntro}</p>
+    <Kepala judul={kata.beranda} intro={kata.berandaIntro}>
       <ul className="flex flex-wrap gap-x-4 gap-y-1.5">
         {nilai.map((n) => (
           <li key={n} className="flex items-baseline gap-1.5 font-sans text-sm text-fg-muted">
@@ -32,6 +31,6 @@ export function Pembuka({ locale }: { locale: Locale }) {
           </li>
         ))}
       </ul>
-    </header>
+    </Kepala>
   )
 }

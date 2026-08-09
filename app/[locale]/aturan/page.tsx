@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { RULESETS, type Ruleset } from '@/lib/rulesets'
 import { LOCALES, isLocale, t } from '@/lib/i18n'
+import { Kepala } from '@/components/shell/Kepala'
 import { Panel } from '@/components/ui/Panel'
 import { Lencana } from '@/components/ui/Lencana'
 import type { Divergence, StatusPerbedaan as Status } from '@/lib/rulesets/schema'
@@ -27,9 +28,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
 
   return (
     <div className="flex flex-col gap-7">
-      <header className="flex flex-col gap-3">
-        <h1 className="font-display text-2xl font-bold">{kata.aturan}</h1>
-        <p className="max-w-prose font-sans leading-relaxed text-fg">{kata.aturanIntro}</p>
+      <Kepala judul={kata.aturan} intro={kata.aturanIntro}>
         <nav className="flex flex-wrap gap-2 pt-1">
           {RULESETS.map((r) => (
             <a
@@ -41,7 +40,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
             </a>
           ))}
         </nav>
-      </header>
+      </Kepala>
 
       {RULESETS.map((ruleset) => (
         <article
