@@ -73,6 +73,43 @@ export interface TurnEndEvent {
   readonly next: Player
 }
 
+/**
+ * Why a turn ended with nothing banked.
+ *
+ * Universal in every variant. The last seed fell in an empty hole on the
+ * opponent's side, and no tradition captures from there.
+ */
+export type AlasanHenti =
+  | 'lubang-kosong-sisi-lawan'
+  /** menembak.requireLapCompleted — biji belum melewati lumbung sendiri. */
+  | 'belum-satu-pusingan'
+  /** menembak.requireOppositeNonEmpty — lubang seberang kosong. */
+  | 'seberang-kosong'
+  /** menembak.enabled === false — pack ini tidak mengenal menembak. */
+  | 'tanpa-menembak'
+  /** extraTurnOnOwnLumbung === false — mendarat di lumbung tanpa giliran lagi. */
+  | 'lumbung-tanpa-giliran-lagi'
+
+/**
+ * The clause that decided it — and the difference between "deterministic"
+ * and "citable", which is what this project actually sells.
+ *
+ * The same last seed legitimately does two different things depending on
+ * which pack is loaded. Without this the player sees a turn end where they
+ * expected a capture, with nothing on screen to say which rule spoke, and
+ * concludes the app is broken. `opsi` is null where the rule is universal
+ * and belongs to no pack.
+ */
+export interface HentiEvent {
+  readonly type: 'henti'
+  readonly alasan: AlasanHenti
+  /** Jalur opsi di ruleset yang memutuskan, atau null kalau universal. */
+  readonly opsi: string | null
+  /** Lubang tempat biji terakhir mendarat. */
+  readonly index: number
+  readonly player: Player
+}
+
 /** Sapu akhir: biji yang tersisa di papan saat permainan selesai. */
 export interface SweepEvent {
   readonly type: 'sweep'
@@ -99,6 +136,7 @@ export type SowEventUnion =
   | RelayEvent
   | MenembakEvent
   | ExtraTurnEvent
+  | HentiEvent
   | TurnEndEvent
   | SweepEvent
   | EndEvent
@@ -120,6 +158,8 @@ export function describeEvent(event: GameEvent): string {
       return `Menembak lubang ${event.seberang}: ${event.total} biji masuk lumbung.`
     case 'extraTurn':
       return 'Biji terakhir jatuh di lumbung sendiri — jalan lagi.'
+    case 'henti':
+      return describeHenti(event)
     case 'turnEnd':
       return 'Giliran habis.'
     case 'sweep':
@@ -132,6 +172,30 @@ export function describeEvent(event: GameEvent): string {
         : `Pemain ${event.hasil.toUpperCase()} menang, ${event.skorA}–${event.skorB}.`
     default: {
       const never: never = event
+      return never
+    }
+  }
+}
+
+/**
+ * Says which rule ended the turn, in the player's words rather than the
+ * schema's. The option path travels on the event for anyone who wants to
+ * trace it back to the pack; this is the sentence a person reads.
+ */
+export function describeHenti(event: HentiEvent): string {
+  switch (event.alasan) {
+    case 'lubang-kosong-sisi-lawan':
+      return `Biji terakhir jatuh di lubang kosong sisi lawan (${event.index}) — giliran habis, tanpa tembakan.`
+    case 'belum-satu-pusingan':
+      return `Biji terakhir jatuh di lubang kosong sendiri (${event.index}), tapi belum melewati lumbung sendiri satu pusingan — aturan ini tidak mengizinkan menembak, jadi giliran habis.`
+    case 'seberang-kosong':
+      return `Biji terakhir jatuh di lubang kosong sendiri (${event.index}), tapi lubang seberangnya kosong — aturan ini tidak menembak ke lubang kosong, jadi giliran habis.`
+    case 'tanpa-menembak':
+      return `Biji terakhir jatuh di lubang kosong sendiri (${event.index}) — aturan ini tidak mengenal menembak, jadi giliran habis.`
+    case 'lumbung-tanpa-giliran-lagi':
+      return 'Biji terakhir jatuh di lumbung sendiri — aturan ini tidak memberi giliran lagi.'
+    default: {
+      const never: never = event.alasan
       return never
     }
   }

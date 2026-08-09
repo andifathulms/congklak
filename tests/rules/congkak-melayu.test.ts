@@ -3,7 +3,7 @@ import { applyMove } from '@/lib/engine/apply'
 import { LUMBUNG_A, LUMBUNG_B, PLAYER_A, PLAYER_B } from '@/lib/engine/board'
 import { countSeeds } from '@/lib/engine/conserve'
 import { getRuleset } from '@/lib/rulesets'
-import { cellsOf, eventTypes, stateFrom } from '../helpers'
+import { alasanHenti, cellsOf, eventTypes, stateFrom } from '../helpers'
 
 const melayu = getRuleset('congkak-melayu')
 const umum = getRuleset('umum')
@@ -93,7 +93,8 @@ describe('syarat satu pusingan sebelum menembak', () => {
       PLAYER_A,
     )
     const { state: after, events } = applyMove(state, 6, melayu)
-    expect(eventTypes(events)).toEqual(['scoop', 'bank', 'sow', 'turnEnd'])
+    expect(eventTypes(events)).toEqual(['scoop', 'bank', 'sow', 'henti', 'turnEnd'])
+    expect(alasanHenti(events)).toEqual({ alasan: 'lubang-kosong-sisi-lawan', opsi: null })
     expect(after.board[LUMBUNG_A]).toBe(1)
   })
 

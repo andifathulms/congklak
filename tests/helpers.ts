@@ -59,3 +59,15 @@ export function umum(): Ruleset {
 export function withOptions(base: Ruleset, options: Partial<Ruleset['options']>): Ruleset {
   return { ...base, options: { ...base.options, ...options } }
 }
+
+/**
+ * The clause a turn ended on. A fixture that only checks a turn ended is
+ * weaker than one that checks *why*: two different rules can end the same
+ * turn, and only one of them is the rule under test.
+ */
+export function alasanHenti(
+  events: readonly GameEvent[],
+): { alasan: string; opsi: string | null } | null {
+  const henti = events.find((e) => e.type === 'henti')
+  return henti && henti.type === 'henti' ? { alasan: henti.alasan, opsi: henti.opsi } : null
+}

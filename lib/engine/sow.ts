@@ -111,6 +111,14 @@ export function sow(
       if (opts.extraTurnOnOwnLumbung) {
         extraTurn = true
         events.push({ type: 'extraTurn', player })
+      } else {
+        events.push({
+          type: 'henti',
+          alasan: 'lumbung-tanpa-giliran-lagi',
+          opsi: 'extraTurnOnOwnLumbung',
+          index: at,
+          player,
+        })
       }
       break
     }
@@ -137,7 +145,25 @@ export function sow(
       isOwnHole(at, player) &&
       (!opts.menembak.requireLapCompleted || sudahSatuPusingan)
 
-    if (bolehMenembak) {
+    // Giliran yang habis tanpa hasil harus mengatakan klausa mana yang
+    // memutuskannya. Biji terakhir yang sama sah melakukan dua hal berbeda
+    // tergantung pack yang dimuat, dan tanpa ini pemain melihat gilirannya
+    // berhenti di tempat yang ia kira menembak, tanpa satu pun keterangan.
+    if (!bolehMenembak) {
+      events.push({
+        type: 'henti',
+        ...(!isOwnHole(at, player)
+          ? { alasan: 'lubang-kosong-sisi-lawan' as const, opsi: null }
+          : !opts.menembak.enabled
+            ? { alasan: 'tanpa-menembak' as const, opsi: 'menembak.enabled' }
+            : { alasan: 'belum-satu-pusingan' as const, opsi: 'menembak.requireLapCompleted' }),
+        index: at,
+        player,
+      })
+      break
+    }
+
+    {
       const seberang = opposite(at)
       const dariSeberang = board[seberang]
 
@@ -161,6 +187,14 @@ export function sow(
           player,
         })
         checkConservation(board, `menembak di ${at}`, expectedSeeds)
+      } else {
+        events.push({
+          type: 'henti',
+          alasan: 'seberang-kosong',
+          opsi: 'menembak.requireOppositeNonEmpty',
+          index: at,
+          player,
+        })
       }
     }
     break

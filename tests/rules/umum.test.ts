@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { IllegalMoveError, applyMove, createGame } from '@/lib/engine/apply'
 import { LUMBUNG_A, LUMBUNG_B, PLAYER_A, PLAYER_B } from '@/lib/engine/board'
 import { countSeeds } from '@/lib/engine/conserve'
-import { cellsOf, eventTypes, stateFrom, umum, withOptions } from '../helpers'
+import { alasanHenti, cellsOf, eventTypes, stateFrom, umum, withOptions } from '../helpers'
 
 const rules = umum()
 
@@ -14,7 +14,10 @@ describe('sow sederhana', () => {
     const { state: after, events } = applyMove(state, 6, rules)
 
     expect(cellsOf(after.board)).toEqual([0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0])
-    expect(eventTypes(events)).toEqual(['scoop', 'bank', 'sow', 'sow', 'turnEnd'])
+    expect(eventTypes(events)).toEqual(['scoop', 'bank', 'sow', 'sow', 'henti', 'turnEnd'])
+    // Giliran habis karena lubangnya milik lawan — aturan universal, jadi
+    // tidak ada opsi ruleset yang bisa disalahkan.
+    expect(alasanHenti(events)).toEqual({ alasan: 'lubang-kosong-sisi-lawan', opsi: null })
     expect(after.toMove).toBe(PLAYER_B)
     expect(after.status).toBe('berjalan')
     expect(countSeeds(after.board)).toBe(3)
@@ -110,7 +113,8 @@ describe('menembak', () => {
 
     expect(after.board[LUMBUNG_A]).toBe(1)
     expect(after.board[8]).toBe(1)
-    expect(eventTypes(events)).toEqual(['scoop', 'bank', 'sow', 'turnEnd'])
+    expect(eventTypes(events)).toEqual(['scoop', 'bank', 'sow', 'henti', 'turnEnd'])
+    expect(alasanHenti(events)).toEqual({ alasan: 'lubang-kosong-sisi-lawan', opsi: null })
     expect(countSeeds(after.board)).toBe(3)
   })
 

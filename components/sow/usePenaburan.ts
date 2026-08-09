@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Board } from '@/lib/engine/board'
-import { describeEvent, type GameEvent } from '@/lib/engine/events'
+import { describeEvent, type GameEvent, type HentiEvent } from '@/lib/engine/events'
 import { framesFor, frameDuration, initialFrame, type Frame } from './frames'
 
 export type Kecepatan = 'pelan' | 'sedang' | 'cepat' | 'langsung'
@@ -27,6 +27,12 @@ export interface Penaburan {
   readonly playing: boolean
   /** Ringkasan tertulis peristiwa yang sudah lewat, untuk gerak-terbatas. */
   readonly ringkasan: readonly string[]
+  /**
+   * Kenapa giliran terakhir berhenti tanpa hasil, kalau memang begitu.
+   * Bertahan sampai langkah berikutnya, karena inilah pertanyaan yang
+   * dibawa pemain ke layar: kenapa tidak menembak?
+   */
+  readonly alasanHenti: HentiEvent | null
   play: (before: Board, events: readonly GameEvent[], onDone: () => void) => void
   /** Loncat ke akhir; animasi yang sedang jalan dibatalkan. */
   skip: () => void
@@ -120,6 +126,17 @@ export function usePenaburan(board: Board, kecepatan: Kecepatan): Penaburan {
     [clear],
   )
 
+  const alasanHenti = useMemo(() => {
+    for (let i = at; i >= 1; i--) {
+      const e = frames[i]?.event
+      if (e && e.type === 'henti') return e
+      // Hanya giliran terakhir yang dihitung — begitu ketemu awal giliran,
+      // berhenti mencari ke belakang.
+      if (e && e.type === 'scoop') return null
+    }
+    return null
+  }, [frames, at])
+
   const ringkasan = useMemo(
     () =>
       frames
@@ -129,5 +146,5 @@ export function usePenaburan(board: Board, kecepatan: Kecepatan): Penaburan {
     [frames, at],
   )
 
-  return { frame: frames[at] ?? frames[0], playing, ringkasan, play, skip, reset }
+  return { frame: frames[at] ?? frames[0], playing, ringkasan, alasanHenti, play, skip, reset }
 }

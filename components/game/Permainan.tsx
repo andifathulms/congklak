@@ -17,6 +17,7 @@ import { t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
 import { KECEPATAN, usePenaburan, type Kecepatan } from '@/components/sow/usePenaburan'
 import { pratinjauTeks, ringkasPratinjau } from '@/components/preview/ringkas'
+import { describeHenti } from '@/lib/engine/events'
 import { Panel } from '@/components/ui/Panel'
 import { Salin } from '@/components/ui/Salin'
 import { Segmen } from '@/components/ui/Segmen'
@@ -283,6 +284,20 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
             </span>
             <span>{pratinjauTeks(pratinjau)}</span>
           </>
+        ) : player.alasanHenti ? (
+          // Kenapa giliran barusan berhenti tanpa hasil, dan klausa mana
+          // yang memutuskannya. Ini pertanyaan yang dibawa pemain ke layar
+          // saat biji terakhirnya mendarat di lubang kosong sendiri dan
+          // tidak terjadi apa-apa — tanpa jawaban, aplikasinya terbaca
+          // rusak, bukan beraturan lain.
+          <span>
+            {describeHenti(player.alasanHenti)}
+            {player.alasanHenti.opsi && (
+              <code className="ml-1.5 rounded bg-mat-high px-1 py-0.5 font-mono text-2xs text-fg-muted">
+                {player.alasanHenti.opsi}
+              </code>
+            )}
+          </span>
         ) : (
           <span className="font-medium">{ajakan ?? kata.pratinjauPetunjuk}</span>
         )}

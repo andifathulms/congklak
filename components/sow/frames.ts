@@ -87,6 +87,12 @@ function applyEvent(prev: Frame, event: GameEvent): Frame {
     case 'extraTurn':
       return { ...prev, cells, hand: 0, active: lumbungOf(event.player), secondary: null, highlight: 'bank', event }
 
+    // Giliran berhenti tanpa hasil. Lubang pendaratannya tetap disorot
+    // sebentar — di situlah gilirannya berakhir, dan pemain perlu melihat
+    // di mana, bukan cuma diberi tahu bahwa gilirannya habis.
+    case 'henti':
+      return { ...prev, cells, hand: 0, active: event.index, secondary: null, highlight: 'none', event }
+
     case 'turnEnd':
     case 'end':
       return { cells, hand: 0, active: null, secondary: null, highlight: 'none', event }
