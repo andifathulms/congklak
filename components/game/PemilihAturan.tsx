@@ -44,8 +44,32 @@ export function PemilihAturan({
           {kata.sumber} →
         </Link>
       }
-      className="flex flex-col gap-2.5"
+      className="flex flex-col gap-3"
     >
+      {/* Sebuah kalimat lebih dulu, baru kendalinya. "Congklak Umum ·
+          Nusantara · 6 perbedaan tercatat" sebagai deretan potongan tidak
+          memberi tahu siapa pun bahwa mereka sedang memainkan satu bacaan
+          tertentu di antara beberapa yang berbeda. */}
+      <p className="font-sans leading-relaxed">
+        {kata.mainPakai}{' '}
+        <span className="font-medium">{active.name}</span>{' '}
+        <span className="text-fg-muted">({active.region})</span>.{' '}
+        <Link
+          href={`/${locale}/aturan#${active.id}`}
+          className="rounded text-accent-strong underline decoration-accent/40 underline-offset-4 transition hover:decoration-accent-strong"
+        >
+          {active.divergences.length} {kata.perbedaanCount}
+        </Link>
+        {perluCek > 0 && (
+          <>
+            {' '}
+            <Lencana nada="perhatian">
+              {perluCek} {kata.perluCek}
+            </Lencana>
+          </>
+        )}
+      </p>
+
       <Segmen
         options={rulesets.map((r) => [r.id, r.name] as const)}
         value={active.id}
@@ -53,24 +77,6 @@ export function PemilihAturan({
         label={kata.rulesetAktif}
         disabled={disabled}
       />
-
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-        <span className="font-mono text-xs text-fg-muted">{active.region}</span>
-        <span aria-hidden className="text-fg-muted">
-          ·
-        </span>
-        <Link
-          href={`/${locale}/aturan#${active.id}`}
-          className="rounded font-sans text-xs text-fg-muted underline decoration-teak/30 underline-offset-4 transition hover:text-fg"
-        >
-          {active.divergences.length} {kata.perbedaanCount}
-        </Link>
-        {perluCek > 0 && (
-          <Lencana nada="perhatian">
-            {perluCek} {kata.perluCek}
-          </Lencana>
-        )}
-      </div>
 
       {/* Mengganti aturan mengubah permainan, jadi katakan begitu, bukan
           diam-diam mereset papan di belakang pemain. */}

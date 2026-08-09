@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { Permainan } from '@/components/game/Permainan'
+import { Pembuka } from '@/components/shell/Pembuka'
 import { defaultRuleset } from '@/lib/rulesets'
 import { LOCALES, isLocale } from '@/lib/i18n'
 
@@ -12,8 +13,12 @@ export default function MainPage({ params }: { params: { locale: string } }) {
   const ruleset = defaultRuleset()
 
   // Aturan yang sedang berlaku selalu disebut namanya, satu ketukan dari
-  // papan (PRD §8.3) — tapi sekali, di dalam pemilihnya. Halaman ini dulu
-  // mengulanginya dalam satu kalimat tepat di atas panel yang sudah
-  // mengatakan hal yang sama.
-  return <Permainan ruleset={ruleset} locale={params.locale} />
+  // papan (PRD §8.3) — tapi sekali, di dalam pemilihnya, bukan diulang
+  // dalam kalimat di atasnya.
+  return (
+    <div className="flex flex-col gap-6">
+      <Pembuka locale={params.locale} />
+      <Permainan ruleset={ruleset} locale={params.locale} />
+    </div>
+  )
 }

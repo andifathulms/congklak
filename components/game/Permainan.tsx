@@ -227,16 +227,20 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
   const namaA = `${kata.pemain} A`
   const namaB = mode === 'ai' ? kata.ai : `${kata.pemain} B`
 
+  // Ajakan yang tidak bergantung pada tetikus. Petunjuk lama berbunyi
+  // "arahkan ke lubangmu" — tidak ada artinya di layar sentuh, yaitu di
+  // perangkat tempat kebanyakan orang membuka ini.
+  const ajakan =
+    state.status === 'selesai'
+      ? null
+      : busy
+        ? null
+        : giliranAi
+          ? kata.giliranLawanAjakan
+          : kata.giliranmuAjakan
+
   return (
     <div className="flex flex-col gap-4">
-      <PemilihAturan
-        rulesets={RULESETS}
-        active={ruleset}
-        onChange={gantiAturan}
-        locale={locale}
-        disabled={busy || record.moves.length > 0}
-      />
-
       <Skor
         state={state}
         kata={kata}
@@ -260,12 +264,16 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
         namaB={namaB}
       />
 
-      {/* Pratinjau langkah: ke mana rantai berakhir, berapa yang ditabung,
-          apakah menembak atau dapat giliran lagi (PRD §8.2). Ruang untuk
-          dua baris disediakan tetap, supaya papan tidak melompat naik-turun
-          setiap kali kursor melewati sebuah lubang. */}
+      {/* Satu baris, dua pekerjaan. Kalau belum ada lubang yang ditunjuk,
+          ia mengatakan apa yang harus dilakukan — dalam kata-kata yang
+          berlaku untuk jari maupun tetikus. Begitu ada, ia berganti jadi
+          pratinjau langkah: ke mana rantai berakhir, berapa yang ditabung,
+          apakah menembak atau dapat giliran lagi (PRD §8.2).
+
+          Tingginya tetap, supaya papan tidak melompat naik-turun setiap
+          kali kursor melewati sebuah lubang. */}
       <p
-        className="flex min-h-[2.75rem] items-center gap-2 rounded-panel bg-mat-low/70 px-3 py-2 font-sans text-sm text-fg ring-1 ring-inset ring-mat-edge/50"
+        className="flex min-h-[3rem] items-center gap-2 rounded-panel bg-mat-low/70 px-3 py-2 font-sans text-fg ring-1 ring-inset ring-mat-edge/50"
         aria-live="polite"
       >
         {pratinjau ? (
@@ -276,7 +284,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
             <span>{pratinjauTeks(pratinjau)}</span>
           </>
         ) : (
-          <span className="text-fg-muted">{kata.pratinjauPetunjuk}</span>
+          <span className="font-medium">{ajakan ?? kata.pratinjauPetunjuk}</span>
         )}
       </p>
 
@@ -331,6 +339,19 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
 
         <Riwayat lines={player.ringkasan} kata={kata} />
       </div>
+
+      {/* Aturan yang dipakai duduk di bawah papan, bukan di atasnya. Ini
+          bagian paling penting dari produknya dan pembukaan yang paling
+          buruk: "6 perbedaan tercatat" tidak berarti apa-apa sebelum orang
+          tahu permainan apa yang sedang dilihatnya. Papan menjelaskan
+          dirinya sendiri; panel ini menjelaskan papannya. */}
+      <PemilihAturan
+        rulesets={RULESETS}
+        active={ruleset}
+        onChange={gantiAturan}
+        locale={locale}
+        disabled={busy || record.moves.length > 0}
+      />
 
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-mat-edge/70 pt-3">
         <p className="flex items-center gap-2 font-mono text-xs text-fg-muted">

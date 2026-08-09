@@ -18,6 +18,15 @@ interface Dict {
   readonly judul: string
   readonly tagline: string
   readonly papan: string
+  readonly beranda: string
+  readonly berandaIntro: string
+  readonly nilai1: string
+  readonly nilai2: string
+  readonly nilai3: string
+  readonly caraMain: string
+  readonly giliranmuAjakan: string
+  readonly giliranLawanAjakan: string
+  readonly mainPakai: string
   readonly salin: string
   readonly tersalin: string
   readonly permainan: string
@@ -133,6 +142,15 @@ const id: Dict = {
   judul: 'Congklak',
   tagline: 'Congklak dengan aturan kedaerahan yang eksplisit dan bersumber.',
   papan: 'Papan',
+  beranda: 'Congklak, dengan aturan daerahnya dibuka',
+  berandaIntro: 'Aturannya berbeda-beda di tiap daerah, dan sumbernya saling bertentangan. Di sini tiap aturan disebut namanya, dicantumkan sumbernya, dan ditunjukkan di mana sumbernya tidak sepakat.',
+  nilai1: 'Tiga aturan daerah, semuanya bersumber',
+  nilai2: 'Lawan AI, atau berdua di satu perangkat',
+  nilai3: 'Main lintas perangkat, tanpa akun',
+  caraMain: 'Pilih satu lubang di sisimu untuk menabur.',
+  giliranmuAjakan: 'Giliranmu — pilih satu lubang di sisimu.',
+  giliranLawanAjakan: 'Menunggu lawan.',
+  mainPakai: 'Aturan yang dipakai',
   salin: 'Salin',
   tersalin: 'Tersalin',
   permainan: 'Permainan',
@@ -248,6 +266,15 @@ const en: Dict = {
   judul: 'Congklak',
   tagline: 'Congklak with its regional rulesets made explicit and cited.',
   papan: 'Board',
+  beranda: 'Congklak, with its regional rules opened up',
+  berandaIntro: 'The rules genuinely differ from region to region, and the published sources contradict each other. Here every ruleset is named, cited, and shown where its sources disagree.',
+  nilai1: 'Three regional rulesets, every one cited',
+  nilai2: 'Play the AI, or two of you on one device',
+  nilai3: 'Play across devices, with no account',
+  caraMain: 'Choose a hole on your side to sow.',
+  giliranmuAjakan: 'Your turn \u2014 choose a hole on your side.',
+  giliranLawanAjakan: 'Waiting for your opponent.',
+  mainPakai: 'Playing by',
   salin: 'Copy',
   tersalin: 'Copied',
   permainan: 'Game',
