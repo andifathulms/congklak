@@ -27,9 +27,9 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
   const kata = t(params.locale)
 
   return (
-    <div className="flex flex-col gap-7">
+    <div className="flex flex-col gap-6">
       <Kepala judul={kata.aturan} intro={kata.aturanIntro}>
-        <nav className="flex flex-wrap gap-2 pt-1">
+        <nav id="daftar-aturan" className="flex scroll-mt-36 flex-wrap gap-2 pt-1 sm:scroll-mt-44 md:scroll-mt-28">
           {RULESETS.map((r) => (
             <a
               key={r.id}
@@ -46,10 +46,19 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
         <article
           key={ruleset.id}
           id={ruleset.id}
-          // Ditautkan dari pemilih aturan di layar papan, jadi judulnya
-          // tidak boleh berhenti di balik header yang menempel.
-          className="flex scroll-mt-24 flex-col gap-4"
+          // Ditautkan dari pemilih aturan di layar papan, jadi judulnya tidak
+          // boleh berhenti di balik header yang menempel. Tinggi header itu
+          // tidak menaik rapi mengikuti lebar layar — 132px di 390, 168px di
+          // 640, 99px di 768, 91px di 1280 — jadi jaraknya disetel per
+          // breakpoint, bukan ditebak sekali.
+          className="flex scroll-mt-36 flex-col gap-3 sm:scroll-mt-44 md:scroll-mt-28"
         >
+          {/* Kepala pack ini sempat dibuat menempel, supaya pack yang sedang
+              dibaca selalu bernama. Diukur, dan dibatalkan: bersama kepala
+              situs ia memakan 33% layar ponsel dan 19% layar lebar, permanen,
+              di halaman yang dibaca dengan menggulir. Jalan kembali ke daftar
+              cukup diulang di awal dan akhir tiap pack — tanpa biaya layar
+              sama sekali. */}
           <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h2 className="font-display text-xl font-bold">{ruleset.name}</h2>
             <p className="font-sans text-sm text-fg-muted">{ruleset.region}</p>
@@ -59,12 +68,18 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
             {ruleset.aka.length > 0 && (
               <p className="font-sans text-sm text-fg-muted">{ruleset.aka.join(' · ')}</p>
             )}
+            <a
+              href="#daftar-aturan"
+              className="ml-auto rounded font-sans text-xs text-fg-muted underline decoration-accent/40 underline-offset-4 transition hover:text-fg"
+            >
+              {kata.kembaliKeDaftar}
+            </a>
           </header>
 
           <p className="max-w-prose font-sans leading-relaxed text-fg">{ruleset.summary}</p>
 
           <Panel judul={kata.sumber} tingkat={3}>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-2.5">
               {ruleset.sources.map((source, i) => (
                 <li key={i} className="border-l-2 border-teak/25 pl-3">
                   <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
@@ -82,7 +97,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
                     {source.locator ? ` — ${source.locator}` : ''}
                   </p>
                   {source.note && (
-                    <p className="mt-1 max-w-prose font-sans text-sm leading-relaxed text-fg-muted">
+                    <p className="mt-1 max-w-[58ch] font-sans text-xs leading-relaxed text-fg-muted">
                       {source.note}
                     </p>
                   )}
@@ -108,11 +123,11 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
                     String(ruleset.divergences.filter((d) => d.status === 'dicatat').length),
                   )}
               </p>
-              <ul className="flex flex-col gap-4">
+              <ul className="flex flex-col gap-3">
                 {ruleset.divergences.map((d, i) => (
                   <li
                     key={i}
-                    className="border-t border-mat-edge/70 pt-4 first:border-0 first:pt-0"
+                    className="border-t border-mat-edge/70 pt-3 first:border-0 first:pt-0"
                   >
                     <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
                       <h4 className="font-display text-base font-semibold">{d.rule}</h4>
@@ -139,7 +154,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
                       </div>
                     </div>
                     {d.note && (
-                      <p className="mt-2 max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
+                      <p className="mt-2 max-w-[58ch] font-sans text-xs leading-relaxed text-fg-muted">
                         {d.note}
                       </p>
                     )}
@@ -149,6 +164,15 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
               </ul>
             </Panel>
           )}
+
+          <p>
+            <a
+              href="#daftar-aturan"
+              className="rounded font-sans text-xs text-fg-muted underline decoration-accent/40 underline-offset-4 transition hover:text-fg"
+            >
+              {kata.kembaliKeDaftar}
+            </a>
+          </p>
         </article>
       ))}
 

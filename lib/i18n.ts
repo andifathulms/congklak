@@ -71,6 +71,7 @@ interface Dict {
   readonly riwayat: string
   readonly kodePermainan: string
   readonly glosarium: string
+  readonly kembaliKeDaftar: string
   readonly lumbungGloss: string
   readonly bijiGloss: string
   readonly menembakGloss: string
@@ -229,6 +230,7 @@ const id: Dict = {
   riwayat: 'Jalannya giliran',
   kodePermainan: 'Kode permainan',
   glosarium: 'Glosarium',
+  kembaliKeDaftar: 'Daftar aturan ↑',
   lumbungGloss: 'lumbung — lubang besar di ujung papan tempat biji ditabung; juga disebut gunung atau rumah.',
   bijiGloss: 'biji — buah congklak yang ditabur; bukan "batu".',
   menembakGloss: 'menembak — mengambil biji di lubang seberang saat biji terakhir jatuh di lubang kosong sisi sendiri.',
@@ -387,6 +389,7 @@ const en: Dict = {
   riwayat: 'What happened',
   kodePermainan: 'Game code',
   glosarium: 'Glossary',
+  kembaliKeDaftar: 'All rulesets ↑',
   lumbungGloss: 'lumbung — the large end hole where biji are banked; also called gunung or rumah.',
   bijiGloss: 'biji — the seeds that are sown. Not "stones".',
   menembakGloss: 'menembak — literally "shooting": taking the opposite hole when your last biji lands in an empty hole on your own side.',
