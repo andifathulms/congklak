@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { GantiBahasa } from '@/components/shell/GantiBahasa'
 import { Navigasi } from '@/components/shell/Navigasi'
 import { TandaPembuat } from '@/components/shell/TandaPembuat'
 import { LOCALES, isLocale, t } from '@/lib/i18n'
@@ -27,7 +28,10 @@ export default function LocaleLayout({
         scrolling back up through a game in progress.
       */}
       <header className="sticky top-0 z-20 -mx-4 border-b border-mat-edge/70 bg-mat/90 px-4 backdrop-blur-sm sm:-mx-8 sm:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pb-2 pt-3 sm:pt-4">
+        {/* Satu baris di layar lebar, dua di ponsel: nama dan pemindah
+            bahasa selalu di baris atas, tujuh tujuan membungkus di bawahnya
+            alih-alih menggulir keluar layar. */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pb-2 pt-3 sm:pt-4">
           <Link href={`/${params.locale}/main`} className="group flex items-center gap-2.5 rounded-lg">
             {/*
               The mark, at the size the brand rules ask for: below 40px it
@@ -60,7 +64,13 @@ export default function LocaleLayout({
               dakon · congkak
             </span>
           </Link>
-          <Navigasi locale={params.locale} />
+          <span className="order-2 ml-auto sm:order-3 sm:ml-0">
+            <GantiBahasa locale={params.locale} />
+          </span>
+          <Navigasi
+            locale={params.locale}
+            className="order-3 w-full sm:order-2 sm:ml-auto sm:w-auto"
+          />
         </div>
       </header>
 

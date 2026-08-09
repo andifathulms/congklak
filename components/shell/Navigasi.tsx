@@ -13,10 +13,9 @@ import { t, type Locale } from '@/lib/i18n'
  * teak underline rather than a brass one: brass means the active hole and
  * captures, and nothing else (PRD §11).
  */
-export function Navigasi({ locale }: { locale: Locale }) {
+export function Navigasi({ locale, className = '' }: { locale: Locale; className?: string }) {
   const kata = t(locale)
   const pathname = usePathname() ?? ''
-  const other: Locale = locale === 'id' ? 'en' : 'id'
 
   const tautan = [
     { href: `/${locale}/main`, label: kata.papan },
@@ -34,7 +33,11 @@ export function Navigasi({ locale }: { locale: Locale }) {
   return (
     <nav
       aria-label={kata.judul}
-      className="-mx-4 flex items-center gap-1 overflow-x-auto px-4 sm:mx-0 sm:px-0"
+      // Membungkus, bukan menggulung ke samping. Dengan tujuh tujuan di
+      // layar 390px, satu baris yang menggulir memotong empat di antaranya
+      // tanpa satu pun tanda bahwa masih ada lagi — Tanding dan pemindah
+      // bahasa termasuk yang hilang.
+      className={['flex flex-wrap items-center gap-1', className].join(' ')}
     >
       {tautan.map((l) => {
         const aktif = l.href.endsWith(`/${segmen}`)
@@ -55,15 +58,6 @@ export function Navigasi({ locale }: { locale: Locale }) {
           </Link>
         )
       })}
-
-      <Link
-        href={`/${other}/main`}
-        lang={other}
-        aria-label={`${kata.bahasa}: ${other === 'id' ? 'Bahasa Indonesia' : 'English'}`}
-        className="ml-2 shrink-0 rounded-lg border border-mat-edge px-2 py-1 font-mono text-2xs uppercase text-fg-muted transition hover:border-teak/40 hover:text-fg"
-      >
-        {other}
-      </Link>
     </nav>
   )
 }
