@@ -30,6 +30,12 @@ export function ownerOfHole(index: number): Player {
 }
 
 export interface PapanProps {
+  /**
+   * Dipanggil papan supaya pemanggilnya bisa mengembalikan fokus ke sini
+   * sesudah giliran selesai. Lubang yang baru ditekan langsung jadi
+   * disabled, dan peramban membuang fokus dari elemen disabled ke <body>.
+   */
+  papanRef?: React.RefObject<HTMLDivElement>
   cells: readonly number[]
   active: number | null
   secondary: number | null
@@ -43,6 +49,7 @@ export interface PapanProps {
 }
 
 export function Papan({
+  papanRef,
   cells,
   active,
   secondary,
@@ -75,6 +82,16 @@ export function Papan({
 
   return (
     <div
+      ref={papanRef}
+      /**
+       * Sasaran fokus, bukan perhentian tab: tabindex negatif tidak
+       * menambah satu langkah pun ke urutan Tab. Sesudah sebuah giliran,
+       * lubang yang ditekan menjadi disabled dan fokus jatuh ke <body> —
+       * pemain papan tik terlempar ke puncak halaman tiap giliran. Fokus
+       * dikembalikan ke sini, dan satu Tab membawanya ke lubang pertama
+       * yang bisa ditabur.
+       */
+      tabIndex={-1}
       // `on-teak` switches the global focus ring to seedA: an ink ring is
       // invisible against the wood.
       // w-full is load-bearing next to mx-auto: as a flex item, an auto

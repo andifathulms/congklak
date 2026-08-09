@@ -60,6 +60,32 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
   const [statVersi, setStatVersi] = useState(0)
 
   const player = usePenaburan(state.board, kecepatan)
+
+  /**
+   * Fokus sesudah giliran.
+   *
+   * Lubang yang baru ditekan langsung menjadi disabled — bukan gilirannya
+   * lagi — dan peramban membuang fokus dari elemen disabled ke <body>. Jadi
+   * tiap giliran, pemain papan tik terlempar kembali ke puncak dokumen dan
+   * harus menekan Tab sembilan kali untuk kembali ke papan.
+   *
+   * Yang dikembalikan adalah papannya, bukan sebuah lubang: dari sana satu
+   * Tab masuk ke lubang pertama yang bisa ditabur, dan tidak ada tebakan
+   * soal lubang mana yang "seharusnya" dipilih berikutnya.
+   *
+   * Hanya dikembalikan kalau fokusnya memang hilang karena kita sendiri —
+   * pemain yang sengaja pindah ke kendali lain tidak boleh direbut fokusnya.
+   */
+  const papanRef = useRef<HTMLDivElement>(null)
+  const fokusDiPapan = useRef(false)
+
+  const kembalikanFokus = useCallback(() => {
+    if (!fokusDiPapan.current) return
+    fokusDiPapan.current = false
+    const aktif = document.activeElement
+    if (aktif && aktif !== document.body) return
+    papanRef.current?.focus()
+  }, [])
   const { pikirkan } = useAi(ruleset.id)
 
   // AI selalu pemain B, supaya sisi manusia tetap di baris bawah.
@@ -71,15 +97,19 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
   const jalankan = useCallback(
     (hole: number) => {
       const { state: next, events } = applyMove(state, hole, ruleset)
+      // Dicatat sebelum papan berubah: sesudahnya elemen yang tadi fokus
+      // sudah tidak ada di dokumen untuk ditanyai.
+      fokusDiPapan.current = papanRef.current?.contains(document.activeElement) ?? false
       setBusy(true)
       setPreviewed(null)
       player.play(state.board, events, () => {
         setState(next)
         setRecord((r) => withMove(r, hole))
         setBusy(false)
+        kembalikanFokus()
       })
     },
-    [state, ruleset, player],
+    [state, ruleset, player, kembalikanFokus],
   )
 
   const pilih = useCallback(
@@ -256,6 +286,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
       />
 
       <Papan
+        papanRef={papanRef}
         cells={frame.cells}
         active={frame.active}
         secondary={frame.secondary}
