@@ -63,7 +63,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
 
           <p className="max-w-prose font-sans leading-relaxed text-fg">{ruleset.summary}</p>
 
-          <Panel judul={kata.sumber}>
+          <Panel judul={kata.sumber} tingkat={3}>
             <ul className="flex flex-col gap-3">
               {ruleset.sources.map((source, i) => (
                 <li key={i} className="border-l-2 border-teak/25 pl-3">
@@ -92,7 +92,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
           </Panel>
 
           {ruleset.divergences.length > 0 && (
-            <Panel judul={kata.perbedaan}>
+            <Panel judul={kata.perbedaan} tingkat={3}>
               {/* Berapa banyak dari daftar ini yang benar-benar sampai ke
                   mesin, dikatakan sebelum daftarnya — karena selama ini
                   daftar ini terbaca seolah semuanya dimainkan. */}
@@ -115,7 +115,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
                     className="border-t border-mat-edge/70 pt-4 first:border-0 first:pt-0"
                   >
                     <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-                      <h3 className="font-display text-base font-semibold">{d.rule}</h3>
+                      <h4 className="font-display text-base font-semibold">{d.rule}</h4>
                       <StatusPerbedaan status={d.status} kata={kata} />
                     </div>
                     {/* Bacaan yang dipakai dan bacaan yang tidak diambil,
@@ -152,7 +152,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
         </article>
       ))}
 
-      <Panel judul={kata.glosarium}>
+      <Panel judul={kata.glosarium} tingkat={2}>
         {/* Kosakatanya tidak diterjemahkan — itu justru yang dijaga di sini. */}
         <dl className="flex max-w-prose flex-col gap-2 font-sans text-sm leading-relaxed text-fg">
           {[kata.lumbungGloss, kata.bijiGloss, kata.menembakGloss].map((baris) => {
