@@ -110,10 +110,19 @@ export function TekaTeki({ locale }: { locale: Locale }) {
                   : 'text-fg-muted hover:bg-mat-high hover:text-fg',
               ].join(' ')}
             >
+              {/* Sudah selesai, sedang dikerjakan, dan belum disentuh adalah
+                  tiga keadaan berbeda, dan kemajuan lima teka-teki adalah
+                  satu-satunya hal yang dilacak layar ini. Dua cabang pertama
+                  dulu identik, jadi lingkarannya tidak mengatakan apa-apa dan
+                  hanya pilnya yang membedakan. */}
               <span
                 className={[
                   'tnum flex h-5 w-5 items-center justify-center rounded-full font-display text-2xs font-bold',
-                  beres ? 'bg-teak text-fg-wood' : i === ke ? 'bg-teak text-fg-wood' : 'bg-mat-low text-fg-muted',
+                  beres
+                    ? 'bg-teak text-fg-wood'
+                    : i === ke
+                      ? 'bg-mat text-fg ring-2 ring-inset ring-teak'
+                      : 'bg-mat-low text-fg-muted',
                 ].join(' ')}
               >
                 {beres ? '✓' : i + 1}
