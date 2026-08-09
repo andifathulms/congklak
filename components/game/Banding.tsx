@@ -50,7 +50,7 @@ export function Banding({ locale }: { locale: Locale }) {
     <div className="flex flex-col gap-5">
       <Panel className="flex flex-wrap items-end gap-3">
         <PilihPack label={`${kata.aturan} 1`} value={kiriId} onChange={setKiriId} />
-        <span aria-hidden className="pb-2 font-display text-lg text-ink/30">
+        <span aria-hidden className="pb-2 font-display text-lg text-fg-muted">
           ↔
         </span>
         <PilihPack label={`${kata.aturan} 2`} value={kananId} onChange={setKananId} />
@@ -72,7 +72,7 @@ export function Banding({ locale }: { locale: Locale }) {
           'rounded-panel p-4 ring-1',
           hasil.simpangDi >= 0
             ? 'bg-ink text-mat ring-ink'
-            : 'bg-mat-high text-ink shadow-raise ring-mat-edge/60',
+            : 'bg-mat-high text-fg shadow-raise ring-mat-edge/60',
         ].join(' ')}
       >
         {hasil.simpangDi >= 0 ? (
@@ -80,7 +80,7 @@ export function Banding({ locale }: { locale: Locale }) {
             <p className="tnum font-display text-lg font-bold">
               {kata.simpangDi} {hasil.simpangDi + 1}
             </p>
-            {alasanTeks && <p className="font-sans text-sm text-mat/75">{alasanTeks}</p>}
+            {alasanTeks && <p className="font-sans text-sm text-mat">{alasanTeks}</p>}
           </>
         ) : (
           <p className="font-display text-lg">{kata.takAdaSimpang}</p>
@@ -88,7 +88,7 @@ export function Banding({ locale }: { locale: Locale }) {
         <p
           className={[
             'mt-2 font-mono text-xs',
-            hasil.simpangDi >= 0 ? 'text-mat/55' : 'text-ink/45',
+            hasil.simpangDi >= 0 ? 'text-mat-edge' : 'text-fg-muted',
           ].join(' ')}
         >
           {kiri.name} · {kiri.options.terminal} / {kiri.options.finalSweep}
@@ -157,11 +157,11 @@ function PilihPack({
 }) {
   return (
     <label className="flex flex-col gap-1 font-sans text-sm">
-      <span className="text-[11px] uppercase tracking-[0.14em] text-ink/45">{label}</span>
+      <span className="text-2xs uppercase tracking-[0.14em] text-fg-muted">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-full bg-mat-low px-3 py-1.5 font-sans text-sm text-ink ring-1 ring-inset ring-mat-edge"
+        className="rounded-full bg-mat-low px-3 py-1.5 font-sans text-sm text-fg ring-1 ring-inset ring-mat-edge"
       >
         {RULESETS.map((r) => (
           <option key={r.id} value={r.id}>
@@ -197,7 +197,7 @@ function SisiPapan({
         )}
       </h2>
       {state === null ? (
-        <p className="rounded-panel bg-mat-low/60 p-6 font-sans text-sm text-ink/55 ring-1 ring-inset ring-mat-edge">
+        <p className="rounded-panel bg-mat-low/60 p-6 font-sans text-sm text-fg-muted ring-1 ring-inset ring-mat-edge">
           {kata.alasanTakSah}
         </p>
       ) : (
@@ -211,13 +211,13 @@ function SisiPapan({
             namaA={`${kata.pemain} A`}
             namaB={`${kata.pemain} B`}
           />
-          <p className="flex flex-wrap items-baseline gap-x-3 font-sans text-sm text-ink/70">
-            <span className="tnum font-display text-lg font-bold text-ink">
+          <p className="flex flex-wrap items-baseline gap-x-3 font-sans text-sm text-fg">
+            <span className="tnum font-display text-lg font-bold text-fg">
               {scoreOf(state.board, PLAYER_A)}–{scoreOf(state.board, PLAYER_B)}
             </span>
-            <span className="text-ink/50">{kata.skor}</span>
+            <span className="text-fg-muted">{kata.skor}</span>
             {state.status === 'selesai' && (
-              <span className="font-medium text-ink">
+              <span className="font-medium text-fg">
                 {state.hasil === 'seri'
                   ? kata.seri
                   : `${kata.pemain} ${state.hasil === 'a' ? 'A' : 'B'} ${kata.menang}`}

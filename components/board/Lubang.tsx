@@ -81,8 +81,14 @@ export function Lubang({
         {biji === 0 && <span className="sr-only">kosong</span>}
       </button>
 
-      {/* Ukiran angka pada kayu: cukup terbaca untuk dihitung, cukup samar
-          untuk tidak bersaing dengan biji di dalam lubang.
+      {/* Ukiran angka pada kayu.
+
+          Angka ini duduk di atas teak, permukaan kayu paling terang, dan di
+          sana hanya --fg-wood yang lolos 4.5:1 — 5.36 berbanding 3.67 untuk
+          nada yang lebih redup dan 1.93 untuk brass. Jadi semua angka
+          memakai satu warna, dan yang membedakannya adalah bobot huruf.
+          Brass tetap menandai lubang aktif, tapi lewat cincinnya, bukan
+          lewat angka yang harus terbaca.
 
           Di papan yang berdiri, angka duduk di bibir bawah lubang, bukan di
           bawahnya: tujuh baris masing-masing menuntut satu baris tambahan
@@ -90,9 +96,9 @@ export function Lubang({
       <span
         aria-hidden
         className={[
-          'tnum absolute bottom-0.5 font-display text-[11px] leading-none transition-colors',
+          'tnum absolute bottom-0.5 font-display text-2xs leading-none text-fg-wood transition-[font-weight]',
           'sm:static sm:bottom-auto',
-          active ? 'font-bold text-brass' : playable ? 'text-seedA/60' : 'text-seedA/35',
+          active ? 'font-bold' : playable ? 'font-medium' : 'font-normal',
         ].join(' ')}
       >
         {biji}

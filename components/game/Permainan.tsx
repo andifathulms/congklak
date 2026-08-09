@@ -265,18 +265,18 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
           dua baris disediakan tetap, supaya papan tidak melompat naik-turun
           setiap kali kursor melewati sebuah lubang. */}
       <p
-        className="flex min-h-[2.75rem] items-center gap-2 rounded-panel bg-mat-low/70 px-3 py-2 font-sans text-sm text-ink/80 ring-1 ring-inset ring-mat-edge/50"
+        className="flex min-h-[2.75rem] items-center gap-2 rounded-panel bg-mat-low/70 px-3 py-2 font-sans text-sm text-fg ring-1 ring-inset ring-mat-edge/50"
         aria-live="polite"
       >
         {pratinjau ? (
           <>
-            <span className="tnum shrink-0 rounded-md bg-mat-high px-1.5 py-0.5 font-mono text-xs text-ink/60">
+            <span className="tnum shrink-0 rounded-md bg-mat-high px-1.5 py-0.5 font-mono text-xs text-fg-muted">
               {kata.pratinjau} {pratinjau.hole}
             </span>
             <span>{pratinjauTeks(pratinjau)}</span>
           </>
         ) : (
-          <span className="text-ink/40">{kata.pratinjauPetunjuk}</span>
+          <span className="text-fg-muted">{kata.pratinjauPetunjuk}</span>
         )}
       </p>
 
@@ -333,9 +333,9 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-mat-edge/70 pt-3">
-        <p className="flex items-center gap-2 font-mono text-xs text-ink/50">
-          <span className="text-ink/40">{kata.kodePermainan}</span>
-          <span className="tnum text-ink/70">{encodeRecord(record)}</span>
+        <p className="flex items-center gap-2 font-mono text-xs text-fg-muted">
+          <span className="text-fg-muted">{kata.kodePermainan}</span>
+          <span className="tnum text-fg">{encodeRecord(record)}</span>
           <Salin teks={encodeRecord(record)} locale={locale} />
         </p>
         <PanelStatistik rulesetId={ruleset.id} kata={kata} versi={statVersi} />
@@ -380,8 +380,8 @@ function PanelStatistik({
     <dl className="flex flex-wrap items-baseline gap-x-4 gap-y-1" aria-label={kata.statistik}>
       {angka.map(([label, nilai]) => (
         <div key={label} className="flex items-baseline gap-1.5">
-          <dt className="font-sans text-[11px] text-ink/45">{label}</dt>
-          <dd className="tnum font-display text-sm font-semibold text-ink/75">{nilai}</dd>
+          <dt className="font-sans text-2xs text-fg-muted">{label}</dt>
+          <dd className="tnum font-display text-sm font-semibold text-fg">{nilai}</dd>
         </div>
       ))}
     </dl>
@@ -397,13 +397,13 @@ function Riwayat({ lines, kata }: { lines: readonly string[]; kata: ReturnType<t
       aria-live="polite"
     >
       {lines.length === 0 ? (
-        <p className="font-sans text-sm text-ink/45">{kata.belumAdaLangkah}</p>
+        <p className="font-sans text-sm text-fg-muted">{kata.belumAdaLangkah}</p>
       ) : (
         <ol className="flex max-h-32 flex-col gap-1 overflow-y-auto">
           {lines.map((line, i) => (
             <li
               key={i}
-              className="border-l-2 border-teak/25 pl-2.5 font-sans text-sm leading-snug text-ink/75"
+              className="border-l-2 border-teak/25 pl-2.5 font-sans text-sm leading-snug text-fg"
             >
               {line}
             </li>

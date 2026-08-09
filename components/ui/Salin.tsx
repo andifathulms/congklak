@@ -41,7 +41,7 @@ export function Salin({
           .catch(() => setTersalin(false))
       }}
       aria-label={`${label ?? kata.salin}: ${teks}`}
-      className="inline-flex shrink-0 items-center gap-1 rounded-full border border-teak/30 px-2.5 py-1 font-sans text-[11px] text-ink/65 transition hover:border-teak/60 hover:text-ink"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full border border-teak/30 px-2.5 py-1 font-sans text-2xs text-fg-muted transition hover:border-teak/60 hover:text-fg"
     >
       <span aria-live="polite">{tersalin ? kata.tersalin : (label ?? kata.salin)}</span>
     </button>

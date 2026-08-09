@@ -13,9 +13,9 @@ import Link from 'next/link'
 type Bobot = 'utama' | 'kedua' | 'sunyi'
 
 const BOBOT: Record<Bobot, string> = {
-  utama: 'bg-teak text-seedA shadow-raise enabled:hover:bg-teak-rim',
-  kedua: 'border border-teak/35 text-ink enabled:hover:border-teak/60 enabled:hover:bg-teak/10',
-  sunyi: 'text-ink/60 enabled:hover:bg-mat-high enabled:hover:text-ink',
+  utama: 'bg-teak text-fg-wood shadow-raise enabled:hover:bg-teak-rim',
+  kedua: 'border border-teak/35 text-fg enabled:hover:border-teak/60 enabled:hover:bg-teak/10',
+  sunyi: 'text-fg-muted enabled:hover:bg-mat-high enabled:hover:text-fg',
 }
 
 const DASAR =

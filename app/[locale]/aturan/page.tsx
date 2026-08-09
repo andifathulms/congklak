@@ -27,13 +27,13 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
     <div className="flex flex-col gap-7">
       <header className="flex flex-col gap-3">
         <h1 className="font-display text-3xl font-bold sm:text-4xl">{kata.aturan}</h1>
-        <p className="max-w-prose font-sans leading-relaxed text-ink/70">{kata.aturanIntro}</p>
+        <p className="max-w-prose font-sans leading-relaxed text-fg">{kata.aturanIntro}</p>
         <nav className="flex flex-wrap gap-2 pt-1">
           {RULESETS.map((r) => (
             <a
               key={r.id}
               href={`#${r.id}`}
-              className="rounded-full border border-teak/30 px-3 py-1 font-sans text-xs text-ink/70 transition hover:border-teak/60 hover:text-ink"
+              className="rounded-full border border-teak/30 px-3 py-1 font-sans text-xs text-fg transition hover:border-teak/60 hover:text-fg"
             >
               {r.name}
             </a>
@@ -51,16 +51,16 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
         >
           <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h2 className="font-display text-2xl font-bold">{ruleset.name}</h2>
-            <p className="font-sans text-sm text-ink/60">{ruleset.region}</p>
-            <code className="rounded bg-mat-low px-1.5 py-0.5 font-mono text-xs text-ink/55">
+            <p className="font-sans text-sm text-fg-muted">{ruleset.region}</p>
+            <code className="rounded bg-mat-low px-1.5 py-0.5 font-mono text-xs text-fg-muted">
               {ruleset.id}
             </code>
             {ruleset.aka.length > 0 && (
-              <p className="font-sans text-sm text-ink/45">{ruleset.aka.join(' · ')}</p>
+              <p className="font-sans text-sm text-fg-muted">{ruleset.aka.join(' · ')}</p>
             )}
           </header>
 
-          <p className="max-w-prose font-sans leading-relaxed text-ink/85">{ruleset.summary}</p>
+          <p className="max-w-prose font-sans leading-relaxed text-fg">{ruleset.summary}</p>
 
           <Panel judul={kata.sumber}>
             <ul className="flex flex-col gap-3">
@@ -76,12 +76,12 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
                       {source.confidence === 'terverifikasi' ? kata.terverifikasi : kata.perluCek}
                     </Lencana>
                   </div>
-                  <p className="font-mono text-xs text-ink/55">
+                  <p className="font-mono text-xs text-fg-muted">
                     {source.publisher}
                     {source.locator ? ` — ${source.locator}` : ''}
                   </p>
                   {source.note && (
-                    <p className="mt-1 max-w-prose font-sans text-sm leading-relaxed text-ink/60">
+                    <p className="mt-1 max-w-prose font-sans text-sm leading-relaxed text-fg-muted">
                       {source.note}
                     </p>
                   )}
@@ -103,24 +103,24 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
                         berdampingan: itulah isi produknya. */}
                     <div className="mt-2 grid gap-2.5 sm:grid-cols-2">
                       <div className="rounded-lg bg-mat p-2.5 ring-1 ring-mat-edge/60">
-                        <p className="mb-1 font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
+                        <p className="mb-1 font-sans text-2xs uppercase tracking-[0.14em] text-fg-muted">
                           {kata.dipakaiDiSini}
                         </p>
-                        <p className="font-sans text-sm leading-relaxed text-ink/85">
+                        <p className="font-sans text-sm leading-relaxed text-fg">
                           {d.thisPack}
                         </p>
                       </div>
                       <div className="rounded-lg p-2.5 ring-1 ring-dashed ring-mat-edge">
-                        <p className="mb-1 font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
+                        <p className="mb-1 font-sans text-2xs uppercase tracking-[0.14em] text-fg-muted">
                           {kata.bacaanLain}
                         </p>
-                        <p className="font-sans text-sm leading-relaxed text-ink/65">
+                        <p className="font-sans text-sm leading-relaxed text-fg-muted">
                           {d.otherReading}
                         </p>
                       </div>
                     </div>
                     {d.note && (
-                      <p className="mt-2 max-w-prose font-sans text-xs leading-relaxed text-ink/50">
+                      <p className="mt-2 max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
                         {d.note}
                       </p>
                     )}
@@ -134,12 +134,12 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
 
       <Panel judul={kata.glosarium}>
         {/* Kosakatanya tidak diterjemahkan — itu justru yang dijaga di sini. */}
-        <dl className="flex max-w-prose flex-col gap-2 font-sans text-sm leading-relaxed text-ink/75">
+        <dl className="flex max-w-prose flex-col gap-2 font-sans text-sm leading-relaxed text-fg">
           {[kata.lumbungGloss, kata.bijiGloss, kata.menembakGloss].map((baris) => {
             const [istilah, ...sisa] = baris.split(' — ')
             return (
               <div key={istilah}>
-                <dt className="inline font-medium italic text-ink">{istilah}</dt>
+                <dt className="inline font-medium italic text-fg">{istilah}</dt>
                 <dd className="inline"> — {sisa.join(' — ')}</dd>
               </div>
             )

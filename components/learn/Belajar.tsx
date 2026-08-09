@@ -98,14 +98,14 @@ export function Belajar({ locale }: { locale: Locale }) {
             className={[
               'flex items-center gap-2 rounded-full py-1 pl-1 pr-3 font-sans text-xs transition',
               i === ke
-                ? 'bg-mat-high text-ink shadow-raise ring-1 ring-teak/30'
-                : 'text-ink/55 hover:bg-mat-high hover:text-ink',
+                ? 'bg-mat-high text-fg shadow-raise ring-1 ring-teak/30'
+                : 'text-fg-muted hover:bg-mat-high hover:text-fg',
             ].join(' ')}
           >
             <span
               className={[
-                'tnum flex h-5 w-5 items-center justify-center rounded-full font-display text-[11px] font-bold',
-                i === ke ? 'bg-teak text-seedA' : 'bg-mat-low text-ink/55',
+                'tnum flex h-5 w-5 items-center justify-center rounded-full font-display text-2xs font-bold',
+                i === ke ? 'bg-teak text-fg-wood' : 'bg-mat-low text-fg-muted',
               ].join(' ')}
             >
               {i + 1}
@@ -117,7 +117,7 @@ export function Belajar({ locale }: { locale: Locale }) {
 
       <div>
         <h2 className="font-display text-2xl font-bold">{pelajaran.judul[locale]}</h2>
-        <p className="mt-1 max-w-prose font-sans leading-relaxed text-ink/80">
+        <p className="mt-1 max-w-prose font-sans leading-relaxed text-fg">
           {pelajaran.ajakan[locale]}
         </p>
       </div>
@@ -136,7 +136,7 @@ export function Belajar({ locale }: { locale: Locale }) {
       {/* Tinggi tetap: kotak jawaban yang muncul tiba-tiba akan mendorong
           papan ke atas tepat saat pemain sedang melihatnya. */}
       <div aria-live="polite" className="min-h-24">
-        {jawab === 'belum' && <p className="font-sans text-sm text-ink/50">{kata.pilihLubang}</p>}
+        {jawab === 'belum' && <p className="font-sans text-sm text-fg-muted">{kata.pilihLubang}</p>}
         {jawab !== 'belum' && (
           // Benar dan meleset dibedakan oleh bobot, bukan oleh brass —
           // brass hanya untuk lubang aktif dan tembakan (PRD §11).
@@ -151,7 +151,7 @@ export function Belajar({ locale }: { locale: Locale }) {
             <p className="font-display text-base font-bold">
               {jawab === 'tepat' ? kata.tepat : kata.belumTepat}
             </p>
-            <p className="mt-1 max-w-prose font-sans text-sm leading-relaxed text-ink/85">
+            <p className="mt-1 max-w-prose font-sans text-sm leading-relaxed text-fg">
               {jawab === 'tepat' ? pelajaran.kenapa[locale] : pelajaran.meleset[locale]}
             </p>
           </div>
@@ -172,7 +172,7 @@ export function Belajar({ locale }: { locale: Locale }) {
         )}
       </div>
 
-      <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/45">
+      <p className="max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
         {kata.belajarCatatan}
       </p>
     </div>

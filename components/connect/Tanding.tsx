@@ -289,7 +289,7 @@ export function Tanding({ locale }: { locale: Locale }) {
             value={ruleset.id}
             onChange={(e) => setRuleset(getRuleset(e.target.value))}
             aria-label={kata.rulesetAktif}
-            className="rounded-full bg-mat-low px-3 py-1.5 font-sans text-sm text-ink ring-1 ring-inset ring-mat-edge"
+            className="rounded-full bg-mat-low px-3 py-1.5 font-sans text-sm text-fg ring-1 ring-inset ring-mat-edge"
           >
             {RULESETS.map((r) => (
               <option key={r.id} value={r.id}>
@@ -299,7 +299,7 @@ export function Tanding({ locale }: { locale: Locale }) {
           </select>
           {/* Kedua sisi harus memakai aturan yang sama, dan itu diperiksa
               saat berkenalan — bukan diperbaiki diam-diam nanti. */}
-          <p className="mt-2 max-w-prose font-sans text-xs leading-relaxed text-ink/55">
+          <p className="mt-2 max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
             {kata.tandingIntro}
           </p>
         </Panel>
@@ -317,10 +317,10 @@ export function Tanding({ locale }: { locale: Locale }) {
           {/* Ini bukan selera masing-masing: dua orang yang memilih cara
               berbeda tidak akan pernah bertemu, dan sebelumnya tidak ada
               apa pun di layar yang mengatakannya. */}
-          <p className="max-w-prose font-sans text-xs font-medium leading-relaxed text-ink/75">
+          <p className="max-w-prose font-sans text-xs font-medium leading-relaxed text-fg">
             {kata.caraHarusSama}
           </p>
-          <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/55">
+          <p className="max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
             {jalur === 'broker' ? kata.jalurBrokerCatatan : kata.jalurManualCatatan}
           </p>
         </Panel>
@@ -334,7 +334,7 @@ export function Tanding({ locale }: { locale: Locale }) {
           </div>
         </Panel>
 
-        <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/50">
+        <p className="max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
           {kata.tanpaTurn}
         </p>
       </div>
@@ -348,20 +348,20 @@ export function Tanding({ locale }: { locale: Locale }) {
           <span className="font-medium">
             {peran === 'tuan-rumah' ? kata.jadiTuanRumah : kata.jadiTamu}
           </span>
-          <span aria-hidden className="text-ink/25">
+          <span aria-hidden className="text-fg-muted">
             ·
           </span>
-          <span className="font-mono text-xs text-ink/60">{ruleset.name}</span>
+          <span className="font-mono text-xs text-fg-muted">{ruleset.name}</span>
           {/* Status sambungan dibaca sekilas, jadi ia punya penanda sendiri
               — bukan potongan ketiga dari sebuah kalimat. */}
           <span
             className={[
               'ml-auto inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-sans text-xs',
               koneksi === 'tersambung'
-                ? 'bg-teak/15 text-ink/80'
+                ? 'bg-teak/15 text-fg'
                 : koneksi === 'putus' || koneksi === 'gagal'
                   ? 'bg-seedB/15 text-seedB'
-                  : 'bg-mat-low text-ink/60',
+                  : 'bg-mat-low text-fg-muted',
             ].join(' ')}
           >
             <span
@@ -382,7 +382,7 @@ export function Tanding({ locale }: { locale: Locale }) {
         {/* Jalur broker: satu kode pendek yang cukup dibacakan. */}
         {kodeBroker && (
           <div className="flex flex-col gap-1">
-            <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
+            <span className="font-sans text-2xs uppercase tracking-[0.14em] text-fg-muted">
               {kata.kodeSambungan}
             </span>
             <span className="flex flex-wrap items-center gap-3">
@@ -396,7 +396,7 @@ export function Tanding({ locale }: { locale: Locale }) {
 
         {jalur === 'broker' && peran === 'tamu' && sesi?.status !== 'siap' && (
           <label className="flex flex-col gap-1.5">
-            <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
+            <span className="font-sans text-2xs uppercase tracking-[0.14em] text-fg-muted">
               {kata.masukkanKode}
             </span>
             <span className="flex flex-wrap items-center gap-2">
@@ -404,7 +404,7 @@ export function Tanding({ locale }: { locale: Locale }) {
                 value={tempel}
                 onChange={(e) => setTempel(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && panggilKode()}
-                className="w-48 rounded-full bg-mat-low px-4 py-2 font-mono text-lg tracking-widest text-ink ring-1 ring-inset ring-mat-edge"
+                className="w-48 rounded-full bg-mat-low px-4 py-2 font-mono text-lg tracking-widest text-fg ring-1 ring-inset ring-mat-edge"
                 aria-label={kata.kodeSambungan}
               />
               <Tombol bobot="utama" onClick={panggilKode}>
@@ -419,7 +419,7 @@ export function Tanding({ locale }: { locale: Locale }) {
         {tawaran && sesi?.status !== 'siap' && (
           <label className="flex flex-col gap-1.5">
             <span className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
+              <span className="font-sans text-2xs uppercase tracking-[0.14em] text-fg-muted">
                 {peran === 'tuan-rumah' ? kata.salinTawaran : kata.salinJawaban}
               </span>
               {/* Blok teks ini panjang dan harus utuh; menyeretnya dengan
@@ -431,21 +431,21 @@ export function Tanding({ locale }: { locale: Locale }) {
               value={tawaran}
               onFocus={(e) => e.currentTarget.select()}
               rows={3}
-              className="w-full rounded-xl bg-mat-low p-2 font-mono text-[10px] leading-relaxed text-ink/80 ring-1 ring-inset ring-mat-edge"
+              className="w-full rounded-xl bg-mat-low p-2 font-mono text-2xs leading-relaxed text-fg ring-1 ring-inset ring-mat-edge"
             />
           </label>
         )}
 
         {jalur === 'manual' && sesi?.status !== 'siap' && (
           <label className="flex flex-col gap-1.5">
-            <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-ink/45">
+            <span className="font-sans text-2xs uppercase tracking-[0.14em] text-fg-muted">
               {peran === 'tuan-rumah' ? kata.tempelJawaban : kata.tempelTawaran}
             </span>
             <textarea
               value={tempel}
               onChange={(e) => setTempel(e.target.value)}
               rows={3}
-              className="w-full rounded-xl bg-mat-low p-2 font-mono text-[10px] leading-relaxed text-ink ring-1 ring-inset ring-mat-edge"
+              className="w-full rounded-xl bg-mat-low p-2 font-mono text-2xs leading-relaxed text-fg ring-1 ring-inset ring-mat-edge"
             />
             <Tombol bobot="utama" className="self-start" onClick={terimaTempelan}>
               {kata.sambung}
@@ -467,7 +467,7 @@ export function Tanding({ locale }: { locale: Locale }) {
         {(galat || koneksi === 'gagal') && (
           <p
             role="alert"
-            className="rounded-panel bg-seedB/10 p-3 font-sans text-sm leading-relaxed text-ink ring-1 ring-inset ring-seedB/40"
+            className="rounded-panel bg-seedB/10 p-3 font-sans text-sm leading-relaxed text-fg ring-1 ring-inset ring-seedB/40"
           >
             {galat ?? kata.sambungGagal}
           </p>

@@ -27,17 +27,17 @@ export function TandaPembuat() {
 
   return (
     <div className="flex flex-col gap-1.5 sm:items-end">
-      <p className="font-sans text-[11px] leading-relaxed text-ink/45">
+      <p className="font-sans text-2xs leading-relaxed text-fg-muted">
         Designed &amp; built by{' '}
         <a
           href={portofolio}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-ink/70 underline decoration-ink/25 underline-offset-4 transition hover:text-ink hover:decoration-teak"
+          className="text-fg underline decoration-fg-muted underline-offset-4 transition hover:decoration-accent"
         >
           {PEMBUAT.nama}
         </a>{' '}
-        <span aria-hidden className="text-ink/25">
+        <span aria-hidden className="text-fg-muted">
           ·
         </span>{' '}
         {/* Angka tahun ikut aturan angka di seluruh situs: mono, tabular. */}
@@ -52,7 +52,7 @@ export function TandaPembuat() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={nama}
-              className="flex rounded-lg p-2 text-ink/45 transition hover:bg-mat-high hover:text-ink"
+              className="flex rounded-lg p-2 text-fg-muted transition hover:bg-mat-high hover:text-fg"
             >
               <Ikon />
             </a>

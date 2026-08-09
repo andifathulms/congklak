@@ -39,7 +39,7 @@ export function PemilihAturan({
       aksi={
         <Link
           href={`/${locale}/aturan#${active.id}`}
-          className="rounded font-sans text-xs text-ink/60 underline underline-offset-4 transition hover:text-ink"
+          className="rounded font-sans text-xs text-fg-muted underline underline-offset-4 transition hover:text-fg"
         >
           {kata.sumber} →
         </Link>
@@ -55,13 +55,13 @@ export function PemilihAturan({
       />
 
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-        <span className="font-mono text-xs text-ink/50">{active.region}</span>
-        <span aria-hidden className="text-ink/25">
+        <span className="font-mono text-xs text-fg-muted">{active.region}</span>
+        <span aria-hidden className="text-fg-muted">
           ·
         </span>
         <Link
           href={`/${locale}/aturan#${active.id}`}
-          className="rounded font-sans text-xs text-ink/60 underline decoration-teak/30 underline-offset-4 transition hover:text-ink"
+          className="rounded font-sans text-xs text-fg-muted underline decoration-teak/30 underline-offset-4 transition hover:text-fg"
         >
           {active.divergences.length} {kata.perbedaanCount}
         </Link>
@@ -74,7 +74,7 @@ export function PemilihAturan({
 
       {/* Mengganti aturan mengubah permainan, jadi katakan begitu, bukan
           diam-diam mereset papan di belakang pemain. */}
-      {disabled && <p className="font-sans text-xs text-ink/45">{kata.gantiSaatJalan}</p>}
+      {disabled && <p className="font-sans text-xs text-fg-muted">{kata.gantiSaatJalan}</p>}
     </Panel>
   )
 }

@@ -64,7 +64,7 @@ export function Skor({
         {/* Satu baris kedua, dan tiga hal bisa menempatinya menurut urutan
             kepentingannya: biji yang sedang di tangan selama animasi, lalu
             AI yang sedang berpikir, lalu selisih yang berlaku sekarang. */}
-        <p aria-live="polite" className="min-h-4 font-sans text-[11px] leading-tight text-ink/55">
+        <p aria-live="polite" className="min-h-4 font-sans text-2xs leading-tight text-fg-muted">
           {hand > 0 ? (
             <span className="tnum text-brass">
               {hand} {kata.diTangan}
@@ -129,14 +129,14 @@ function Sisi({
       >
         {/* Bentuk biji, bukan warna, yang menandai sisi siapa (invariant 18). */}
         <Biji owner={owner} size={8} />
-        <span className="truncate font-sans text-xs text-ink/70">{nama}</span>
+        <span className="truncate font-sans text-xs text-fg">{nama}</span>
       </span>
       <span className="tnum font-display text-2xl font-bold leading-none sm:text-3xl">{skor}</span>
       {/* Giliran ditandai oleh latar dan cincin kartu ini; kata "giliran"
           sendiri sudah ada di tengah, dan tidak perlu dikatakan dua kali. */}
       <span
         className={[
-          'font-sans text-[10px] uppercase tracking-[0.14em]',
+          'font-sans text-2xs uppercase tracking-[0.14em]',
           menang ? 'text-teak' : 'text-transparent',
         ].join(' ')}
       >

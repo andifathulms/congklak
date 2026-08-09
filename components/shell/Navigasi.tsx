@@ -46,8 +46,8 @@ export function Navigasi({ locale }: { locale: Locale }) {
               'relative whitespace-nowrap rounded-lg px-2.5 py-1.5 font-sans text-sm transition',
               'after:absolute after:inset-x-2.5 after:-bottom-px after:h-0.5 after:rounded-full after:transition',
               aktif
-                ? 'font-medium text-ink after:bg-teak'
-                : 'text-ink/55 hover:bg-mat-high hover:text-ink after:bg-transparent',
+                ? 'font-medium text-fg after:bg-teak'
+                : 'text-fg-muted hover:bg-mat-high hover:text-fg after:bg-transparent',
             ].join(' ')}
           >
             {l.label}
@@ -59,7 +59,7 @@ export function Navigasi({ locale }: { locale: Locale }) {
         href={`/${other}/main`}
         lang={other}
         aria-label={`${kata.bahasa}: ${other === 'id' ? 'Bahasa Indonesia' : 'English'}`}
-        className="ml-2 shrink-0 rounded-lg border border-mat-edge px-2 py-1 font-mono text-[11px] uppercase text-ink/55 transition hover:border-teak/40 hover:text-ink"
+        className="ml-2 shrink-0 rounded-lg border border-mat-edge px-2 py-1 font-mono text-2xs uppercase text-fg-muted transition hover:border-teak/40 hover:text-fg"
       >
         {other}
       </Link>

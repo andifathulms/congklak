@@ -37,7 +37,7 @@ export function Segmen<T extends string>({
   return (
     <div className="flex min-w-0 items-center gap-2">
       {labelVisible && (
-        <span aria-hidden className="shrink-0 font-sans text-xs text-ink/50">
+        <span aria-hidden className="shrink-0 font-sans text-xs text-fg-muted">
           {label}
         </span>
       )}
@@ -62,8 +62,8 @@ export function Segmen<T extends string>({
                 'rounded-full font-sans transition disabled:opacity-40',
                 pad,
                 dipilih
-                  ? 'bg-mat-high font-medium text-ink shadow-raise'
-                  : 'text-ink/55 enabled:hover:text-ink',
+                  ? 'bg-mat-high font-medium text-fg shadow-raise'
+                  : 'text-fg-muted enabled:hover:text-fg',
               ].join(' ')}
             >
               {teks}

@@ -56,7 +56,7 @@ export default function LocaleLayout({
             {/* Nama daerah lain untuk permainan yang sama, bukan pengulangan
                 judulnya: congklak di Jawa juga disebut dakon, dan congkak di
                 Sumatera dan semenanjung. */}
-            <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-ink/45 sm:inline">
+            <span className="hidden font-mono text-2xs uppercase tracking-[0.18em] text-fg-muted sm:inline">
               dakon · congkak
             </span>
           </Link>
@@ -71,11 +71,11 @@ export default function LocaleLayout({
           proyek, bukan digabung dengannya, karena yang satu kredit pribadi
           dan yang satu keterangan tentang datanya. */}
       <footer className="mt-8 border-t border-mat-edge/70 py-5">
-        <p className="max-w-prose font-sans text-xs leading-relaxed text-ink/50">
+        <p className="max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
           {kata.tagline}
         </p>
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-          <p className="font-mono text-[11px] text-ink/40">
+          <p className="font-mono text-2xs text-fg-muted">
             Aturan adalah data bersumber, bukan kode.
           </p>
           <TandaPembuat />

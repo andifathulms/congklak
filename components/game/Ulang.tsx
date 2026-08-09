@@ -52,7 +52,7 @@ export function Ulang({ locale, kodeAwal }: { locale: Locale; kodeAwal?: string 
             onKeyDown={(e) => e.key === 'Enter' && muat()}
             placeholder="umum.0.0362…"
             aria-label={kata.kodePermainan}
-            className="min-w-64 flex-1 rounded-full bg-mat-low px-4 py-2 font-mono text-sm text-ink ring-1 ring-inset ring-mat-edge placeholder:text-ink/30"
+            className="min-w-64 flex-1 rounded-full bg-mat-low px-4 py-2 font-mono text-sm text-fg ring-1 ring-inset ring-mat-edge placeholder:text-fg-muted"
           />
           <Tombol bobot="utama" onClick={muat}>
             {kata.muatKode}
@@ -62,7 +62,7 @@ export function Ulang({ locale, kodeAwal }: { locale: Locale; kodeAwal?: string 
 
       {hasil && 'error' in hasil && (
         <p className="rounded-panel bg-brass/15 p-3 font-sans text-sm ring-1 ring-inset ring-brass/40">
-          {kata.kodeTakValid} <span className="font-mono text-xs text-ink/60">{hasil.error}</span>
+          {kata.kodeTakValid} <span className="font-mono text-xs text-fg-muted">{hasil.error}</span>
         </p>
       )}
 
@@ -71,7 +71,7 @@ export function Ulang({ locale, kodeAwal }: { locale: Locale; kodeAwal?: string 
           {/* Melangkah satu per satu harus mungkin tanpa menyeret apa pun:
               penggeser saja tidak cukup untuk papan tik atau untuk jempol. */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-panel bg-mat-high p-3 shadow-raise ring-1 ring-mat-edge/60">
-            <span className="font-mono text-xs text-ink/50">
+            <span className="font-mono text-xs text-fg-muted">
               {getRuleset(hasil.rulesetId).name}
             </span>
             <span className="tnum font-display text-sm font-medium">
@@ -118,13 +118,13 @@ export function Ulang({ locale, kodeAwal }: { locale: Locale; kodeAwal?: string 
             namaB={`${kata.pemain} B`}
           />
 
-          <p className="flex flex-wrap items-baseline gap-x-3 font-sans text-sm text-ink/70">
-            <span className="tnum font-display text-lg font-bold text-ink">
+          <p className="flex flex-wrap items-baseline gap-x-3 font-sans text-sm text-fg">
+            <span className="tnum font-display text-lg font-bold text-fg">
               {scoreOf(state.board, PLAYER_A)}–{scoreOf(state.board, PLAYER_B)}
             </span>
-            <span className="text-ink/50">{kata.skor}</span>
+            <span className="text-fg-muted">{kata.skor}</span>
             {state.status === 'selesai' && (
-              <span className="font-medium text-ink">
+              <span className="font-medium text-fg">
                 {state.hasil === 'seri'
                   ? kata.seri
                   : `${kata.pemain} ${state.hasil === 'a' ? 'A' : 'B'} ${kata.menang}`}
@@ -138,7 +138,7 @@ export function Ulang({ locale, kodeAwal }: { locale: Locale; kodeAwal?: string 
                 {events.map((event, i) => (
                   <li
                     key={i}
-                    className="border-l-2 border-teak/25 pl-2.5 font-sans text-sm leading-snug text-ink/75"
+                    className="border-l-2 border-teak/25 pl-2.5 font-sans text-sm leading-snug text-fg"
                   >
                     {describeEvent(event)}
                   </li>

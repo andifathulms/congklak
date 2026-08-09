@@ -74,7 +74,7 @@ export function TumpukanBiji({
 
   if (biji > AMBANG_NUMERAL) {
     return (
-      <span className="tnum font-display text-base font-bold text-seedA sm:text-lg">{biji}</span>
+      <span className="tnum font-display text-base font-bold text-fg-wood sm:text-lg">{biji}</span>
     )
   }
 

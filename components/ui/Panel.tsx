@@ -30,7 +30,7 @@ export function Panel({
       {(judul || aksi) && (
         <div className="mb-2.5 flex items-baseline justify-between gap-3">
           {judul && (
-            <h2 className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-ink/45">
+            <h2 className="font-sans text-2xs font-medium uppercase tracking-[0.14em] text-fg-muted">
               {judul}
             </h2>
           )}

@@ -17,10 +17,10 @@ export function Lencana({
   return (
     <span
       className={[
-        'inline-flex items-center rounded-full px-2 py-0.5 font-sans text-[11px] leading-tight',
+        'inline-flex items-center rounded-full px-2 py-0.5 font-sans text-2xs leading-tight',
         nada === 'perhatian'
-          ? 'bg-brass/20 text-ink/80 ring-1 ring-inset ring-brass/40'
-          : 'bg-teak/10 text-ink/65 ring-1 ring-inset ring-teak/20',
+          ? 'bg-brass/20 text-fg ring-1 ring-inset ring-brass/40'
+          : 'bg-teak/10 text-fg-muted ring-1 ring-inset ring-teak/20',
       ].join(' ')}
     >
       {children}

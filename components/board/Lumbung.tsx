@@ -36,7 +36,7 @@ export function LumbungView({
       role="status"
       aria-label={`Lumbung ${name}: ${biji} biji`}
     >
-      <span className="tnum font-display text-3xl font-bold leading-none text-seedA sm:text-4xl">
+      <span className="tnum font-display text-3xl font-bold leading-none text-fg-wood sm:text-4xl">
         {biji}
       </span>
       {/* Bentuk biji, bukan hanya warna, yang menandai sisi siapa ini. */}
@@ -47,7 +47,7 @@ export function LumbungView({
             jadi "PEMAI…", yang tidak memberi tahu siapa pun apa pun. Di sana
             bentuk biji yang menandai sisi, papan skor tepat di atas menyebut
             namanya, dan aria-label tetap lengkap di keduanya. */}
-        <span className="truncate font-sans text-[10px] uppercase tracking-widest text-seedA/60 sm:hidden">
+        <span className="truncate font-sans text-2xs uppercase tracking-widest text-fg-wood-muted sm:hidden">
           {name}
         </span>
       </span>
