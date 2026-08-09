@@ -27,6 +27,12 @@ export interface LubangProps {
  * The count sits engraved on the wood below the hole rather than inside
  * it, because inside it would fight the biji for the same few pixels.
  */
+/*
+ * `aria-pressed` used to ride on `active`, which means "the sow is passing
+ * through here right now" — not a pressed state. Twenty-four holes then
+ * announced as "toggle button, not pressed", and a hole is not a toggle.
+ * The highlight is decoration; what matters is in the name.
+ */
 export function Lubang({
   index,
   biji,
@@ -58,7 +64,6 @@ export function Lubang({
         type="button"
         disabled={!playable}
         aria-label={label}
-        aria-pressed={active}
         onClick={playable ? () => onSelect?.(index) : undefined}
         onMouseEnter={playable ? () => onPreview?.(index) : undefined}
         onMouseLeave={playable ? () => onPreview?.(null) : undefined}
