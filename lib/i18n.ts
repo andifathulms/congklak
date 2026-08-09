@@ -84,6 +84,13 @@ interface Dict {
   readonly statusJelasDiterapkan: string
   readonly statusJelasDicatat: string
   readonly perbedaanRingkas: string
+  readonly buktiJudul: string
+  readonly buktiTeks: string
+  readonly buktiTakAda: string
+  readonly buktiCara: string
+  readonly alasanRingkasPapan: string
+  readonly alasanRingkasSelesai: string
+  readonly alasanRingkasTakSah: string
   readonly gantiSaatJalan: string
   readonly banding: string
   readonly bandingIntro: string
@@ -215,6 +222,13 @@ const id: Dict = {
   statusJelasDiterapkan: 'Bacaan pack ini yang dijalankan mesin. Bacaan lawannya belum bisa dinyatakan, jadi tidak ada papan pembandingnya.',
   statusJelasDicatat: 'Tidak diterapkan. Dicatat karena sumbernya menyatakannya, dan ditunda dengan sadar.',
   perbedaanRingkas: 'Dari {n} perbedaan yang tercatat, {a} dijalankan mesin dan {b} baru catatan.',
+  buktiJudul: 'Terbukti di papan',
+  buktiTeks: 'Pada permainan contoh #{seed} ({panjang} langkah), kedua bacaan berpisah di giliran {giliran}: {alasan}',
+  buktiTakAda: 'Tidak ada papan yang membedakannya dalam {n} permainan contoh. Aturannya nyata dan bersumber, tapi jarang menentukan.',
+  buktiCara: 'Dicari dengan menjalankan pack ini melawan dirinya sendiri, satu klausa itu saja dibalik. Benihnya tetap, jadi permainannya bisa diputar ulang.',
+  alasanRingkasPapan: 'papan kedua bacaan mulai berbeda.',
+  alasanRingkasSelesai: 'satu bacaan menyatakan permainan sudah selesai, satunya belum.',
+  alasanRingkasTakSah: 'langkah itu tidak sah lagi di salah satu bacaan.',
   gantiSaatJalan: 'Selesaikan atau mulai permainan baru untuk mengganti aturan.',
   banding: 'Bandingkan aturan',
   bandingIntro: 'Satu daftar langkah, dua ruleset. Di mana keduanya pertama kali berbeda?',
@@ -346,6 +360,13 @@ const en: Dict = {
   statusJelasDiterapkan: 'This pack\u2019s reading is what the engine plays. The other reading cannot be expressed yet, so there is no board to compare against.',
   statusJelasDicatat: 'Not implemented. Recorded because a source states it, and deferred deliberately.',
   perbedaanRingkas: 'Of {n} recorded divergences, {a} are played by the engine and {b} are notes.',
+  buktiJudul: 'Shown on a board',
+  buktiTeks: 'In sample game #{seed} ({panjang} moves), the two readings part at turn {giliran}: {alasan}',
+  buktiTakAda: 'No board told them apart across {n} sample games. The rule is real and cited, but it rarely decides anything.',
+  buktiCara: 'Found by running this pack against itself with that one clause flipped. The seed is fixed, so the game can be replayed.',
+  alasanRingkasPapan: 'the two boards start to differ.',
+  alasanRingkasSelesai: 'one reading says the game is already over, the other does not.',
+  alasanRingkasTakSah: 'that move is no longer legal under one reading.',
   gantiSaatJalan: 'Finish or start a new game to change the ruleset.',
   banding: 'Compare rulesets',
   bandingIntro: 'One move list, two rulesets. Where do they first disagree?',

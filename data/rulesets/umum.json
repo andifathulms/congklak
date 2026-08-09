@@ -46,6 +46,10 @@
     {
       "rule": "Syarat berhenti",
       "status": "dapat-dibandingkan",
+      "banding": {
+        "opsi": "terminal",
+        "nilaiLain": "tiga-lubang-kosong"
+      },
       "thisPack": "Permainan berhenti saat pemain yang mendapat giliran tidak punya satu pun lubang berisi di sisinya.",
       "otherReading": "Permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya, walau papan masih berisi.",
       "sources": [
@@ -66,6 +70,10 @@
     {
       "rule": "Menembak saat lubang seberang kosong",
       "status": "dapat-dibandingkan",
+      "banding": {
+        "opsi": "menembak.requireOppositeNonEmpty",
+        "nilaiLain": "true"
+      },
       "thisPack": "Biji terakhir tetap diambil ke lumbung walau lubang seberang kosong.",
       "otherReading": "Tidak ada tembakan sama sekali kalau lubang seberang kosong; biji ditinggal dan giliran habis.",
       "sources": [],
@@ -94,6 +102,10 @@
     {
       "rule": "Syarat satu pusingan sebelum menembak",
       "status": "dapat-dibandingkan",
+      "banding": {
+        "opsi": "menembak.requireLapCompleted",
+        "nilaiLain": "true"
+      },
       "thisPack": "Tidak ada syarat pusingan. Biji terakhir di lubang kosong sisi sendiri langsung menembak.",
       "otherReading": "Menembak hanya sah sesudah biji melewati lumbung sendiri lalu kembali ke sisi sendiri; sebelum itu hanya mati.",
       "sources": [],

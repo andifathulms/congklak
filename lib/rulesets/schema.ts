@@ -68,6 +68,32 @@ export const DivergenceSchema = z
      * dibuat wajib supaya setidaknya tidak bisa lupa diisi.
      */
     status: StatusPerbedaanSchema,
+
+    /**
+     * Opsi mana yang diperdebatkan, dan nilai apa yang dipakai bacaan
+     * lawannya. Ada tepat kalau statusnya `dapat-dibandingkan`.
+     *
+     * Ini yang membuat perbedaan bisa dibuktikan, bukan sekadar dinyatakan:
+     * dengan opsi dan nilai lawannya, aplikasi bisa menyalakan pack ini
+     * dengan satu klausa itu saja dibalik — semua yang lain tetap sama —
+     * lalu mencari permainan tempat kedua bacaan berpisah. Membandingkan
+     * dua pack utuh tidak bisa melakukan itu: perbedaannya lebih dari satu,
+     * jadi tidak ada yang bisa menunjuk klausa mana yang menyebabkannya.
+     */
+    banding: z
+      .object({
+        opsi: z.enum([
+          'terminal',
+          'finalSweep',
+          'extraTurnOnOwnLumbung',
+          'menembak.requireOppositeNonEmpty',
+          'menembak.requireLapCompleted',
+        ]),
+        /** Nilai bacaan lawan, sebagai teks: "true", "tak-ada-langkah", … */
+        nilaiLain: z.string().min(1),
+      })
+      .strict()
+      .optional(),
     /**
      * Judul sumber dalam pack ini yang berbicara soal perbedaan ini.
      * Sebuah perbedaan yang tidak bisa ditelusuri ke sumber hanyalah
@@ -77,6 +103,27 @@ export const DivergenceSchema = z
     note: z.string().optional(),
   })
   .strict()
+  /**
+   * `banding` dan `status` harus sejalan. Sebuah perbedaan yang mengaku
+   * dapat dibandingkan tanpa menyebut opsinya tidak bisa dibuktikan, dan
+   * perbedaan yang cuma dicatat tidak boleh berpura-pura punya pembanding.
+   */
+  .superRefine((d, ctx) => {
+    if (d.status === 'dapat-dibandingkan' && !d.banding) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['banding'],
+        message: 'status "dapat-dibandingkan" wajib menyebut opsi dan nilai lawannya',
+      })
+    }
+    if (d.status !== 'dapat-dibandingkan' && d.banding) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['banding'],
+        message: `status "${d.status}" tidak boleh punya pembanding — tidak ada yang bisa dibalik`,
+      })
+    }
+  })
 export type Divergence = z.infer<typeof DivergenceSchema>
 
 export const OptionsSchema = z

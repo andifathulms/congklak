@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation'
-import { RULESETS } from '@/lib/rulesets'
+import { RULESETS, type Ruleset } from '@/lib/rulesets'
 import { LOCALES, isLocale, t } from '@/lib/i18n'
 import { Panel } from '@/components/ui/Panel'
 import { Lencana } from '@/components/ui/Lencana'
-import type { StatusPerbedaan as Status } from '@/lib/rulesets/schema'
+import type { Divergence, StatusPerbedaan as Status } from '@/lib/rulesets/schema'
+import { BENIH_MAKS, cariBukti } from '@/lib/engine/bukti'
 import { TautanTombol } from '@/components/ui/Tombol'
 
 export function generateStaticParams() {
@@ -143,6 +144,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
                         {d.note}
                       </p>
                     )}
+                    <Bukti divergence={d} ruleset={ruleset} kata={kata} />
                   </li>
                 ))}
               </ul>
@@ -219,5 +221,61 @@ function StatusPerbedaan({ status, kata }: { status: Status; kata: ReturnType<ty
       />
       {label}
     </span>
+  )
+}
+
+/**
+ * The proof that a divergence reaches a board.
+ *
+ * Computed here, in a server component, so it runs once at build time and
+ * ships as static text: no runtime cost, and — more importantly — no stored
+ * artifact that can drift away from the packs. It is recomputed from the
+ * live pack on every build, so it cannot go stale.
+ *
+ * When no board tells the two readings apart, it says exactly that. A rule
+ * can be genuine, cited, and still almost never decide a game; reporting
+ * that is the honest outcome, not a hole to paper over.
+ */
+function Bukti({
+  divergence,
+  ruleset,
+  kata,
+}: {
+  divergence: Divergence
+  ruleset: Ruleset
+  kata: ReturnType<typeof t>
+}) {
+  if (!divergence.banding) return null
+  const bukti = cariBukti(ruleset, divergence.banding)
+
+  const alasan =
+    bukti === null
+      ? ''
+      : bukti.alasan === 'papan-berbeda'
+        ? kata.alasanRingkasPapan
+        : bukti.alasan === 'satu-sudah-selesai'
+          ? kata.alasanRingkasSelesai
+          : kata.alasanRingkasTakSah
+
+  return (
+    <div className="mt-3 rounded-lg bg-mat p-3 ring-1 ring-mat-edge/60">
+      <p className="mb-1 font-sans text-2xs uppercase tracking-[0.14em] text-fg-muted">
+        {kata.buktiJudul}
+      </p>
+      <p className="tnum max-w-prose font-sans text-sm leading-relaxed text-fg">
+        {bukti === null
+          ? kata.buktiTakAda.replace('{n}', String(BENIH_MAKS))
+          : kata.buktiTeks
+              .replace('{seed}', String(bukti.seed))
+              .replace('{panjang}', String(bukti.panjang))
+              .replace('{giliran}', String(bukti.giliran))
+              .replace('{alasan}', alasan)}
+      </p>
+      <p className="mt-1.5 max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
+        <code className="rounded bg-mat-low px-1 py-0.5 font-mono">{divergence.banding.opsi}</code>{' '}
+        → <code className="rounded bg-mat-low px-1 py-0.5 font-mono">{divergence.banding.nilaiLain}</code>.{' '}
+        {kata.buktiCara}
+      </p>
+    </div>
   )
 }

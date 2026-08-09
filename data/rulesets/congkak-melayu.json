@@ -42,6 +42,10 @@
     {
       "rule": "Syarat menembak",
       "status": "dapat-dibandingkan",
+      "banding": {
+        "opsi": "menembak.requireLapCompleted",
+        "nilaiLain": "false"
+      },
       "thisPack": "Hanya boleh menembak sesudah satu pusingan penuh — biji sudah melewati rumah sendiri lalu kembali ke kawasan sendiri. Sebelum itu, mendarat di kampung kosong sendiri berarti mati.",
       "otherReading": "Boleh menembak kapan saja biji terakhir mendarat di lubang kosong sisi sendiri, tanpa syarat pusingan.",
       "sources": [
