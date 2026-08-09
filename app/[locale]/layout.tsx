@@ -4,7 +4,9 @@ import { GantiBahasa } from '@/components/shell/GantiBahasa'
 import { Navigasi } from '@/components/shell/Navigasi'
 import { TandaPembuat } from '@/components/shell/TandaPembuat'
 import { LOCALES, isLocale, t } from '@/lib/i18n'
-import { BASE } from '../layout'
+
+export { metadata, viewport } from '../dasar'
+import { BASE, KELAS_FONT } from '../dasar'
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))
@@ -20,7 +22,17 @@ export default function LocaleLayout({
   if (!isLocale(params.locale)) notFound()
   const kata = t(params.locale)
 
+  /**
+   * A root layout, so that <html lang> can name the language of the page.
+   * The App Router does not hand route params to a layout above the
+   * segment that declares them, so a single root at app/layout.tsx could
+   * only ever hardcode one language — and it hardcoded Indonesian onto the
+   * English pages, which a screen reader then read with Indonesian
+   * pronunciation (WCAG 3.1.1).
+   */
   return (
+    <html lang={params.locale} className={KELAS_FONT}>
+      <body className="min-h-dvh font-sans antialiased">
     <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-4 sm:px-8">
       {/*
         The header stays put while the board scrolls, because on a phone the
@@ -92,5 +104,7 @@ export default function LocaleLayout({
         </div>
       </footer>
     </div>
+      </body>
+    </html>
   )
 }

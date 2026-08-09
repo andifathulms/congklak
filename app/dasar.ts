@@ -3,6 +3,19 @@ import { IBM_Plex_Mono, IBM_Plex_Sans, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 
 /**
+ * Everything both root layouts share.
+ *
+ * There are two of them because `<html lang>` has to name the language of
+ * the page it wraps, and a root layout in the App Router cannot see the
+ * `[locale]` segment below it — so the English pages were served as
+ * `lang="id"` and read aloud by an Indonesian synthesiser. The locale
+ * layout is a root layout now, and the redirect at `/` has its own.
+ *
+ * Fonts, metadata and the base path live here so the two roots cannot
+ * drift apart.
+ */
+
+/**
  * The three typefaces PRD §11 asks for, actually loaded.
  *
  * They were named in `globals.css` as CSS variables from the start but no
@@ -35,6 +48,9 @@ const mono = IBM_Plex_Mono({
   variable: '--font-mono',
   display: 'swap',
 })
+
+/** Kelas font untuk <html>, sama di kedua root. */
+export const KELAS_FONT = `${display.variable} ${sans.variable} ${mono.variable}`
 
 const JUDUL = 'Congklak — dengan aturan kedaerahan yang bersumber'
 const RINGKAS =
@@ -93,12 +109,4 @@ export const viewport: Viewport = {
   // than framing it. Not the brand paper — this has to match what is
   // actually painted behind the content.
   themeColor: '#E4DDCD',
-}
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="id" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
-      <body className="min-h-dvh font-sans antialiased">{children}</body>
-    </html>
-  )
 }
