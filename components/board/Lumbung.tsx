@@ -33,7 +33,13 @@ export function LumbungView({
         'bg-hollow bg-pit shadow-bank transition-shadow',
         active ? 'ring-[3px] ring-brass ring-offset-2 ring-offset-teak-grain' : 'ring-0',
       ].join(' ')}
-      role="status"
+      /**
+       * Sebuah angka, bukan wilayah status. Dengan role="status" isinya
+       * diumumkan tiap kali berubah — dan ia berubah tiap bingkai animasi,
+       * jadi satu giliran membacakan hitungannya berkali-kali. Papan skor
+       * di atas papan sudah menyebutkan kedua angka, dan ringkasan giliran
+       * mengatakan apa yang terjadi. Ini cukup dibaca saat disinggahi.
+       */
       aria-label={`Lumbung ${name}: ${biji} biji`}
     >
       <span className="tnum font-display text-2xl font-bold leading-none text-fg-wood">

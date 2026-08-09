@@ -18,7 +18,7 @@ import { Papan } from '@/components/board/Papan'
 import { KECEPATAN, usePenaburan, type Kecepatan } from '@/components/sow/usePenaburan'
 import { TombolSuara } from '@/components/sow/TombolSuara'
 import { pratinjauTeks, ringkasPratinjau } from '@/components/preview/ringkas'
-import { describeHenti } from '@/lib/engine/events'
+import { describeEvent, describeHenti } from '@/lib/engine/events'
 import { Panel } from '@/components/ui/Panel'
 import { Salin } from '@/components/ui/Salin'
 import { Segmen } from '@/components/ui/Segmen'
@@ -58,6 +58,20 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
    * lalu tidak pernah membaca lagi, jadi statistik tidak pernah muncul.
    */
   const [statVersi, setStatVersi] = useState(0)
+  /**
+   * Apa yang terjadi pada giliran barusan, diumumkan sekali.
+   *
+   * Sebelumnya panel riwayat sendiri yang jadi wilayah live, jadi tiap baris
+   * baru memicu pembacaan: satu giliran menghasilkan 43 pengumuman, delapan
+   * belas di antaranya hitungan mundur biji di tangan. Ringkasan tertulis
+   * memang jalur akses utamanya (PRD §8.1) — yang salah adalah menyiarkannya
+   * baris demi baris, bukan sekali saat gilirannya selesai.
+   *
+   * Baris per biji dibuang; yang tersisa adalah peristiwa yang menentukan —
+   * angkat, sambung, tembak, giliran lagi, alasan berhenti, sapu, selesai —
+   * lalu skornya. Semuanya kalimat yang sudah ada, tidak ada klaim baru.
+   */
+  const [umumkan, setUmumkan] = useState('')
 
   const player = usePenaburan(state.board, kecepatan)
 
@@ -107,9 +121,15 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
         setRecord((r) => withMove(r, hole))
         setBusy(false)
         kembalikanFokus()
+        const penting = events
+          .filter((e) => e.type !== 'sow' && e.type !== 'bank')
+          .map(describeEvent)
+        setUmumkan(
+          `${penting.join(' ')} ${kata.skor} ${next.board[7]}–${next.board[15]}.`,
+        )
       })
     },
-    [state, ruleset, player, kembalikanFokus],
+    [state, ruleset, player, kembalikanFokus, kata.skor],
   )
 
   const pilih = useCallback(
@@ -284,6 +304,13 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
         hand={frame.hand}
         berpikir={berpikir}
       />
+
+      {/* Satu wilayah live untuk seluruh layar papan, dibacakan sekali per
+          giliran. Tidak terlihat karena isinya sudah terlihat di tempat
+          lain — papan skor, panel riwayat — hanya waktunya yang berbeda. */}
+      <p className="sr-only" aria-live="polite">
+        {umumkan}
+      </p>
 
       <Papan
         papanRef={papanRef}
@@ -473,12 +500,7 @@ function PanelStatistik({
 
 function Riwayat({ lines, kata }: { lines: readonly string[]; kata: ReturnType<typeof t> }) {
   return (
-    <Panel
-      judul={kata.riwayat}
-      // Ringkasan tertulis adalah jalur utama untuk prefers-reduced-motion,
-      // dan sekaligus tempat pembaca layar mengikuti giliran.
-      aria-live="polite"
-    >
+    <Panel judul={kata.riwayat}>
       {lines.length === 0 ? (
         <p className="font-sans text-sm text-fg-muted">{kata.belumAdaLangkah}</p>
       ) : (
