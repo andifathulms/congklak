@@ -116,7 +116,7 @@ export function Belajar({ locale }: { locale: Locale }) {
       </nav>
 
       <div>
-        <h2 className="font-display text-2xl font-bold">{pelajaran.judul[locale]}</h2>
+        <h2 className="font-display text-xl font-bold">{pelajaran.judul[locale]}</h2>
         <p className="mt-1 max-w-prose font-sans leading-relaxed text-fg">
           {pelajaran.ajakan[locale]}
         </p>

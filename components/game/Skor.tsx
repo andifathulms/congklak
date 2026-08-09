@@ -131,7 +131,7 @@ function Sisi({
         <Biji owner={owner} size={8} />
         <span className="truncate font-sans text-xs text-fg">{nama}</span>
       </span>
-      <span className="tnum font-display text-2xl font-bold leading-none sm:text-3xl">{skor}</span>
+      <span className="tnum font-display text-xl font-bold leading-none sm:text-2xl">{skor}</span>
       {/* Giliran ditandai oleh latar dan cincin kartu ini; kata "giliran"
           sendiri sudah ada di tengah, dan tidak perlu dikatakan dua kali. */}
       <span

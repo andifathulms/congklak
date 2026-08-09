@@ -386,7 +386,7 @@ export function Tanding({ locale }: { locale: Locale }) {
               {kata.kodeSambungan}
             </span>
             <span className="flex flex-wrap items-center gap-3">
-              <span className="tnum select-all font-display text-3xl font-bold tracking-[0.2em]">
+              <span className="tnum select-all font-display text-2xl font-bold tracking-[0.2em]">
                 {kodeBroker}
               </span>
               <Salin teks={kodeBroker} locale={locale} />

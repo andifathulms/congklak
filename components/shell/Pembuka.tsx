@@ -19,7 +19,7 @@ export function Pembuka({ locale }: { locale: Locale }) {
 
   return (
     <header className="flex flex-col gap-3">
-      <h1 className="max-w-[22ch] font-display text-2xl font-bold leading-tight sm:max-w-none sm:text-3xl">
+      <h1 className="max-w-[22ch] font-display text-xl font-bold leading-tight sm:max-w-none sm:text-2xl">
         {kata.beranda}
       </h1>
       <p className="max-w-prose font-sans leading-relaxed text-fg-muted">{kata.berandaIntro}</p>

@@ -67,6 +67,11 @@ const config: Config = {
        * One scale. `text-xs` and up are reading sizes; `text-2xs` exists
        * only for counts on the board and the odd chip, and nothing is
        * smaller than that.
+       *
+       * Seven steps, seven names. There used to be nine names over the same
+       * seven steps — xl and 2xl were the same size, 3xl and 4xl were the
+       * same size — so `sm:text-4xl` was a class that did nothing and two
+       * different names rendered identically. A name now predicts a size.
        */
       fontSize: {
         '2xs': ['var(--step-000)', { lineHeight: '1.35' }],
@@ -75,9 +80,7 @@ const config: Config = {
         base: ['var(--step-1)', { lineHeight: '1.55' }],
         lg: ['var(--step-2)', { lineHeight: '1.4' }],
         xl: ['var(--step-3)', { lineHeight: '1.25' }],
-        '2xl': ['var(--step-3)', { lineHeight: '1.2' }],
-        '3xl': ['var(--step-4)', { lineHeight: '1.15' }],
-        '4xl': ['var(--step-4)', { lineHeight: '1.1' }],
+        '2xl': ['var(--step-4)', { lineHeight: '1.15' }],
       },
       fontFamily: {
         display: ['var(--font-display)', 'ui-sans-serif', 'system-ui'],

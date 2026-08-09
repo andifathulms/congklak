@@ -17,7 +17,7 @@ export function Kepala({
 }) {
   return (
     <header className="flex flex-col gap-3">
-      <h1 className="font-display text-3xl font-bold sm:text-4xl">{judul}</h1>
+      <h1 className="font-display text-2xl font-bold">{judul}</h1>
       {intro && <p className="max-w-prose font-sans leading-relaxed text-fg">{intro}</p>}
       {children}
     </header>

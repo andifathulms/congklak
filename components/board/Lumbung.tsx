@@ -36,7 +36,7 @@ export function LumbungView({
       role="status"
       aria-label={`Lumbung ${name}: ${biji} biji`}
     >
-      <span className="tnum font-display text-3xl font-bold leading-none text-fg-wood sm:text-4xl">
+      <span className="tnum font-display text-2xl font-bold leading-none text-fg-wood">
         {biji}
       </span>
       {/* Bentuk biji, bukan hanya warna, yang menandai sisi siapa ini. */}

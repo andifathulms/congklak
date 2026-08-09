@@ -28,7 +28,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
   return (
     <div className="flex flex-col gap-7">
       <header className="flex flex-col gap-3">
-        <h1 className="font-display text-3xl font-bold sm:text-4xl">{kata.aturan}</h1>
+        <h1 className="font-display text-2xl font-bold">{kata.aturan}</h1>
         <p className="max-w-prose font-sans leading-relaxed text-fg">{kata.aturanIntro}</p>
         <nav className="flex flex-wrap gap-2 pt-1">
           {RULESETS.map((r) => (
@@ -52,7 +52,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
           className="flex scroll-mt-24 flex-col gap-4"
         >
           <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h2 className="font-display text-2xl font-bold">{ruleset.name}</h2>
+            <h2 className="font-display text-xl font-bold">{ruleset.name}</h2>
             <p className="font-sans text-sm text-fg-muted">{ruleset.region}</p>
             <code className="rounded bg-mat-low px-1.5 py-0.5 font-mono text-xs text-fg-muted">
               {ruleset.id}
