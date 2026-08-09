@@ -16,11 +16,14 @@ export function LumbungView({
   biji,
   active,
   name,
+  label,
 }: {
   owner: Player
   biji: number
   active: boolean
   name: string
+  /** Nama yang dibacakan, sudah dalam bahasa yang benar. */
+  label: string
 }) {
   return (
     <div
@@ -40,7 +43,7 @@ export function LumbungView({
        * di atas papan sudah menyebutkan kedua angka, dan ringkasan giliran
        * mengatakan apa yang terjadi. Ini cukup dibaca saat disinggahi.
        */
-      aria-label={`Lumbung ${name}: ${biji} biji`}
+      aria-label={`${label}: ${biji} biji`}
     >
       <span className="tnum font-display text-2xl font-bold leading-none text-fg-wood">
         {biji}

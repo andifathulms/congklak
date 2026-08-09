@@ -495,6 +495,7 @@ export function Tanding({ locale }: { locale: Locale }) {
             {giliranku ? kata.giliranmu : kata.giliranLawan}
           </p>
           <Papan
+          locale={locale}
             cells={frame.cells}
             active={frame.active}
             secondary={frame.secondary}

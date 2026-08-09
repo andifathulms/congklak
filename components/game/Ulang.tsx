@@ -109,6 +109,7 @@ export function Ulang({ locale, kodeAwal }: { locale: Locale; kodeAwal?: string 
           </div>
 
           <Papan
+          locale={locale}
             cells={Array.from(state.board)}
             active={null}
             secondary={null}

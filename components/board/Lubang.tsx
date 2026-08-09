@@ -15,6 +15,8 @@ export interface LubangProps {
   onSelect?: (index: number) => void
   onPreview?: (index: number | null) => void
   label: string
+  /** Kata "kosong" dalam bahasa yang berlaku. */
+  kosongLabel: string
 }
 
 /**
@@ -44,6 +46,7 @@ export function Lubang({
   onSelect,
   onPreview,
   label,
+  kosongLabel,
 }: LubangProps) {
   // brass hanya untuk lubang aktif dan peristiwa tembakan — tidak untuk
   // hal lain (PRD §11). Lubang yang bisa dipilih dan lubang yang sedang
@@ -83,7 +86,7 @@ export function Lubang({
         ].join(' ')}
       >
         <TumpukanBiji biji={biji} owner={owner} />
-        {biji === 0 && <span className="sr-only">kosong</span>}
+        {biji === 0 && <span className="sr-only">{kosongLabel}</span>}
       </button>
 
       {/* Ukiran angka pada kayu.

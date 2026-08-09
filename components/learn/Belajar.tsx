@@ -123,6 +123,7 @@ export function Belajar({ locale }: { locale: Locale }) {
       </div>
 
       <Papan
+          locale={locale}
         cells={frame.cells}
         active={frame.active}
         secondary={frame.secondary}

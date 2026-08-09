@@ -1,6 +1,7 @@
 'use client'
 
 import { LUMBUNG_A, LUMBUNG_B, PLAYER_A, PLAYER_B, type Player } from '@/lib/engine/board'
+import { t, type Locale } from '@/lib/i18n'
 import { Lubang } from './Lubang'
 import { LumbungView } from './Lumbung'
 
@@ -46,6 +47,14 @@ export interface PapanProps {
   onPreview?: (index: number | null) => void
   namaA: string
   namaB: string
+  /**
+   * Papan ini ikut berbicara, jadi ia harus tahu bahasanya. Namanya dulu
+   * ditulis langsung dalam bahasa Indonesia di kedua locale, jadi pembaca
+   * layar berbahasa Inggris mendengar "Lubang 8, 7 biji" — dan lumbungnya
+   * keluar setengah-setengah, "Lumbung Player A: 0 biji". Istilah
+   * tradisionalnya tetap (invariant 19); perancahnya yang diterjemahkan.
+   */
+  locale: Locale
 }
 
 export function Papan({
@@ -59,7 +68,9 @@ export function Papan({
   onPreview,
   namaA,
   namaB,
+  locale,
 }: PapanProps) {
+  const kata = t(locale)
   const canPlay = (index: number) => playable.includes(index)
 
   const hole = (index: number) => (
@@ -76,7 +87,21 @@ export function Papan({
       previewed={previewed === index}
       onSelect={onSelect}
       onPreview={onPreview}
-      label={`Lubang ${index}, ${cells[index]} biji${canPlay(index) ? ', bisa ditabur' : ''}`}
+      /**
+       * Sisi siapa lubang ini, disebutkan. Empat belas tombol bernama
+       * "Lubang N, X biji" tidak mengatakan bahwa 8–14 milik lawan —
+       * pemain yang melihat membacanya dari dua baris dan dua bentuk biji,
+       * pemain yang mendengar tidak mendapat apa-apa (WCAG 1.3.1).
+       */
+      label={[
+        kata.lubangLabel.replace('{n}', String(index)),
+        `${cells[index]} biji`,
+        ownerOfHole(index) === PLAYER_A ? kata.sisimu : kata.sisiLawan,
+        canPlay(index) ? kata.bisaDitabur : '',
+      ]
+        .filter(Boolean)
+        .join(', ')}
+      kosongLabel={kata.kosongLabel}
     />
   )
 
@@ -99,7 +124,7 @@ export function Papan({
       // its content width.
       className="on-teak mx-auto w-full max-w-[10.5rem] rounded-board bg-teak bg-grain p-3 shadow-carve ring-1 ring-teak-rim/40 sm:max-w-none sm:p-6"
       role="group"
-      aria-label="Papan congklak"
+      aria-label={kata.papanLabel}
     >
       {/*
         On a phone the board stands upright. Laid out lengthwise, fourteen
@@ -125,13 +150,24 @@ export function Papan({
             biji={cells[LUMBUNG_A]}
             active={active === LUMBUNG_A}
             name={namaA}
+            label={kata.lumbungLabel.replace('{nama}', namaA)}
           />
         </div>
 
-        <div className="col-start-2 row-start-2 grid grid-cols-1 gap-2 sm:col-start-2 sm:row-start-1 sm:grid-cols-7 sm:gap-3">
+        {/* Tiap baris bernama, jadi strukturnya dua-baris papan ini bisa
+            didengar dan bukan hanya dilihat. */}
+        <div
+          role="group"
+          aria-label={kata.barisLabel.replace('{nama}', namaB)}
+          className="col-start-2 row-start-2 grid grid-cols-1 gap-2 sm:col-start-2 sm:row-start-1 sm:grid-cols-7 sm:gap-3"
+        >
           {BARIS_ATAS.map(hole)}
         </div>
-        <div className="col-start-1 row-start-2 grid grid-cols-1 gap-2 sm:col-start-2 sm:row-start-2 sm:grid-cols-7 sm:gap-3">
+        <div
+          role="group"
+          aria-label={kata.barisLabel.replace('{nama}', namaA)}
+          className="col-start-1 row-start-2 grid grid-cols-1 gap-2 sm:col-start-2 sm:row-start-2 sm:grid-cols-7 sm:gap-3"
+        >
           {BARIS_BAWAH.map(hole)}
         </div>
 
@@ -141,6 +177,7 @@ export function Papan({
             biji={cells[LUMBUNG_B]}
             active={active === LUMBUNG_B}
             name={namaB}
+            label={kata.lumbungLabel.replace('{nama}', namaB)}
           />
         </div>
       </div>

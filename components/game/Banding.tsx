@@ -138,8 +138,8 @@ export function Banding({ locale }: { locale: Locale }) {
           lubang yang harus dibandingkan itu yang persis di atas-bawahnya. */}
       {step && (
         <div className="flex flex-col gap-5">
-          <SisiPapan nama={kiri.name} state={step.kiri} sama={step.sama} kata={kata} />
-          <SisiPapan nama={kanan.name} state={step.kanan} sama={step.sama} kata={kata} />
+          <SisiPapan nama={kiri.name} state={step.kiri} sama={step.sama} kata={kata} locale={locale} />
+          <SisiPapan nama={kanan.name} state={step.kanan} sama={step.sama} kata={kata} locale={locale} />
         </div>
       )}
     </div>
@@ -178,11 +178,13 @@ function SisiPapan({
   state,
   sama,
   kata,
+  locale,
 }: {
   nama: string
   state: ReturnType<typeof compareRulesets>['steps'][number]['kiri']
   sama: boolean
   kata: ReturnType<typeof t>
+  locale: Locale
 }) {
   return (
     <div className="flex flex-col gap-2">
@@ -203,6 +205,7 @@ function SisiPapan({
       ) : (
         <>
           <Papan
+          locale={locale}
             cells={Array.from(state.board)}
             active={null}
             secondary={null}

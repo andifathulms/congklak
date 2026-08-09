@@ -18,6 +18,14 @@ interface Dict {
   readonly judul: string
   readonly tagline: string
   readonly papan: string
+  readonly papanLabel: string
+  readonly lubangLabel: string
+  readonly sisimu: string
+  readonly sisiLawan: string
+  readonly bisaDitabur: string
+  readonly kosongLabel: string
+  readonly lumbungLabel: string
+  readonly barisLabel: string
   readonly beranda: string
   readonly berandaIntro: string
   readonly nilai1: string
@@ -177,6 +185,14 @@ const id: Dict = {
   judul: 'Congklak',
   tagline: 'Congklak dengan aturan kedaerahan yang eksplisit dan bersumber.',
   papan: 'Papan',
+  papanLabel: 'Papan congklak',
+  lubangLabel: 'Lubang {n}',
+  sisimu: 'sisimu',
+  sisiLawan: 'sisi lawan',
+  bisaDitabur: 'bisa ditabur',
+  kosongLabel: 'kosong',
+  lumbungLabel: 'Lumbung {nama}',
+  barisLabel: 'Baris {nama}',
   beranda: 'Congklak, dengan aturan daerahnya dibuka',
   berandaIntro: 'Aturannya berbeda-beda di tiap daerah, dan sumbernya saling bertentangan. Di sini tiap aturan disebut namanya, dicantumkan sumbernya, dan ditunjukkan di mana sumbernya tidak sepakat.',
   nilai1: 'Tiga aturan daerah, semuanya bersumber',
@@ -336,6 +352,14 @@ const en: Dict = {
   judul: 'Congklak',
   tagline: 'Congklak with its regional rulesets made explicit and cited.',
   papan: 'Board',
+  papanLabel: 'Congklak board',
+  lubangLabel: 'Lubang {n}',
+  sisimu: 'your side',
+  sisiLawan: 'opponent\u2019s side',
+  bisaDitabur: 'can be sown',
+  kosongLabel: 'empty',
+  lumbungLabel: 'Lumbung {nama}',
+  barisLabel: '{nama} row',
   beranda: 'Congklak, with its regional rules opened up',
   berandaIntro: 'The rules genuinely differ from region to region, and the published sources contradict each other. Here every ruleset is named, cited, and shown where its sources disagree.',
   nilai1: 'Three regional rulesets, every one cited',

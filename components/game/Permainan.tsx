@@ -313,6 +313,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
       </p>
 
       <Papan
+          locale={locale}
         papanRef={papanRef}
         cells={frame.cells}
         active={frame.active}
