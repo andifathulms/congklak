@@ -103,7 +103,7 @@ export function Ulang({ locale, kodeAwal }: { locale: Locale; kodeAwal?: string 
               max={steps.length}
               value={at}
               onChange={(e) => setAt(Number(e.target.value))}
-              className="w-full flex-1 accent-teak"
+              className="min-h-target w-full flex-1 accent-teak"
               aria-label={kata.langkah}
             />
           </div>

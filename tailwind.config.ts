@@ -90,6 +90,9 @@ const config: Config = {
       fontVariantNumeric: {
         tabular: 'tabular-nums',
       },
+      /** Sasaran tekan terkecil (WCAG 2.5.8), dari satu variabel. */
+      minHeight: { target: 'var(--target-min)' },
+      minWidth: { target: 'var(--target-min)' },
       borderRadius: {
         /** One continuous carved form, not fourteen cards (PRD §11). */
         board: '2.75rem',

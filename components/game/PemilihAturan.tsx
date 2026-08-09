@@ -39,7 +39,7 @@ export function PemilihAturan({
       aksi={
         <Link
           href={`/${locale}/aturan#${active.id}`}
-          className="rounded font-sans text-xs text-fg-muted underline underline-offset-4 transition hover:text-fg"
+          className="inline-flex min-h-target items-center rounded font-sans text-xs text-fg-muted underline underline-offset-4 transition hover:text-fg"
         >
           {kata.sumber} →
         </Link>

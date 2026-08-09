@@ -70,7 +70,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
             )}
             <a
               href="#daftar-aturan"
-              className="ml-auto rounded font-sans text-xs text-fg-muted underline decoration-accent/40 underline-offset-4 transition hover:text-fg"
+              className="ml-auto inline-flex min-h-target items-center rounded font-sans text-xs text-fg-muted underline decoration-accent/40 underline-offset-4 transition hover:text-fg"
             >
               {kata.kembaliKeDaftar}
             </a>
@@ -168,7 +168,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
           <p>
             <a
               href="#daftar-aturan"
-              className="rounded font-sans text-xs text-fg-muted underline decoration-accent/40 underline-offset-4 transition hover:text-fg"
+              className="inline-flex min-h-target items-center rounded font-sans text-xs text-fg-muted underline decoration-accent/40 underline-offset-4 transition hover:text-fg"
             >
               {kata.kembaliKeDaftar}
             </a>

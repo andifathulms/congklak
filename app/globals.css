@@ -54,6 +54,17 @@
   --accent: #7b5533; /* on mat 4.87:1 · on mat-high 5.49:1 */
   --accent-strong: #66442a; /* on mat-high 7.22:1 */
 
+  /**
+   * Ukuran sasaran terkecil untuk sesuatu yang bisa ditekan — WCAG 2.5.8
+   * meminta 24×24 px CSS. Ditulis sekali di sini supaya angkanya tidak
+   * ditebak ulang tiap kali sebuah kendali dibuat kecil.
+   *
+   * Tautan yang duduk di dalam kalimat dikecualikan oleh kriteriumnya, dan
+   * memang tidak memakai ini: memberi tinggi paksa pada tautan sebaris
+   * justru merusak barisnya.
+   */
+  --target-min: 1.5rem;
+
   /* SPACE — the rhythm the page is built on, so vertical spacing is a
      decision made once rather than per component. */
   --space-1: 0.25rem;

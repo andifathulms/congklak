@@ -128,7 +128,7 @@ export function Banding({ locale }: { locale: Locale }) {
             max={hasil.steps.length - 1}
             value={langkahKe}
             onChange={(e) => setLihat(Number(e.target.value))}
-            className="w-full flex-1 accent-teak"
+            className="min-h-target w-full flex-1 accent-teak"
             aria-label={kata.giliranKe}
           />
         </div>
