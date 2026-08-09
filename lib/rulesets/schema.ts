@@ -36,6 +36,24 @@ export type Source = z.infer<typeof SourceSchema>
  * Where this pack knowingly disagrees with another reading. Surfaced in the
  * UI — when sources conflict we record both rather than picking silently.
  */
+/**
+ * Seberapa jauh sebuah perbedaan benar-benar sampai ke mesin.
+ *
+ * Halaman Aturan dulu menampilkan kedelapan belas perbedaan dengan bobot
+ * yang sama, jadi pembaca tidak bisa membedakan aturan yang sungguh
+ * dijalankan mesin dari catatan kaki yang sengaja ditunda. Itu justru
+ * kabur di tempat proyek ini menaruh seluruh klaimnya.
+ *
+ * - `dapat-dibandingkan` — kedua bacaan bisa dinyatakan sebagai opsi, dan
+ *   aplikasi bisa menunjukkan papan tempat keduanya berbeda.
+ * - `diterapkan` — bacaan pack ini yang dijalankan mesin, tapi bacaan
+ *   lawannya tidak bisa dinyatakan skema, jadi tidak ada pembandingnya.
+ * - `dicatat` — tidak satu pun bacaan mengubah perilaku mesin. Dicatat
+ *   karena ada sumber yang menyatakannya, dan ditunda dengan sadar.
+ */
+export const StatusPerbedaanSchema = z.enum(['dapat-dibandingkan', 'diterapkan', 'dicatat'])
+export type StatusPerbedaan = z.infer<typeof StatusPerbedaanSchema>
+
 export const DivergenceSchema = z
   .object({
     /** Aturan yang diperselisihkan, dalam bahasa manusia. */
@@ -44,6 +62,12 @@ export const DivergenceSchema = z
     thisPack: z.string().min(3),
     /** Bacaan lain yang terdokumentasi. */
     otherReading: z.string().min(3),
+    /**
+     * Wajib. Tidak bisa diperiksa mesin — ia menyatakan hubungan antara
+     * prosa dan perilaku engine yang hanya manusia bisa pastikan — jadi ia
+     * dibuat wajib supaya setidaknya tidak bisa lupa diisi.
+     */
+    status: StatusPerbedaanSchema,
     /**
      * Judul sumber dalam pack ini yang berbicara soal perbedaan ini.
      * Sebuah perbedaan yang tidak bisa ditelusuri ke sumber hanyalah

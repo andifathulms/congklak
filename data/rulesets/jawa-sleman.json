@@ -43,6 +43,7 @@
   "divergences": [
     {
       "rule": "Syarat berhenti",
+      "status": "dapat-dibandingkan",
       "thisPack": "Permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya, walau papan masih berisi.",
       "otherReading": "Permainan berjalan sampai pemain yang mendapat giliran tidak punya satu pun lubang berisi.",
       "sources": [
@@ -52,6 +53,7 @@
     },
     {
       "rule": "Biji sisa di papan saat berhenti",
+      "status": "dapat-dibandingkan",
       "thisPack": "Tidak masuk hitungan. Yang dihitung hanya isi kedua gunung.",
       "otherReading": "Biji sisa disapu ke lumbung pemilik sisinya lebih dulu, baru dihitung.",
       "sources": [
@@ -61,6 +63,7 @@
     },
     {
       "rule": "Jumlah lubang per baris",
+      "status": "dicatat",
       "thisPack": "Tujuh lubang per baris, 98 biji.",
       "otherReading": "Sumber yang sama menyebut papan bisa berbaris tujuh, sembilan, atau sebelas lubang, dengan biji sebanyak jumlah lubang per barisnya.",
       "sources": [
@@ -70,6 +73,7 @@
     },
     {
       "rule": "Langkah pertama",
+      "status": "dicatat",
       "thisPack": "Bergiliran sejak langkah pertama, pemain A lebih dulu.",
       "otherReading": "Kedua pemain mulai serentak, sama-sama mengangkat satu lubang di sisinya.",
       "sources": [
@@ -79,6 +83,7 @@
     },
     {
       "rule": "Menembak saat lubang seberang kosong",
+      "status": "dapat-dibandingkan",
       "thisPack": "Biji terakhir tetap diambil ke gunung walau lubang seberang kosong.",
       "otherReading": "Tidak menembak sama sekali kalau seberangnya kosong.",
       "sources": [],
@@ -86,6 +91,7 @@
     },
     {
       "rule": "Syarat satu pusingan sebelum menembak",
+      "status": "dapat-dibandingkan",
       "thisPack": "Tidak ada syarat pusingan. Biji terakhir di lubang kosong sisi sendiri langsung menembak.",
       "otherReading": "Menembak hanya sah sesudah biji melewati lumbung sendiri lalu kembali ke sisi sendiri; sebelum itu hanya mati.",
       "sources": [],

@@ -77,6 +77,13 @@ interface Dict {
   readonly skor: string
   readonly belumAdaLangkah: string
   readonly perbedaanCount: string
+  readonly statusDapatDibandingkan: string
+  readonly statusDiterapkan: string
+  readonly statusDicatat: string
+  readonly statusJelasDibandingkan: string
+  readonly statusJelasDiterapkan: string
+  readonly statusJelasDicatat: string
+  readonly perbedaanRingkas: string
   readonly gantiSaatJalan: string
   readonly banding: string
   readonly bandingIntro: string
@@ -201,6 +208,13 @@ const id: Dict = {
   skor: 'Skor',
   belumAdaLangkah: 'Belum ada langkah.',
   perbedaanCount: 'perbedaan tercatat',
+  statusDapatDibandingkan: 'Dijalankan mesin',
+  statusDiterapkan: 'Dijalankan, tanpa pembanding',
+  statusDicatat: 'Dicatat saja',
+  statusJelasDibandingkan: 'Kedua bacaan bisa dimainkan di sini, dan bisa ditunjukkan di papan.',
+  statusJelasDiterapkan: 'Bacaan pack ini yang dijalankan mesin. Bacaan lawannya belum bisa dinyatakan, jadi tidak ada papan pembandingnya.',
+  statusJelasDicatat: 'Tidak diterapkan. Dicatat karena sumbernya menyatakannya, dan ditunda dengan sadar.',
+  perbedaanRingkas: 'Dari {n} perbedaan yang tercatat, {a} dijalankan mesin dan {b} baru catatan.',
   gantiSaatJalan: 'Selesaikan atau mulai permainan baru untuk mengganti aturan.',
   banding: 'Bandingkan aturan',
   bandingIntro: 'Satu daftar langkah, dua ruleset. Di mana keduanya pertama kali berbeda?',
@@ -325,6 +339,13 @@ const en: Dict = {
   skor: 'Score',
   belumAdaLangkah: 'No moves yet.',
   perbedaanCount: 'recorded divergences',
+  statusDapatDibandingkan: 'The engine plays this',
+  statusDiterapkan: 'Played, nothing to compare',
+  statusDicatat: 'Recorded only',
+  statusJelasDibandingkan: 'Both readings are playable here, and the difference can be shown on a board.',
+  statusJelasDiterapkan: 'This pack\u2019s reading is what the engine plays. The other reading cannot be expressed yet, so there is no board to compare against.',
+  statusJelasDicatat: 'Not implemented. Recorded because a source states it, and deferred deliberately.',
+  perbedaanRingkas: 'Of {n} recorded divergences, {a} are played by the engine and {b} are notes.',
   gantiSaatJalan: 'Finish or start a new game to change the ruleset.',
   banding: 'Compare rulesets',
   bandingIntro: 'One move list, two rulesets. Where do they first disagree?',

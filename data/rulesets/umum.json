@@ -45,6 +45,7 @@
   "divergences": [
     {
       "rule": "Syarat berhenti",
+      "status": "dapat-dibandingkan",
       "thisPack": "Permainan berhenti saat pemain yang mendapat giliran tidak punya satu pun lubang berisi di sisinya.",
       "otherReading": "Permainan berhenti begitu salah satu pemain punya tiga lubang kosong di sisinya, walau papan masih berisi.",
       "sources": [
@@ -54,6 +55,7 @@
     },
     {
       "rule": "Sisi mana yang menembak",
+      "status": "diterapkan",
       "thisPack": "Biji terakhir di lubang kosong sisi sendiri menembak lubang seberang. Di lubang kosong sisi lawan, giliran habis tanpa tembakan.",
       "otherReading": "Terbalik: berhenti di lubang kosong sisi sendiri justru mengakhiri giliran, dan yang menembak adalah berhenti di sisi lawan.",
       "sources": [
@@ -63,6 +65,7 @@
     },
     {
       "rule": "Menembak saat lubang seberang kosong",
+      "status": "dapat-dibandingkan",
       "thisPack": "Biji terakhir tetap diambil ke lumbung walau lubang seberang kosong.",
       "otherReading": "Tidak ada tembakan sama sekali kalau lubang seberang kosong; biji ditinggal dan giliran habis.",
       "sources": [],
@@ -70,6 +73,7 @@
     },
     {
       "rule": "Permainan beberapa babak",
+      "status": "dicatat",
       "thisPack": "Satu babak saja.",
       "otherReading": "Pemenang mengisi ulang lubangnya; lubang yang tak terisi menjadi 'terbakar' dan dilewati pada babak berikutnya, sampai satu pemain kehilangan seluruh lubangnya atau menyerah.",
       "sources": [
@@ -79,6 +83,7 @@
     },
     {
       "rule": "Langkah pertama",
+      "status": "dicatat",
       "thisPack": "Bergiliran sejak langkah pertama, pemain A lebih dulu.",
       "otherReading": "Kedua pemain menabur serentak pada langkah pertama.",
       "sources": [
@@ -88,6 +93,7 @@
     },
     {
       "rule": "Syarat satu pusingan sebelum menembak",
+      "status": "dapat-dibandingkan",
       "thisPack": "Tidak ada syarat pusingan. Biji terakhir di lubang kosong sisi sendiri langsung menembak.",
       "otherReading": "Menembak hanya sah sesudah biji melewati lumbung sendiri lalu kembali ke sisi sendiri; sebelum itu hanya mati.",
       "sources": [],

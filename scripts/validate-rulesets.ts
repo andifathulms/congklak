@@ -48,7 +48,19 @@ function main(): void {
 
     const unverified = pack.sources.filter((s) => s.confidence === 'perlu-cek').length
     const flag = unverified > 0 ? `  (${unverified} sumber perlu dicek)` : ''
-    console.log(`  ok  ${file}  — ${pack.sources.length} sumber${flag}`)
+
+    /**
+     * Berapa banyak perbedaan yang benar-benar sampai ke mesin, dicetak
+     * tiap build. Skema mewajibkan `status`, tapi tidak ada yang bisa
+     * memeriksa apakah nilainya jujur — jadi angkanya ditaruh di depan
+     * mata orang yang menjalankan build, di mana pergeseran akan terlihat.
+     */
+    const banding = pack.divergences.filter((d) => d.status === 'dapat-dibandingkan').length
+    const catat = pack.divergences.filter((d) => d.status === 'dicatat').length
+    console.log(
+      `  ok  ${file}  — ${pack.sources.length} sumber${flag}` +
+        `  · ${pack.divergences.length} perbedaan (${banding} dapat dibandingkan, ${catat} dicatat saja)`,
+    )
   }
 
   if (problems.length > 0) {

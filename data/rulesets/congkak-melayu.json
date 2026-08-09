@@ -2,7 +2,10 @@
   "id": "congkak-melayu",
   "name": "Congkak Melayu",
   "region": "Semenanjung Melayu (Malaysia, Riau, Sumatra pesisir)",
-  "aka": ["congkak", "dakon"],
+  "aka": [
+    "congkak",
+    "dakon"
+  ],
   "summary": "Bacaan Melayu. Lubang kecil disebut kampung, lumbung disebut rumah atau ibu. Menyebar searah jarum jam, rumah lawan dilewati, biji terakhir di rumah sendiri memberi giliran tambahan. Yang membedakan: menembak hanya boleh sesudah satu pusingan penuh — sesudah biji melewati rumah sendiri lalu kembali ke kawasan sendiri. Mendarat di kampung kosong sendiri sebelum itu hanyalah mati; giliran habis tanpa tembakan.",
   "presentation": {
     "direction": "searah-jarum-jam"
@@ -38,13 +41,17 @@
   "divergences": [
     {
       "rule": "Syarat menembak",
+      "status": "dapat-dibandingkan",
       "thisPack": "Hanya boleh menembak sesudah satu pusingan penuh — biji sudah melewati rumah sendiri lalu kembali ke kawasan sendiri. Sebelum itu, mendarat di kampung kosong sendiri berarti mati.",
       "otherReading": "Boleh menembak kapan saja biji terakhir mendarat di lubang kosong sisi sendiri, tanpa syarat pusingan.",
-      "sources": ["Congkak — Gerbang Maklumat Seni Budaya"],
+      "sources": [
+        "Congkak — Gerbang Maklumat Seni Budaya"
+      ],
       "note": "Inilah satu-satunya opsi tempat pack ini berbeda dari 'umum'. Perbedaannya besar dalam permainan: tembakan jadi jauh lebih jarang dan pembukaan pendek hampir tidak pernah menghasilkan tangkapan. Sumber Jawa tidak menyebut syarat pusingan sama sekali."
     },
     {
       "rule": "Cakupan satu pusingan",
+      "status": "diterapkan",
       "thisPack": "Dihitung untuk seluruh giliran, lintas sambung: sekali biji melewati rumah sendiri, syaratnya terpenuhi sampai giliran itu habis.",
       "otherReading": "Bisa juga dibaca ulang tiap kali lubang diangkat pada sambungan, jadi tiap potongan rantai harus melewati rumah sendiri lagi.",
       "sources": [],
@@ -52,23 +59,32 @@
     },
     {
       "rule": "Langkah pertama",
+      "status": "dicatat",
       "thisPack": "Bergiliran sejak langkah pertama, pemain A lebih dulu.",
       "otherReading": "Kedua pemain menabur serentak pada langkah pertama — dinyatakan tegas dalam tradisi Melayu.",
-      "sources": ["Congkak — mancala game, rules and strategy"],
+      "sources": [
+        "Congkak — mancala game, rules and strategy"
+      ],
       "note": "Merusak model giliran secara mendasar. Ditunda dengan sengaja — PRD §4."
     },
     {
       "rule": "Permainan beberapa babak dan kampung terbakar",
+      "status": "dicatat",
       "thisPack": "Satu babak saja.",
       "otherReading": "Sesudah satu babak, tiap pemain mengisi ulang kampungnya dari rumahnya sendiri; kampung yang bijinya tidak cukup dianggap 'terbakar' dan dilewati pada babak-babak berikutnya.",
-      "sources": ["Congkak — mancala game, rules and strategy"],
+      "sources": [
+        "Congkak — mancala game, rules and strategy"
+      ],
       "note": "Nyata dan tradisional, tapi menambah satu lapis meta di atas permainannya. Ditunda — PRD §4."
     },
     {
       "rule": "Jumlah kampung per baris",
+      "status": "dicatat",
       "thisPack": "Tujuh kampung per baris, 98 biji.",
       "otherReading": "JKKN menyebut papan lima, tujuh, dan sembilan kampung; tujuh yang paling lazim di Malaysia.",
-      "sources": ["Congkak — Gerbang Maklumat Seni Budaya"],
+      "sources": [
+        "Congkak — Gerbang Maklumat Seni Budaya"
+      ],
       "note": "Papan lima dan sembilan butuh topologi yang bisa berubah ukuran, dan itu belum ada."
     }
   ]

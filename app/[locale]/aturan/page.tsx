@@ -3,6 +3,7 @@ import { RULESETS } from '@/lib/rulesets'
 import { LOCALES, isLocale, t } from '@/lib/i18n'
 import { Panel } from '@/components/ui/Panel'
 import { Lencana } from '@/components/ui/Lencana'
+import type { StatusPerbedaan as Status } from '@/lib/rulesets/schema'
 import { TautanTombol } from '@/components/ui/Tombol'
 
 export function generateStaticParams() {
@@ -92,13 +93,31 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
 
           {ruleset.divergences.length > 0 && (
             <Panel judul={kata.perbedaan}>
+              {/* Berapa banyak dari daftar ini yang benar-benar sampai ke
+                  mesin, dikatakan sebelum daftarnya — karena selama ini
+                  daftar ini terbaca seolah semuanya dimainkan. */}
+              <p className="mb-4 font-sans text-sm text-fg-muted">
+                {kata.perbedaanRingkas
+                  .replace('{n}', String(ruleset.divergences.length))
+                  .replace(
+                    '{a}',
+                    String(ruleset.divergences.filter((d) => d.status !== 'dicatat').length),
+                  )
+                  .replace(
+                    '{b}',
+                    String(ruleset.divergences.filter((d) => d.status === 'dicatat').length),
+                  )}
+              </p>
               <ul className="flex flex-col gap-4">
                 {ruleset.divergences.map((d, i) => (
                   <li
                     key={i}
                     className="border-t border-mat-edge/70 pt-4 first:border-0 first:pt-0"
                   >
-                    <h3 className="font-display text-base font-semibold">{d.rule}</h3>
+                    <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                      <h3 className="font-display text-base font-semibold">{d.rule}</h3>
+                      <StatusPerbedaan status={d.status} kata={kata} />
+                    </div>
                     {/* Bacaan yang dipakai dan bacaan yang tidak diambil,
                         berdampingan: itulah isi produknya. */}
                     <div className="mt-2 grid gap-2.5 sm:grid-cols-2">
@@ -153,5 +172,52 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
         </TautanTombol>
       </div>
     </div>
+  )
+}
+
+/**
+ * Seberapa jauh sebuah perbedaan sampai ke mesin.
+ *
+ * Yang dijalankan mesin dan yang baru dicatat sebelumnya tampil sama
+ * persis, jadi halaman ini menyiratkan aplikasinya memainkan semua yang
+ * didokumentasikannya. Delapan dari delapan belas tidak.
+ */
+function StatusPerbedaan({ status, kata }: { status: Status; kata: ReturnType<typeof t> }) {
+  const label =
+    status === 'dapat-dibandingkan'
+      ? kata.statusDapatDibandingkan
+      : status === 'diterapkan'
+        ? kata.statusDiterapkan
+        : kata.statusDicatat
+  const jelas =
+    status === 'dapat-dibandingkan'
+      ? kata.statusJelasDibandingkan
+      : status === 'diterapkan'
+        ? kata.statusJelasDiterapkan
+        : kata.statusJelasDicatat
+
+  return (
+    <span
+      title={jelas}
+      className={[
+        'inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-sans text-2xs',
+        status === 'dicatat'
+          ? 'bg-mat-low text-fg-muted ring-1 ring-inset ring-mat-edge'
+          : 'bg-teak/12 text-fg ring-1 ring-inset ring-teak/30',
+      ].join(' ')}
+    >
+      <span
+        aria-hidden
+        className={[
+          'h-1.5 w-1.5 rounded-full',
+          status === 'dapat-dibandingkan'
+            ? 'bg-teak'
+            : status === 'diterapkan'
+              ? 'bg-teak/50'
+              : 'bg-fg-muted/40',
+        ].join(' ')}
+      />
+      {label}
+    </span>
   )
 }
