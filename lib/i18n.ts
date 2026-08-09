@@ -52,6 +52,9 @@ interface Dict {
   readonly urung: string
   readonly lewati: string
   readonly kecepatan: string
+  readonly suara: string
+  readonly suaraHidup: string
+  readonly suaraMati: string
   readonly mode: string
   readonly kesulitan: string
   readonly pelan: string
@@ -194,6 +197,9 @@ const id: Dict = {
   urung: 'Urungkan',
   lewati: 'Lewati animasi',
   kecepatan: 'Kecepatan',
+  suara: 'Suara',
+  suaraHidup: 'Suara hidup — matikan',
+  suaraMati: 'Suara mati — hidupkan',
   mode: 'Mode',
   kesulitan: 'Kesulitan',
   pelan: 'Pelan',
@@ -336,6 +342,9 @@ const en: Dict = {
   urung: 'Undo',
   lewati: 'Skip animation',
   kecepatan: 'Speed',
+  suara: 'Sound',
+  suaraHidup: 'Sound on \u2014 turn off',
+  suaraMati: 'Sound off \u2014 turn on',
   mode: 'Mode',
   kesulitan: 'Difficulty',
   pelan: 'Slow',

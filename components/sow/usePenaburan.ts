@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Board } from '@/lib/engine/board'
 import { describeEvent, type GameEvent, type HentiEvent } from '@/lib/engine/events'
 import { framesFor, frameDuration, initialFrame, type Frame } from './frames'
+import { mainkanRingkas, mainkanSuara } from './suara'
 
 export type Kecepatan = 'pelan' | 'sedang' | 'cepat' | 'langsung'
 
@@ -83,7 +84,12 @@ export function usePenaburan(board: Board, kecepatan: Kecepatan): Penaburan {
       return
     }
 
-    timer.current = setTimeout(() => setAt((i) => i + 1), ms)
+    timer.current = setTimeout(() => {
+      // Bunyi menumpang pada langkah bingkai yang sama: satu peristiwa, satu
+      // bingkai, satu bunyi. Ia tidak pernah menghitung apa pun sendiri.
+      if (next.event) mainkanSuara(next.event)
+      setAt((i) => i + 1)
+    }, ms)
     return clear
   }, [playing, at, frames, kecepatan, clear, finish])
 
@@ -97,6 +103,7 @@ export function usePenaburan(board: Board, kecepatan: Kecepatan): Penaburan {
       // Gerak-terbatas diselesaikan seketika, dengan ringkasan tertulis
       // tentang apa yang terjadi (PRD §8.1).
       if (prefersReducedMotion() || kecepatan === 'langsung') {
+        mainkanRingkas(events)
         setAt(next.length - 1)
         setPlaying(false)
         onDone()
@@ -112,8 +119,11 @@ export function usePenaburan(board: Board, kecepatan: Kecepatan): Penaburan {
 
   const skip = useCallback(() => {
     clear()
+    // Melewati animasi tetap menyisakan hasilnya, jadi hasil itu tetap
+    // berbunyi — sekali, bukan sisa bingkai yang belum sempat diputar.
+    mainkanRingkas(frames.slice(at + 1).map((f) => f.event).filter((e): e is GameEvent => !!e))
     setAt(frames.length - 1)
-  }, [clear, frames.length])
+  }, [clear, frames, at])
 
   const reset = useCallback(
     (next: Board) => {

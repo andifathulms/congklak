@@ -16,6 +16,7 @@ import { RULESETS, getRuleset, type Ruleset } from '@/lib/rulesets'
 import { t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
 import { KECEPATAN, usePenaburan, type Kecepatan } from '@/components/sow/usePenaburan'
+import { TombolSuara } from '@/components/sow/TombolSuara'
 import { pratinjauTeks, ringkasPratinjau } from '@/components/preview/ringkas'
 import { describeHenti } from '@/lib/engine/events'
 import { Panel } from '@/components/ui/Panel'
@@ -329,7 +330,8 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
         {player.playing && (
           <Tombol onClick={player.skip}>{kata.lewati}</Tombol>
         )}
-        <span className="ml-auto">
+        <span className="ml-auto flex items-center gap-1">
+          <TombolSuara locale={locale} />
           <Segmen
             options={KECEPATAN.map((k) => [k, kata[k]] as const)}
             value={kecepatan}
