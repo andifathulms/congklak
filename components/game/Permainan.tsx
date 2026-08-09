@@ -22,6 +22,7 @@ import { Panel } from '@/components/ui/Panel'
 import { Salin } from '@/components/ui/Salin'
 import { Segmen } from '@/components/ui/Segmen'
 import { Tombol } from '@/components/ui/Tombol'
+import { AturanLain } from './AturanLain'
 import { PemilihAturan } from './PemilihAturan'
 import { Skor } from './Skor'
 import { useAi } from './useAi'
@@ -302,6 +303,13 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
           <span className="font-medium">{ajakan ?? kata.pratinjauPetunjuk}</span>
         )}
       </p>
+
+      {/* Begitu permainannya selesai, pertanyaan berikutnya bukan lagi
+          "aturan mana yang ada" melainkan "apa jadinya permainanku barusan
+          di aturan yang lain". Panelnya cuma muncul di situ. */}
+      {state.status === 'selesai' && !busy && (
+        <AturanLain record={record} aktif={ruleset} locale={locale} />
+      )}
 
       {/* Yang sering disentuh saat bermain duduk langsung di bawah papan;
           yang jarang — mode dan kesulitan — turun ke panel di bawahnya. */}

@@ -88,6 +88,10 @@ interface Dict {
   readonly buktiTeks: string
   readonly buktiTakAda: string
   readonly buktiCara: string
+  readonly aturanLainJudul: string
+  readonly aturanLainSama: string
+  readonly aturanLainBeda: string
+  readonly aturanLainCatatan: string
   readonly alasanRingkasPapan: string
   readonly alasanRingkasSelesai: string
   readonly alasanRingkasTakSah: string
@@ -226,6 +230,10 @@ const id: Dict = {
   buktiTeks: 'Pada permainan contoh #{seed} ({panjang} langkah), kedua bacaan berpisah di giliran {giliran}: {alasan}',
   buktiTakAda: 'Tidak ada papan yang membedakannya dalam {n} permainan contoh. Aturannya nyata dan bersumber, tapi jarang menentukan.',
   buktiCara: 'Dicari dengan menjalankan pack ini melawan dirinya sendiri, satu klausa itu saja dibalik. Benihnya tetap, jadi permainannya bisa diputar ulang.',
+  aturanLainJudul: 'Permainan ini di bawah aturan lain',
+  aturanLainSama: 'berjalan sama persis sampai akhir.',
+  aturanLainBeda: 'berpisah di giliran {n} — {alasan}',
+  aturanLainCatatan: 'Daftar langkah yang sama diputar ulang di tiap aturan. Sesudah keduanya berpisah, permainannya bukan permainan yang sama lagi, jadi tidak ada skor akhir yang bisa dibandingkan.',
   alasanRingkasPapan: 'papan kedua bacaan mulai berbeda.',
   alasanRingkasSelesai: 'satu bacaan menyatakan permainan sudah selesai, satunya belum.',
   alasanRingkasTakSah: 'langkah itu tidak sah lagi di salah satu bacaan.',
@@ -364,6 +372,10 @@ const en: Dict = {
   buktiTeks: 'In sample game #{seed} ({panjang} moves), the two readings part at turn {giliran}: {alasan}',
   buktiTakAda: 'No board told them apart across {n} sample games. The rule is real and cited, but it rarely decides anything.',
   buktiCara: 'Found by running this pack against itself with that one clause flipped. The seed is fixed, so the game can be replayed.',
+  aturanLainJudul: 'This game under the other rulesets',
+  aturanLainSama: 'plays identically all the way through.',
+  aturanLainBeda: 'parts at turn {n} — {alasan}',
+  aturanLainCatatan: 'The same move list, replayed under each ruleset. Once two readings part the game is no longer the same game, so there is no final score to compare.',
   alasanRingkasPapan: 'the two boards start to differ.',
   alasanRingkasSelesai: 'one reading says the game is already over, the other does not.',
   alasanRingkasTakSah: 'that move is no longer legal under one reading.',
