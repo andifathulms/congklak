@@ -19,6 +19,20 @@ interface Dict {
   readonly tagline: string
   readonly papan: string
   readonly bukaPapan: string
+  readonly contohJudul: string
+  readonly contohIntro: string
+  readonly contohTujuan: string
+  readonly contohLewatiLumbung: string
+  readonly contohLangkahKe: string
+  readonly contohSebelum: string
+  readonly contohBerikut: string
+  readonly contohUlang: string
+  readonly contohAwal: string
+  readonly contohAmbil: string
+  readonly contohJatuh: string
+  readonly contohLumbung: string
+  readonly contohSelesai: string
+  readonly contohPapanIni: string
   readonly papanLabel: string
   readonly lubangLabel: string
   readonly sisimu: string
@@ -187,6 +201,20 @@ const id: Dict = {
   tagline: 'Congklak dengan aturan kedaerahan yang eksplisit dan bersumber.',
   papan: 'Papan',
   bukaPapan: 'Buka papan',
+  contohJudul: 'Satu giliran, langkah demi langkah',
+  contohIntro: 'Papannya punya 14 lubang kecil dan dua lumbung — lubang besar di kedua ujung. Barisan bawah milikmu, lumbung kirimu juga. Di permainan penuh tiap lubang kecil mulai dengan 7 biji, 98 biji seluruhnya.',
+  contohTujuan: 'Yang menang adalah yang paling banyak mengumpulkan biji di lumbungnya sendiri.',
+  contohLewatiLumbung: 'Lumbung lawan selalu dilewati — kamu tidak pernah menabur ke sana. Giliran contoh ini berhenti sebelum sampai ke situ, jadi hal itu tidak terlihat di sini.',
+  contohLangkahKe: 'Langkah {n} dari {total}',
+  contohSebelum: 'Sebelumnya',
+  contohBerikut: 'Berikutnya',
+  contohUlang: 'Ulang dari awal',
+  contohAwal: 'Posisi awal. Lubang 4 di barisanmu berisi 5 biji, dan giliranmu. Lubang lain sengaja dikosongkan supaya jalannya biji mudah diikuti.',
+  contohAmbil: 'Ambil semua {n} biji dari lubang {i}. Lubang itu jadi kosong, dan {n} biji ada di tangan.',
+  contohJatuh: 'Jatuhkan satu biji ke lubang {i}: {a} → {b}. Sisa di tangan: {s}.',
+  contohLumbung: 'Lubang besar di ujung ini lumbungmu. Biji yang melewatinya masuk ke dalam: {a} → {b}. Sisa di tangan: {s}.',
+  contohSelesai: 'Biji terakhir jatuh di lubang kosong milik lawan, jadi giliran ini habis. Satu biji sudah tersimpan di lumbung.',
+  contohPapanIni: 'Papan contoh — sengaja diisi sedikit biji supaya terbaca. Papan yang bisa dimainkan ada di bawah.',
   papanLabel: 'Papan congklak',
   lubangLabel: 'Lubang {n}',
   sisimu: 'sisimu',
@@ -355,6 +383,20 @@ const en: Dict = {
   tagline: 'Congklak with its regional rulesets made explicit and cited.',
   papan: 'Board',
   bukaPapan: 'Open the board',
+  contohJudul: 'One turn, step by step',
+  contohIntro: 'The board has 14 small holes and two lumbung — the large holes at either end. The bottom row is yours, and so is the lumbung on your left. In a full game every small hole starts with 7 biji, 98 in all.',
+  contohTujuan: 'Whoever gathers the most biji in their own lumbung wins.',
+  contohLewatiLumbung: 'Your opponent\u2019s lumbung is always skipped — you never sow into it. This example turn stops before reaching it, so that is not shown here.',
+  contohLangkahKe: 'Step {n} of {total}',
+  contohSebelum: 'Previous',
+  contohBerikut: 'Next',
+  contohUlang: 'Start again',
+  contohAwal: 'The starting position. Hole 4 on your row holds 5 biji, and it is your turn. The other holes are left empty so the path is easy to follow.',
+  contohAmbil: 'Scoop all {n} biji out of hole {i}. That hole is now empty, and {n} biji are in your hand.',
+  contohJatuh: 'Drop one biji into hole {i}: {a} → {b}. Left in hand: {s}.',
+  contohLumbung: 'The large hole at this end is your lumbung. Biji passing it fall in: {a} → {b}. Left in hand: {s}.',
+  contohSelesai: 'The last biji landed in an empty hole on your opponent\u2019s side, so the turn ends here. One biji is banked.',
+  contohPapanIni: 'An example board \u2014 deliberately sparse so it reads clearly. The board you can play is below.',
   papanLabel: 'Congklak board',
   lubangLabel: 'Lubang {n}',
   sisimu: 'your side',

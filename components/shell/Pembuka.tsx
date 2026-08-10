@@ -1,4 +1,5 @@
 import { t, type Locale } from '@/lib/i18n'
+import { ContohGiliran } from './ContohGiliran'
 import { Kepala } from './Kepala'
 
 /**
@@ -31,6 +32,11 @@ export function Pembuka({ locale }: { locale: Locale }) {
           </li>
         ))}
       </ul>
+
+      {/* Contoh yang bisa ditelusuri sebelum satu kendali pun disentuh.
+          Ia duduk di sini, tepat sebelum papan sungguhan, bukan di halaman
+          lain yang harus dicari. */}
+      <ContohGiliran locale={locale} />
     </Kepala>
   )
 }
