@@ -6,6 +6,22 @@ import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { RulesetSchema } from '../lib/rulesets/schema'
 
+/**
+ * Stable stringify — keys sorted, so two objects that carry the same data
+ * compare equal regardless of the order they were written in.
+ */
+function kanonik(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(kanonik).join(',')}]`
+  if (value && typeof value === 'object') {
+    const o = value as Record<string, unknown>
+    return `{${Object.keys(o)
+      .sort()
+      .map((k) => `${JSON.stringify(k)}:${kanonik(o[k])}`)
+      .join(',')}}`
+  }
+  return JSON.stringify(value) ?? 'null'
+}
+
 const DIR = join(process.cwd(), 'data', 'rulesets')
 
 function main(): void {
@@ -33,6 +49,24 @@ function main(): void {
     }
 
     const pack = result.data
+
+    /**
+     * The browser is handed these packs as plain data — zod does not ship
+     * to the client, because a pack that reaches production has already
+     * passed this gate. That shortcut is only sound if parsing changes
+     * nothing: a schema default silently filling in a missing field here
+     * would leave the client with an object its own type says is complete
+     * and is not.
+     *
+     * So: parsed must equal raw. If it does not, the field the default
+     * supplied has to be written out in the JSON instead.
+     */
+    if (kanonik(pack) !== kanonik(raw)) {
+      problems.push(
+        `${file}: parsing mengubah isinya — ada field yang diisi oleh default skema. ` +
+          `Tulis field itu apa adanya di JSON-nya, karena klien menerima data ini tanpa divalidasi ulang.`,
+      )
+    }
 
     // Id is the filename, because ids appear in shared codes and handshakes.
     if (`${pack.id}.json` !== file) {
