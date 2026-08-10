@@ -415,6 +415,10 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
             onChange={gantiMode}
             label={kata.mode}
           />
+          {/* Apa AI itu sebenarnya, di panel tempat ia dinyalakan. Aplikasi
+              ini menjual "tiap angka bisa ditelusuri ke aturan bersumber",
+              lalu menaruh lawan yang menilai papan dengan bobot karangan
+              sendiri — dan tidak pernah mengatakannya. */}
           {mode === 'ai' && (
             <Segmen
               options={KESULITAN.map((k) => [k, kata[k]] as const)}
@@ -424,6 +428,11 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
               labelVisible
               size="sm"
             />
+          )}
+          {mode === 'ai' && (
+            <p className="max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
+              {kata.aiJujur}
+            </p>
           )}
         </Panel>
 
