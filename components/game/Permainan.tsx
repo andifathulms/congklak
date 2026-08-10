@@ -24,6 +24,7 @@ import { Salin } from '@/components/ui/Salin'
 import { Segmen } from '@/components/ui/Segmen'
 import { Tombol } from '@/components/ui/Tombol'
 import { AturanLain } from './AturanLain'
+import { aturanUntukOpsi, sumberUntukOpsi } from './rujukan'
 import { PemilihAturan } from './PemilihAturan'
 import { Skor } from './Skor'
 import { useAi } from './useAi'
@@ -352,12 +353,11 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
           // tidak terjadi apa-apa — tanpa jawaban, aplikasinya terbaca
           // rusak, bukan beraturan lain.
           <span>
-            {describeHenti(player.alasanHenti)}
-            {player.alasanHenti.opsi && (
-              <code className="ml-1.5 rounded bg-mat-high px-1 py-0.5 font-mono text-2xs text-fg-muted">
-                {player.alasanHenti.opsi}
-              </code>
-            )}
+            {describeHenti(player.alasanHenti)}{' '}
+            {/* Aturan yang memutuskan, dan siapa yang mengatakannya —
+                di tempat aturannya baru saja berlaku, bukan di catatan
+                kaki halaman lain. */}
+            <Rujukan opsi={player.alasanHenti.opsi} ruleset={ruleset} kata={kata} />
           </span>
         ) : (
           <span className="font-medium">{ajakan ?? kata.pratinjauPetunjuk}</span>
@@ -517,5 +517,47 @@ function Riwayat({ lines, kata }: { lines: readonly string[]; kata: ReturnType<t
         </ol>
       )}
     </Panel>
+  )
+}
+
+/**
+ * The clause that just decided a turn, and the source behind it.
+ *
+ * Universal rules say so plainly instead of borrowing a citation: landing
+ * in an empty hole on the opponent's side ends the turn under every reading
+ * there is, and dressing that in a source would imply a choice nobody made.
+ */
+function Rujukan({
+  opsi,
+  ruleset,
+  kata,
+}: {
+  opsi: string | null
+  ruleset: Ruleset
+  kata: ReturnType<typeof t>
+}) {
+  if (opsi === null) {
+    return <span className="text-fg-muted">{kata.rujukanUniversal}</span>
+  }
+
+  const aturan = aturanUntukOpsi(ruleset, opsi)
+  const sumber = sumberUntukOpsi(ruleset, opsi)
+
+  return (
+    <span className="text-fg-muted">
+      {aturan && (
+        <>
+          {kata.rujukanAturan}: <span className="text-fg">{aturan}</span>
+          {' · '}
+        </>
+      )}
+      <code className="rounded bg-mat-high px-1 py-0.5 font-mono text-2xs">{opsi}</code>
+      {sumber.length > 0 && (
+        <>
+          {' · '}
+          {kata.rujukanSumber}: {sumber.join('; ')}
+        </>
+      )}
+    </span>
   )
 }

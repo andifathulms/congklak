@@ -33,6 +33,9 @@ interface Dict {
   readonly contohLumbung: string
   readonly contohSelesai: string
   readonly contohPapanIni: string
+  readonly rujukanAturan: string
+  readonly rujukanSumber: string
+  readonly rujukanUniversal: string
   readonly papanLabel: string
   readonly lubangLabel: string
   readonly sisimu: string
@@ -214,6 +217,9 @@ const id: Dict = {
   contohJatuh: 'Jatuhkan satu biji ke lubang {i}: {a} → {b}. Sisa di tangan: {s}.',
   contohLumbung: 'Lubang besar di ujung ini lumbungmu. Biji yang melewatinya masuk ke dalam: {a} → {b}. Sisa di tangan: {s}.',
   contohSelesai: 'Biji terakhir jatuh di lubang kosong milik lawan, jadi giliran ini habis. Satu biji sudah tersimpan di lumbung.',
+  rujukanAturan: 'Aturan yang menentukan',
+  rujukanSumber: 'Sumber',
+  rujukanUniversal: 'Berlaku di semua bacaan — bukan pilihan pack ini.',
   contohPapanIni: 'Papan contoh — sengaja diisi sedikit biji supaya terbaca. Papan yang bisa dimainkan ada di bawah.',
   papanLabel: 'Papan congklak',
   lubangLabel: 'Lubang {n}',
@@ -396,6 +402,9 @@ const en: Dict = {
   contohJatuh: 'Drop one biji into hole {i}: {a} → {b}. Left in hand: {s}.',
   contohLumbung: 'The large hole at this end is your lumbung. Biji passing it fall in: {a} → {b}. Left in hand: {s}.',
   contohSelesai: 'The last biji landed in an empty hole on your opponent\u2019s side, so the turn ends here. One biji is banked.',
+  rujukanAturan: 'The rule that decided this',
+  rujukanSumber: 'Source',
+  rujukanUniversal: 'Holds under every reading \u2014 not this pack\u2019s choice.',
   contohPapanIni: 'An example board \u2014 deliberately sparse so it reads clearly. The board you can play is below.',
   papanLabel: 'Congklak board',
   lubangLabel: 'Lubang {n}',
