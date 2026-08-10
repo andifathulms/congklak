@@ -39,6 +39,37 @@ export interface Pelajaran {
 
 export const PELAJARAN: readonly Pelajaran[] = [
   {
+    id: 'menabur',
+    judul: {
+      id: 'Menabur',
+      en: 'Sowing',
+    },
+    ajakan: {
+      id: 'Biji diangkat semua dari satu lubang di barisanmu, lalu dijatuhkan satu per satu ke lubang berikutnya. Lumbungmu ada di ujung barisan, dan biji yang melewatinya masuk ke dalam. Cari lubang yang bijinya cukup untuk sampai ke sana.',
+      en: 'You scoop every biji out of one hole on your row, then drop them one at a time into the holes that follow. Your lumbung sits at the end of the row, and a biji passing it falls in. Find the hole holding enough to reach it.',
+    },
+    // A[4]=4 menabur ke 5, 6, lumbung, lalu menyeberang ke lubang 8 milik
+    // lawan yang kosong — giliran habis di situ. A[0]=2 berhenti jauh
+    // sebelum lumbung.
+    cells: [
+      [0, 2],
+      [4, 4],
+      [10, 3],
+    ],
+    jawaban: 4,
+    pembanding: 0,
+    kenapa: {
+      id: 'Empat biji dari lubang 4 jatuh di 5, lalu 6, lalu lumbungmu — satu biji tersimpan — dan yang terakhir menyeberang ke lubang kosong milik lawan, jadi giliranmu habis di sana. Hitung jarak ke lumbung, lalu cari lubang yang isinya cukup.',
+      en: 'Four biji from hole 4 fall into 5, then 6, then your lumbung — one banked — and the last crosses into an empty hole on your opponent\u2019s side, where your turn ends. Count the distance to your lumbung, then find a hole holding enough.',
+    },
+    meleset: {
+      id: 'Dua biji dari lubang 0 berhenti di lubang 2, masih jauh dari lumbung. Yang terjadi di situ — biji terakhir mendarat di lubang kosong sisi sendiri — punya aturannya sendiri, dan itu pelajaran keempat. Untuk sekarang: bijinya tidak cukup untuk sampai ke lumbung.',
+      en: 'Two biji from hole 0 stop at hole 2, still far from the lumbung. What happens there — a last biji landing in an empty hole on your own side — has a rule of its own, and that is the fourth lesson. For now: there were not enough biji to reach the lumbung.',
+    },
+    klaim: { keLumbung: 1, relay: false, menembak: false, extraTurn: false, toMoveAfter: 1 },
+    klaimPembanding: { menembak: true },
+  },
+  {
     id: 'sambung',
     judul: {
       id: 'Sambung',

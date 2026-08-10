@@ -33,10 +33,12 @@ function periksaKlaim(cells: Parameters<typeof stateFrom>[0], hole: number, klai
 }
 
 describe('mode belajar', () => {
-  it('punya tiga pelajaran dengan id yang berbeda', () => {
-    expect(PELAJARAN).toHaveLength(3)
-    expect(new Set(PELAJARAN.map((p) => p.id)).size).toBe(3)
-    expect(PELAJARAN.map((p) => p.id)).toEqual(['sambung', 'jalan-lagi', 'menembak'])
+  it('punya empat pelajaran dengan id yang berbeda', () => {
+    expect(PELAJARAN).toHaveLength(4)
+    expect(new Set(PELAJARAN.map((p) => p.id)).size).toBe(4)
+    // Menabur lebih dulu: tiga pelajaran lama semuanya kasus khusus dari
+    // aturan yang tidak pernah diajarkan.
+    expect(PELAJARAN.map((p) => p.id)).toEqual(['menabur', 'sambung', 'jalan-lagi', 'menembak'])
   })
 
   describe.each(PELAJARAN.map((p) => [p.id, p] as const))('%s', (_id, pelajaran) => {
