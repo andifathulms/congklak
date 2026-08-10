@@ -50,6 +50,25 @@ export function setSuaraAktif(next: boolean): void {
   if (!next && ctx) void ctx.suspend()
 }
 
+/**
+ * Build the audio context ahead of time, while nothing is happening.
+ *
+ * Constructing an AudioContext is synchronous and slow — measured at 168ms
+ * on the first move of a session, the only main-thread task over 50ms the
+ * app produced. It landed inside the move because that was the first time
+ * anything asked for sound. Second and subsequent moves cost nothing, and
+ * with sound off the task never existed at all, which is how it was
+ * identified.
+ *
+ * Creating one without a user gesture is allowed: it starts suspended, and
+ * `konteks()` already resumes it when the first sound actually plays. So
+ * the cost moves to idle time after load, where nobody is waiting.
+ */
+export function siapkanSuara(): void {
+  if (!suaraAktif()) return
+  konteks()
+}
+
 function konteks(): AudioContext | null {
   if (typeof window === 'undefined') return null
   if (ctx === null) {

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Board } from '@/lib/engine/board'
 import { describeEvent, type GameEvent, type HentiEvent } from '@/lib/engine/events'
 import { framesFor, frameDuration, initialFrame, type Frame } from './frames'
-import { mainkanRingkas, mainkanSuara } from './suara'
+import { mainkanRingkas, mainkanSuara, siapkanSuara } from './suara'
 
 export type Kecepatan = 'pelan' | 'sedang' | 'cepat' | 'langsung'
 
@@ -67,6 +67,23 @@ export function usePenaburan(board: Board, kecepatan: Kecepatan): Penaburan {
   }, [])
 
   useEffect(() => clear, [clear])
+
+  /**
+   * Warm the audio context once, during idle time, on every screen that can
+   * make a sound — rather than paying for it inside the player's first move.
+   */
+  useEffect(() => {
+    const jadwal =
+      typeof window.requestIdleCallback === 'function'
+        ? window.requestIdleCallback
+        : (cb: () => void) => window.setTimeout(cb, 300)
+    const batal =
+      typeof window.cancelIdleCallback === 'function'
+        ? window.cancelIdleCallback
+        : window.clearTimeout
+    const id = jadwal(() => siapkanSuara())
+    return () => batal(id as number)
+  }, [])
 
   // Satu langkah per bingkai, dijadwalkan dari durasi bingkai itu sendiri.
   useEffect(() => {
