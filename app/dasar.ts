@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import { IBM_Plex_Mono, IBM_Plex_Sans, Space_Grotesk } from 'next/font/google'
 import './globals.css'
+import { DEFAULT_LOCALE, type Locale } from '@/lib/i18n'
+import { alamatSemuaBahasa, judulHalaman, ringkasHalaman, type Segmen } from '@/lib/halaman'
 
 /**
  * Everything both root layouts share.
@@ -125,4 +127,51 @@ export const viewport: Viewport = {
   // than framing it. Not the brand paper — this has to match what is
   // actually painted behind the content.
   themeColor: '#E4DDCD',
+}
+
+/**
+ * Metadata for one page, in one language.
+ *
+ * Built from the same i18n entries the page renders as its heading and
+ * opening paragraph, so the two cannot drift apart — the previous version
+ * was a single hand-written pair repeated across all fourteen routes,
+ * describing the English pages in Indonesian.
+ *
+ * Canonical and hreflang come from the route table too. With two locales
+ * serving parallel content, hreflang is the signal that stops them being
+ * read as duplicates of each other, and it was absent everywhere.
+ */
+export function metaHalaman(locale: Locale, segmen: Segmen): Metadata {
+  const judul = judulHalaman(locale, segmen)
+  const ringkas = ringkasHalaman(locale, segmen)
+  const bahasa = alamatSemuaBahasa(segmen)
+
+  return {
+    title: `${judul} — Congklak`,
+    description: ringkas,
+    alternates: {
+      canonical: bahasa[locale],
+      languages: {
+        ...bahasa,
+        // Tanpa x-default, mesin pencari harus menebak mana yang dipakai
+        // untuk bahasa yang tidak terdaftar. Bahasa situsnya Indonesia.
+        'x-default': bahasa[DEFAULT_LOCALE],
+      },
+    },
+    openGraph: {
+      type: 'website',
+      siteName: 'Congklak',
+      locale,
+      title: `${judul} — Congklak`,
+      description: ringkas,
+      url: bahasa[locale],
+      images: [{ url: 'og.png', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${judul} — Congklak`,
+      description: ringkas,
+      images: ['og.png'],
+    },
+  }
 }

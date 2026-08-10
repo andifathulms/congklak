@@ -1,8 +1,16 @@
 import { notFound } from 'next/navigation'
+import { metaHalaman } from '@/app/dasar'
 import { Permainan } from '@/components/game/Permainan'
 import { Pembuka } from '@/components/shell/Pembuka'
 import { defaultRuleset } from '@/lib/rulesets'
 import { LOCALES, isLocale } from '@/lib/i18n'
+
+export function generateMetadata({ params }: { params: { locale: string } }) {
+  // Judul dan deskripsinya diambil dari entri i18n yang sama dengan yang
+  // dirender halaman ini — bukan pasangan teks kedua yang bisa menyimpang.
+  if (!isLocale(params.locale)) return {}
+  return metaHalaman(params.locale, 'main')
+}
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))

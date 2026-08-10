@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { metaHalaman } from '@/app/dasar'
 import { RULESETS, type Ruleset } from '@/lib/rulesets'
 import { LOCALES, isLocale, t, type Locale } from '@/lib/i18n'
 import { Papan } from '@/components/board/Papan'
@@ -8,6 +9,13 @@ import { Lencana } from '@/components/ui/Lencana'
 import type { Divergence, StatusPerbedaan as Status } from '@/lib/rulesets/schema'
 import { BENIH_MAKS, cariBukti } from '@/lib/engine/bukti'
 import { TautanTombol } from '@/components/ui/Tombol'
+
+export function generateMetadata({ params }: { params: { locale: string } }) {
+  // Judul dan deskripsinya diambil dari entri i18n yang sama dengan yang
+  // dirender halaman ini — bukan pasangan teks kedua yang bisa menyimpang.
+  if (!isLocale(params.locale)) return {}
+  return metaHalaman(params.locale, 'aturan')
+}
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }))
