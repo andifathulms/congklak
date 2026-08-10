@@ -103,18 +103,27 @@ export function ContohGiliran({ locale }: { locale: Locale }) {
         {kata.contohIntro} <strong className="font-medium text-fg">{kata.contohTujuan}</strong>
       </p>
 
-      <Papan
-        locale={locale}
-        cells={frame.cells}
-        active={frame.active}
-        secondary={frame.secondary}
-        // Papan contoh: tidak ada yang bisa diklik di sini, dan langkahnya
-        // sudah ditentukan. Yang bergerak adalah tombol di bawahnya.
-        playable={[]}
-        previewed={null}
-        namaA={`${kata.pemain} A`}
-        namaB={`${kata.pemain} B`}
-      />
+      {/*
+        Papan contoh ini gambar, bukan kendali: semua lubangnya disabled,
+        jadi tidak ada yang bisa difokus, dan kalimat berjalan di bawahnya
+        sudah menyebutkan setiap angka yang digambarkannya. Disembunyikan
+        dari pembaca layar supaya halaman ini tidak menyodorkan enam belas
+        tombol "Lubang N" kedua kalinya sebelum papan yang sungguhan.
+      */}
+      <div aria-hidden>
+        <Papan
+          locale={locale}
+          cells={frame.cells}
+          active={frame.active}
+          secondary={frame.secondary}
+          // Papan contoh: tidak ada yang bisa diklik di sini, dan langkahnya
+          // sudah ditentukan. Yang bergerak adalah tombol di bawahnya.
+          playable={[]}
+          previewed={null}
+          namaA={`${kata.pemain} A`}
+          namaB={`${kata.pemain} B`}
+        />
+      </div>
       <p className="font-sans text-xs text-fg-muted">{kata.contohPapanIni}</p>
 
       {/* Tinggi tetap, supaya papan tidak melompat saat kalimatnya berganti
