@@ -18,6 +18,7 @@ interface Dict {
   readonly judul: string
   readonly tagline: string
   readonly papan: string
+  readonly bukaPapan: string
   readonly papanLabel: string
   readonly lubangLabel: string
   readonly sisimu: string
@@ -185,6 +186,7 @@ const id: Dict = {
   judul: 'Congklak',
   tagline: 'Congklak dengan aturan kedaerahan yang eksplisit dan bersumber.',
   papan: 'Papan',
+  bukaPapan: 'Buka papan',
   papanLabel: 'Papan congklak',
   lubangLabel: 'Lubang {n}',
   sisimu: 'sisimu',
@@ -352,6 +354,7 @@ const en: Dict = {
   judul: 'Congklak',
   tagline: 'Congklak with its regional rulesets made explicit and cited.',
   papan: 'Board',
+  bukaPapan: 'Open the board',
   papanLabel: 'Congklak board',
   lubangLabel: 'Lubang {n}',
   sisimu: 'your side',

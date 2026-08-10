@@ -1,4 +1,5 @@
-import { KELAS_FONT } from '../dasar'
+import { BASE, KELAS_FONT } from '../dasar'
+import { DEFAULT_LOCALE } from '@/lib/i18n'
 
 export { metadata, viewport } from '../dasar'
 
@@ -13,6 +14,14 @@ export { metadata, viewport } from '../dasar'
 export default function AlihLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className={KELAS_FONT}>
+      <head>
+        {/*
+          Pengalihan yang tidak butuh JavaScript. Halaman di bawahnya tetap
+          punya isi dan tautan, jadi kalau refresh ini diabaikan pun tidak
+          ada yang menatap layar kosong.
+        */}
+        <meta httpEquiv="refresh" content={`0; url=${BASE}/${DEFAULT_LOCALE}/main/`} />
+      </head>
       <body className="min-h-dvh font-sans antialiased">{children}</body>
     </html>
   )

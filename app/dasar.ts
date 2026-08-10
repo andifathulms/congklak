@@ -64,6 +64,22 @@ const RINGKAS =
 export const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 
 /**
+ * Cache-buster for the tab icon.
+ *
+ * Browsers cache favicons far more stubbornly than ordinary assets, and
+ * they key part of that cache to the origin — this app is a path on
+ * andifathulms.github.io, which already serves a /favicon.ico of its own
+ * for the portfolio. Anyone who opened the site before the icon existed
+ * keeps being shown whatever was cached then, however correct the markup
+ * is. Verified: the browser does request our SVG and gets 200, so the
+ * markup was never the problem.
+ *
+ * Bumping this changes the URL, which is the only reliable way to make a
+ * cached favicon let go. Raise it when the mark itself changes.
+ */
+const IKON_V = '2'
+
+/**
  * Where the site actually lives. Only Open Graph needs it — those URLs have
  * to be absolute, and without a base Next resolves them against
  * `localhost:3000`, which is what a shared link would then point at.
@@ -87,10 +103,10 @@ export const metadata: Metadata = {
     // The SVG is the 4-seed small-size form of the mark; the 32px PNG is
     // there for anything that will not take an SVG.
     icon: [
-      { url: `${BASE}/favicon.svg`, type: 'image/svg+xml' },
-      { url: `${BASE}/favicon-32.png`, type: 'image/png', sizes: '32x32' },
+      { url: `${BASE}/favicon.svg?v=${IKON_V}`, type: 'image/svg+xml' },
+      { url: `${BASE}/favicon-32.png?v=${IKON_V}`, type: 'image/png', sizes: '32x32' },
     ],
-    apple: { url: `${BASE}/apple-touch-icon.png`, sizes: '180x180' },
+    apple: { url: `${BASE}/apple-touch-icon.png?v=${IKON_V}`, sizes: '180x180' },
   },
   openGraph: {
     type: 'website',
