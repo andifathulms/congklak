@@ -27,6 +27,16 @@ export interface Bukti {
   readonly alasan: AlasanSimpang
   /** Panjang daftar langkah permainan contohnya. */
   readonly panjang: number
+  /**
+   * Kedua papan pada giliran tempat mereka berpisah.
+   *
+   * Tanpa ini halaman Aturan menyatakan sebuah papan tanpa pernah
+   * menunjukkannya — meminta pembaca percaya, di halaman yang seluruh
+   * pekerjaannya justru tidak meminta itu. null di sisi mana pun berarti
+   * langkahnya sudah tidak sah di bacaan itu, dan itu sendiri perbedaannya.
+   */
+  readonly papanIni: readonly number[] | null
+  readonly papanLain: readonly number[] | null
 }
 
 type Banding = NonNullable<Divergence['banding']>
@@ -101,11 +111,17 @@ export function cariBukti(
     const hasil = compareRulesets(moves, ruleset, lain)
     if (hasil.simpangDi < 0 || hasil.alasan === null) continue
 
+    // Langkah tempat keduanya berpisah — papan sesudah giliran itu
+    // dimainkan, di kedua bacaan.
+    const langkah = hasil.steps[hasil.simpangDi]
+
     return {
       seed,
       giliran: hasil.simpangDi + 1,
       alasan: hasil.alasan,
       panjang: moves.length,
+      papanIni: langkah?.kiri ? Array.from(langkah.kiri.board) : null,
+      papanLain: langkah?.kanan ? Array.from(langkah.kanan.board) : null,
     }
   }
 

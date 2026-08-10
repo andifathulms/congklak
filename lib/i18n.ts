@@ -37,6 +37,9 @@ interface Dict {
   readonly rujukanSumber: string
   readonly rujukanUniversal: string
   readonly aiJujur: string
+  readonly buktiPapanIni: string
+  readonly buktiPapanLain: string
+  readonly buktiTakSah: string
   readonly papanLabel: string
   readonly lubangLabel: string
   readonly sisimu: string
@@ -221,6 +224,9 @@ const id: Dict = {
   rujukanAturan: 'Aturan yang menentukan',
   rujukanSumber: 'Sumber',
   rujukanUniversal: 'Berlaku di semua bacaan — bukan pilihan pack ini.',
+  buktiPapanIni: 'Papan di bacaan pak ini, sesudah giliran itu',
+  buktiPapanLain: 'Papan di bacaan lain, sesudah giliran yang sama',
+  buktiTakSah: 'Langkah itu sudah tidak sah di bacaan ini — permainannya berhenti lebih dulu.',
   aiJujur: 'AI-nya mencari beberapa langkah ke depan lalu menilai papannya dengan bobot yang ditulis tangan — selisih lumbung, peluang menembak, giliran tambahan. Bobot itu pendapat, bukan aturan bersumber seperti isi halaman Aturan, dan tidak ada sumber yang bisa dirujuk untuknya. AI tidak melihat apa pun yang tidak kamu lihat: congklak permainan informasi terbuka, dan tingkat kesulitan hanya mengubah sedalam apa ia mencari.',
   contohPapanIni: 'Papan contoh — sengaja diisi sedikit biji supaya terbaca. Papan yang bisa dimainkan ada di bawah.',
   papanLabel: 'Papan congklak',
@@ -407,6 +413,9 @@ const en: Dict = {
   rujukanAturan: 'The rule that decided this',
   rujukanSumber: 'Source',
   rujukanUniversal: 'Holds under every reading \u2014 not this pack\u2019s choice.',
+  buktiPapanIni: 'The board under this pack\u2019s reading, after that turn',
+  buktiPapanLain: 'The board under the other reading, after the same turn',
+  buktiTakSah: 'That move is no longer legal under this reading \u2014 the game had already stopped.',
   aiJujur: 'The AI searches a few moves ahead and scores the board with hand-written weights \u2014 lumbung difference, capture chances, extra turns. Those weights are opinion, not sourced rules like the ones on the Rules page, and there is no citation to give for them. It sees nothing you cannot: congklak is a perfect-information game, and difficulty only changes how deep it looks.',
   contohPapanIni: 'An example board \u2014 deliberately sparse so it reads clearly. The board you can play is below.',
   papanLabel: 'Congklak board',

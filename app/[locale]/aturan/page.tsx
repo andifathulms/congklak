@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { RULESETS, type Ruleset } from '@/lib/rulesets'
-import { LOCALES, isLocale, t } from '@/lib/i18n'
+import { LOCALES, isLocale, t, type Locale } from '@/lib/i18n'
+import { Papan } from '@/components/board/Papan'
 import { Kepala } from '@/components/shell/Kepala'
 import { Panel } from '@/components/ui/Panel'
 import { Lencana } from '@/components/ui/Lencana'
@@ -24,7 +25,8 @@ export function generateStaticParams() {
  */
 export default function AturanPage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound()
-  const kata = t(params.locale)
+  const locale: Locale = params.locale
+  const kata = t(locale)
 
   return (
     <div className="flex flex-col gap-6">
@@ -158,7 +160,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
                         {d.note}
                       </p>
                     )}
-                    <Bukti divergence={d} ruleset={ruleset} kata={kata} />
+                    <Bukti divergence={d} ruleset={ruleset} kata={kata} locale={locale} />
                   </li>
                 ))}
               </ul>
@@ -192,7 +194,7 @@ export default function AturanPage({ params }: { params: { locale: string } }) {
       </Panel>
 
       <div>
-        <TautanTombol href={`/${params.locale}/main`} bobot="utama">
+        <TautanTombol href={`/${locale}/main`} bobot="utama">
           {kata.kembali}
         </TautanTombol>
       </div>
@@ -263,10 +265,12 @@ function Bukti({
   divergence,
   ruleset,
   kata,
+  locale,
 }: {
   divergence: Divergence
   ruleset: Ruleset
   kata: ReturnType<typeof t>
+  locale: Locale
 }) {
   if (!divergence.banding) return null
   const bukti = cariBukti(ruleset, divergence.banding)
@@ -294,11 +298,75 @@ function Bukti({
               .replace('{giliran}', String(bukti.giliran))
               .replace('{alasan}', alasan)}
       </p>
+      {/* Papannya, bukan cuma nomor gilirannya. Klaimnya bisa dilihat. */}
+      {bukti !== null && (
+        /* Bertumpuk, bukan berdampingan — pelajaran yang sama seperti di
+           halaman Bandingkan: papan congklak hampir seluruhnya lebar, dan
+           dua papan yang dijejerkan di kolom ini menyusut sampai lubangnya
+           16px sementara bijinya tetap 50px, karena ukuran biji mengikuti
+           lebar layar, bukan lebar papan. Lubang yang harus dibandingkan
+           juga justru yang persis di atas-bawahnya. */
+        <div className="mt-3 flex flex-col gap-3">
+          <PapanBukti
+            judul={kata.buktiPapanIni}
+            cells={bukti.papanIni}
+            kata={kata}
+            locale={locale}
+          />
+          <PapanBukti
+            judul={kata.buktiPapanLain}
+            cells={bukti.papanLain}
+            kata={kata}
+            locale={locale}
+          />
+        </div>
+      )}
       <p className="mt-1.5 max-w-prose font-sans text-xs leading-relaxed text-fg-muted">
         <code className="rounded bg-mat-low px-1 py-0.5 font-mono">{divergence.banding.opsi}</code>{' '}
         → <code className="rounded bg-mat-low px-1 py-0.5 font-mono">{divergence.banding.nilaiLain}</code>.{' '}
         {kata.buktiCara}
       </p>
+    </div>
+  )
+}
+
+/**
+ * One side of a divergence, on a board.
+ *
+ * A null board is not a missing board: it means the move had already become
+ * illegal under that reading, which is the divergence itself and is said
+ * rather than drawn.
+ */
+function PapanBukti({
+  judul,
+  cells,
+  kata,
+  locale,
+}: {
+  judul: string
+  cells: readonly number[] | null
+  kata: ReturnType<typeof t>
+  locale: Locale
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <p className="font-sans text-2xs uppercase tracking-[0.14em] text-fg-muted">{judul}</p>
+      {cells === null ? (
+        <p className="rounded-lg bg-mat-low/60 p-3 font-sans text-sm text-fg-muted ring-1 ring-inset ring-mat-edge">
+          {kata.buktiTakSah}
+        </p>
+      ) : (
+        <Papan
+          locale={locale}
+          cells={cells}
+          active={null}
+          secondary={null}
+          playable={[]}
+          previewed={null}
+          namaA={`${kata.pemain} A`}
+          namaB={`${kata.pemain} B`}
+        />
+      )}
     </div>
   )
 }
