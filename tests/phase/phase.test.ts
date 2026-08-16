@@ -93,10 +93,11 @@ describe('wilayahDi', () => {
     expect(wilayah).not.toContain('aturanLain')
   })
 
-  it('main: papan, skor, kendaliGiliran, pratinjau, riwayat — tidak pemilihAturan atau statistik', () => {
+  it('main: papan, skor, kendaliGiliran, pratinjau, riwayat, kodePermainan — tidak pemilihAturan atau statistik', () => {
     const wilayah = wilayahDi('main', false)
-    expect(wilayah).toEqual(['papan', 'skor', 'kendaliGiliran', 'pratinjau', 'riwayat'])
+    expect(wilayah).toEqual(['papan', 'skor', 'kendaliGiliran', 'pratinjau', 'riwayat', 'kodePermainan'])
     expect(wilayah).not.toContain('pemilihAturan')
+    expect(wilayah).not.toContain('panelMode')
     expect(wilayah).not.toContain('statistik')
     expect(wilayah).not.toContain('aturanLain')
   })
@@ -106,31 +107,23 @@ describe('wilayahDi', () => {
   })
 
   it('setelah: sama seperti main, plus aturanLain hanya kalau langkahnya bersimpang', () => {
-    expect(wilayahDi('setelah', false)).toEqual([
-      'papan',
-      'skor',
-      'kendaliGiliran',
-      'pratinjau',
-      'riwayat',
-    ])
-    expect(wilayahDi('setelah', true)).toEqual([
-      'papan',
-      'skor',
-      'kendaliGiliran',
-      'pratinjau',
-      'riwayat',
-      'aturanLain',
-    ])
+    expect(wilayahDi('setelah', false)).toEqual(wilayahDi('main', false))
+    expect(wilayahDi('setelah', true)).toEqual([...wilayahDi('main', false), 'aturanLain'])
   })
 
-  it('selesai: papan, skor, statistik, kodePermainan, plus aturanLain kalau langkah terakhir bersimpang', () => {
-    expect(wilayahDi('selesai', false)).toEqual(['papan', 'skor', 'statistik', 'kodePermainan'])
+  it('selesai: main ditambah statistik, plus aturanLain kalau langkah terakhir bersimpang — bukan pengganti main', () => {
+    // kendaliGiliran dan pratinjau tetap ada: mengurungkan langkah yang
+    // mengakhiri permainan, dan membaca kenapa langkah itu tidak menembak,
+    // adalah kemampuan yang sudah ada dan tidak diminta dilepas.
+    expect(wilayahDi('selesai', false)).toEqual([...wilayahDi('main', false), 'statistik'])
     expect(wilayahDi('selesai', true)).toEqual([
-      'papan',
-      'skor',
+      ...wilayahDi('main', false),
       'statistik',
-      'kodePermainan',
       'aturanLain',
     ])
+    expect(wilayahDi('selesai', false)).toContain('kendaliGiliran')
+    expect(wilayahDi('selesai', false)).toContain('pratinjau')
+    expect(wilayahDi('selesai', false)).not.toContain('pemilihAturan')
+    expect(wilayahDi('selesai', false)).not.toContain('panelMode')
   })
 })

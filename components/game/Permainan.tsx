@@ -23,7 +23,8 @@ import { Panel } from '@/components/ui/Panel'
 import { Salin } from '@/components/ui/Salin'
 import { Segmen } from '@/components/ui/Segmen'
 import { Tombol } from '@/components/ui/Tombol'
-import { AturanLain } from './AturanLain'
+import { phaseOf, wilayahDi } from '@/lib/phase'
+import { AturanLain, adaSimpang } from './AturanLain'
 import { aturanUntukOpsi, sumberUntukOpsi } from './rujukan'
 import { PemilihAturan } from './PemilihAturan'
 import { Skor } from './Skor'
@@ -293,18 +294,35 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
           ? kata.giliranLawanAjakan
           : kata.giliranmuAjakan
 
+  // Fase layar (DESIGN.md §5), dihitung ulang tiap render dari state yang
+  // sudah ada untuk alasan lain — bukan useState-nya sendiri, jadi tidak
+  // bisa melenceng dari apa yang sebenarnya sedang terjadi (lib/phase.ts).
+  const fase = phaseOf({ movesPlayed: record.moves.length, status: state.status, busy })
+  const langkahBersimpang = useMemo(
+    () => adaSimpang(record.moves, ruleset),
+    [record.moves, ruleset],
+  )
+  const wilayah = wilayahDi(fase, langkahBersimpang)
+  const tampil = (w: (typeof wilayah)[number]) => wilayah.includes(w)
+
   return (
     <div className="flex flex-col gap-4">
-      <Skor
-        state={state}
-        kata={kata}
-        namaA={namaA}
-        namaB={namaB}
-        skorA={skorA}
-        skorB={skorB}
-        hand={frame.hand}
-        berpikir={berpikir}
-      />
+      {/* siap: papan saja, kosong-siap, dan setup di bawah. main/setelah/
+          selesai: skor di atasnya. Board sendiri tidak pernah bergantung
+          pada fase (DESIGN.md §5: ukurannya tetap sepanjang sesi) — hanya
+          apa yang duduk di sekitarnya yang berubah. */}
+      {tampil('skor') && (
+        <Skor
+          state={state}
+          kata={kata}
+          namaA={namaA}
+          namaB={namaB}
+          skorA={skorA}
+          skorB={skorB}
+          hand={frame.hand}
+          berpikir={berpikir}
+        />
+      )}
 
       {/* Satu wilayah live untuk seluruh layar papan, dibacakan sekali per
           giliran. Tidak terlihat karena isinya sudah terlihat di tempat
@@ -314,7 +332,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
       </p>
 
       <Papan
-          locale={locale}
+        locale={locale}
         papanRef={papanRef}
         cells={frame.cells}
         active={frame.active}
@@ -328,82 +346,82 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
         namaB={namaB}
       />
 
-      {/* Satu baris, dua pekerjaan. Kalau belum ada lubang yang ditunjuk,
-          ia mengatakan apa yang harus dilakukan — dalam kata-kata yang
-          berlaku untuk jari maupun tetikus. Begitu ada, ia berganti jadi
-          pratinjau langkah: ke mana rantai berakhir, berapa yang ditabung,
-          apakah menembak atau dapat giliran lagi (PRD §8.2).
-
-          Tingginya tetap, supaya papan tidak melompat naik-turun setiap
-          kali kursor melewati sebuah lubang. */}
-      <p
-        className="flex min-h-[3rem] items-center gap-2 rounded-panel bg-mat-low/70 px-3 py-2 font-sans text-fg ring-1 ring-inset ring-mat-edge/50"
-        aria-live="polite"
-      >
-        {pratinjau ? (
-          <>
-            <span className="tnum shrink-0 rounded-md bg-mat-high px-1.5 py-0.5 font-mono text-xs text-fg-muted">
-              {kata.pratinjau} {pratinjau.hole}
+      {tampil('pratinjau') && (
+        // Satu baris, dua pekerjaan. Kalau belum ada lubang yang ditunjuk,
+        // ia mengatakan apa yang harus dilakukan — dalam kata-kata yang
+        // berlaku untuk jari maupun tetikus. Begitu ada, ia berganti jadi
+        // pratinjau langkah: ke mana rantai berakhir, berapa yang ditabung,
+        // apakah menembak atau dapat giliran lagi (PRD §8.2).
+        //
+        // Tingginya tetap, supaya papan tidak melompat naik-turun setiap
+        // kali kursor melewati sebuah lubang.
+        <p
+          className="flex min-h-[3rem] items-center gap-2 rounded-panel bg-mat-low/70 px-3 py-2 font-sans text-fg ring-1 ring-inset ring-mat-edge/50"
+          aria-live="polite"
+        >
+          {pratinjau ? (
+            <>
+              <span className="tnum shrink-0 rounded-md bg-mat-high px-1.5 py-0.5 font-mono text-xs text-fg-muted">
+                {kata.pratinjau} {pratinjau.hole}
+              </span>
+              <span>{pratinjauTeks(pratinjau)}</span>
+            </>
+          ) : player.alasanHenti ? (
+            // Kenapa giliran barusan berhenti tanpa hasil, dan klausa mana
+            // yang memutuskannya. Ini pertanyaan yang dibawa pemain ke layar
+            // saat biji terakhirnya mendarat di lubang kosong sendiri dan
+            // tidak terjadi apa-apa — tanpa jawaban, aplikasinya terbaca
+            // rusak, bukan beraturan lain.
+            <span>
+              {describeHenti(player.alasanHenti)}{' '}
+              {/* Aturan yang memutuskan, dan siapa yang mengatakannya —
+                  di tempat aturannya baru berlaku, bukan di catatan kaki
+                  halaman lain. */}
+              <Rujukan opsi={player.alasanHenti.opsi} ruleset={ruleset} kata={kata} />
             </span>
-            <span>{pratinjauTeks(pratinjau)}</span>
-          </>
-        ) : player.alasanHenti ? (
-          // Kenapa giliran barusan berhenti tanpa hasil, dan klausa mana
-          // yang memutuskannya. Ini pertanyaan yang dibawa pemain ke layar
-          // saat biji terakhirnya mendarat di lubang kosong sendiri dan
-          // tidak terjadi apa-apa — tanpa jawaban, aplikasinya terbaca
-          // rusak, bukan beraturan lain.
-          <span>
-            {describeHenti(player.alasanHenti)}{' '}
-            {/* Aturan yang memutuskan, dan siapa yang mengatakannya —
-                di tempat aturannya baru saja berlaku, bukan di catatan
-                kaki halaman lain. */}
-            <Rujukan opsi={player.alasanHenti.opsi} ruleset={ruleset} kata={kata} />
-          </span>
-        ) : (
-          <span className="font-medium">{ajakan ?? kata.pratinjauPetunjuk}</span>
-        )}
-      </p>
-
-      {/* Begitu permainannya selesai, pertanyaan berikutnya bukan lagi
-          "aturan mana yang ada" melainkan "apa jadinya permainanku barusan
-          di aturan yang lain". Panelnya cuma muncul di situ. */}
-      {state.status === 'selesai' && !busy && (
-        <AturanLain record={record} aktif={ruleset} locale={locale} />
+          ) : (
+            <span className="font-medium">{ajakan ?? kata.pratinjauPetunjuk}</span>
+          )}
+        </p>
       )}
 
-      {/* Yang sering disentuh saat bermain duduk langsung di bawah papan;
-          yang jarang — mode dan kesulitan — turun ke panel di bawahnya. */}
-      <div className="flex flex-wrap items-center gap-2">
-        {/* "Permainan baru" berhenti jadi tombol utama. Sebelum ada langkah
-            yang dimainkan ia tidak melakukan apa-apa, dan ia adalah hal
-            paling menonjol di layar — memberi bobot penuh pada satu-satunya
-            tindakan yang belum berguna. Tindakan pertama yang sebenarnya
-            ada di papan; ini baru menonjol setelah ada permainan untuk
-            dimulai ulang. */}
-        <Tombol bobot={record.moves.length > 0 ? 'utama' : 'kedua'} onClick={baru}>
-          {kata.permainanBaru}
-        </Tombol>
-        <Tombol onClick={urung} disabled={busy || record.moves.length === 0}>
-          {kata.urung}
-        </Tombol>
-        {player.playing && (
-          <Tombol onClick={player.skip}>{kata.lewati}</Tombol>
-        )}
-        <span className="ml-auto flex items-center gap-1">
-          <TombolSuara locale={locale} />
-          <Segmen
-            options={KECEPATAN.map((k) => [k, kata[k]] as const)}
-            value={kecepatan}
-            onChange={setKecepatan}
-            label={kata.kecepatan}
-            labelVisible
-            size="sm"
-          />
-        </span>
-      </div>
+      {/* Begitu sebuah langkah selesai — giliran biasa atau yang mengakhiri
+          permainan — pertanyaan berikutnya bukan lagi "aturan mana yang
+          ada" melainkan "apa jadinya langkah barusan di aturan yang lain".
+          Panelnya cuma dipasang kalau langkah itu memang bersimpang
+          (DESIGN.md §5: promosi hanya untuk itu, tidak pernah dipasang lalu
+          disembunyikan kalau tidak). */}
+      {tampil('aturanLain') && <AturanLain record={record} aktif={ruleset} locale={locale} />}
 
-      <div className="grid gap-3 md:grid-cols-2">
+      {tampil('kendaliGiliran') && (
+        // Yang sering disentuh saat bermain duduk langsung di bawah papan;
+        // yang jarang — mode dan kesulitan — turun ke panel setup, yang
+        // sudah tidak terpasang lagi begitu ada langkah pertama.
+        <div className="flex flex-wrap items-center gap-2">
+          <Tombol bobot="utama" onClick={baru}>
+            {kata.permainanBaru}
+          </Tombol>
+          <Tombol onClick={urung} disabled={busy || record.moves.length === 0}>
+            {kata.urung}
+          </Tombol>
+          {player.playing && <Tombol onClick={player.skip}>{kata.lewati}</Tombol>}
+          <span className="ml-auto flex items-center gap-1">
+            <TombolSuara locale={locale} />
+            <Segmen
+              options={KECEPATAN.map((k) => [k, kata[k]] as const)}
+              value={kecepatan}
+              onChange={setKecepatan}
+              label={kata.kecepatan}
+              labelVisible
+              size="sm"
+            />
+          </span>
+        </div>
+      )}
+
+      {tampil('riwayat') && <Riwayat lines={player.ringkasan} kata={kata} />}
+
+      {tampil('panelMode') && (
         <Panel judul={kata.permainan} className="flex flex-col gap-3">
           <Segmen
             // Label pendek di dalam kendali, kalimat panjangnya di tempat
@@ -436,31 +454,42 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
             </p>
           )}
         </Panel>
+      )}
 
-        <Riwayat lines={player.ringkasan} kata={kata} />
-      </div>
+      {tampil('pemilihAturan') && (
+        // Aturan yang dipakai duduk di bawah papan, bukan di atasnya. Ini
+        // bagian paling penting dari produknya dan pembukaan yang paling
+        // buruk: "6 perbedaan tercatat" tidak berarti apa-apa sebelum orang
+        // tahu permainan apa yang sedang dilihatnya. Papan menjelaskan
+        // dirinya sendiri; panel ini menjelaskan papannya.
+        <PemilihAturan
+          rulesets={RULESETS}
+          active={ruleset}
+          onChange={gantiAturan}
+          locale={locale}
+          // Ini hanya pernah dipasang pada fase siap, dan siap berarti
+          // persis busy===false dan record.moves.length===0 — jadi
+          // disabled di sini selalu false. Bukan digrayscale, hanya
+          // dilepas sama sekali begitu ada langkah pertama (DESIGN.md §5:
+          // "not greyed, not collapsed to a header. Absent.").
+          disabled={false}
+        />
+      )}
 
-      {/* Aturan yang dipakai duduk di bawah papan, bukan di atasnya. Ini
-          bagian paling penting dari produknya dan pembukaan yang paling
-          buruk: "6 perbedaan tercatat" tidak berarti apa-apa sebelum orang
-          tahu permainan apa yang sedang dilihatnya. Papan menjelaskan
-          dirinya sendiri; panel ini menjelaskan papannya. */}
-      <PemilihAturan
-        rulesets={RULESETS}
-        active={ruleset}
-        onChange={gantiAturan}
-        locale={locale}
-        disabled={busy || record.moves.length > 0}
-      />
-
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-mat-edge/70 pt-3">
-        <p className="flex items-center gap-2 font-mono text-xs text-fg-muted">
-          <span className="text-fg-muted">{kata.kodePermainan}</span>
-          <span className="tnum text-fg">{encodeRecord(record)}</span>
-          <Salin teks={encodeRecord(record)} locale={locale} />
-        </p>
-        <PanelStatistik rulesetId={ruleset.id} kata={kata} versi={statVersi} />
-      </div>
+      {(tampil('kodePermainan') || tampil('statistik')) && (
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-mat-edge/70 pt-3">
+          {tampil('kodePermainan') && (
+            <p className="flex items-center gap-2 font-mono text-xs text-fg-muted">
+              <span className="text-fg-muted">{kata.kodePermainan}</span>
+              <span className="tnum text-fg">{encodeRecord(record)}</span>
+              <Salin teks={encodeRecord(record)} locale={locale} />
+            </p>
+          )}
+          {tampil('statistik') && (
+            <PanelStatistik rulesetId={ruleset.id} kata={kata} versi={statVersi} />
+          )}
+        </div>
+      )}
     </div>
   )
 }

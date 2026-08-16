@@ -35,14 +35,22 @@ export function phaseOf({ movesPlayed, status, busy }: PhaseInput): Phase {
 }
 
 /**
- * Wilayah layar yang disebut namanya di DESIGN.md §5, per fase. Hanya yang
- * dinyatakan tegas di sana — bukan tebakan atas yang tidak disebut. `siap`
- * dan `main` masing-masing menegaskan yang tidak ada ("No score strip, no
- * history, no stats" / "Ruleset picker and stats unmount"), jadi keduanya
- * di bawah ini lengkap. `selesai` hanya menyebut "Result, stats, share
- * code, replay link" — di mana tombol "permainan baru" duduk dari sana
- * bukan yang diputuskan di sini, itu urusan langkah 4 (menggerbangi
- * `Permainan.tsx`).
+ * Wilayah layar per fase (DESIGN.md §5, diselesaikan di langkah 4).
+ *
+ * `siap` dan `main` menegaskan tegas apa yang tidak ada ("No score strip,
+ * no history, no stats" / "Ruleset picker and stats unmount"), jadi
+ * keduanya di bawah ini lengkap dari teksnya sendiri.
+ *
+ * `selesai` cuma menyebut "Result, stats, share code, replay link" —
+ * daftar pendek yang BARU di fase itu, bukan daftar lengkap semua yang
+ * boleh tampil. Sebelum ini `kendaliGiliran` (urungkan, terutama) dan
+ * `pratinjau` (yang juga membawa penjelasan "kenapa giliran berhenti
+ * tanpa hasil") tampil terus tanpa peduli status permainan. Melepas
+ * keduanya begitu saja di `selesai` akan membuang kemampuan yang sudah
+ * ada — mengurungkan langkah terakhir yang mengakhiri permainan, dan
+ * membaca kenapa langkah itu tidak menembak — tanpa DESIGN.md pernah
+ * memintanya dilepas. Jadi `selesai` di sini adalah `main` ditambah
+ * `statistik`, bukan penggantinya.
  */
 export type Wilayah =
   | 'papan'
@@ -56,11 +64,20 @@ export type Wilayah =
   | 'statistik'
   | 'kodePermainan'
 
+const DASAR_MAIN: readonly Wilayah[] = [
+  'papan',
+  'skor',
+  'kendaliGiliran',
+  'pratinjau',
+  'riwayat',
+  'kodePermainan',
+]
+
 const WILAYAH_TETAP: Record<Phase, readonly Wilayah[]> = {
   siap: ['papan', 'pemilihAturan', 'panelMode'],
-  main: ['papan', 'skor', 'kendaliGiliran', 'pratinjau', 'riwayat'],
-  setelah: ['papan', 'skor', 'kendaliGiliran', 'pratinjau', 'riwayat'],
-  selesai: ['papan', 'skor', 'statistik', 'kodePermainan'],
+  main: DASAR_MAIN,
+  setelah: DASAR_MAIN,
+  selesai: [...DASAR_MAIN, 'statistik'],
 }
 
 /**
