@@ -150,6 +150,7 @@ interface Dict {
   readonly sambungTerpanjang: string
   readonly dimainkan: string
   readonly menangA: string
+  readonly menangB: string
   readonly tanding: string
   readonly tandingIntro: string
   readonly jadiTuanRumah: string
@@ -339,6 +340,7 @@ const id: Dict = {
   sambungTerpanjang: 'Sambung terpanjang',
   dimainkan: 'Permainan',
   menangA: 'Menang A',
+  menangB: 'Menang B',
   tanding: 'Tanding',
   tandingIntro: 'Dua perangkat, satu permainan. Yang melintas hanya langkah dan hash — papan tidak pernah dikirim. Kedua sisi harus memakai aturan yang sama; kalau tidak, sambungan ditolak.',
   jadiTuanRumah: 'Jadi tuan rumah',
@@ -528,6 +530,7 @@ const en: Dict = {
   sambungTerpanjang: 'Longest relay',
   dimainkan: 'Games',
   menangA: 'A wins',
+  menangB: 'B wins',
   tanding: 'Play online',
   tandingIntro: 'Two devices, one game. Only moves and hashes cross the wire — the board is never sent. Both sides must be on the same ruleset, or the connection is refused.',
   jadiTuanRumah: 'Host',

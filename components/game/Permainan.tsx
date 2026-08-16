@@ -3,7 +3,8 @@
 import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyMove, createGame, currentLegalMoves, type GameState } from '@/lib/engine/apply'
-import { PLAYER_B } from '@/lib/engine/board'
+import { PLAYER_A, PLAYER_B } from '@/lib/engine/board'
+import { Biji, TumpukanBiji } from '@/components/board/Biji'
 import {
   encodeRecord,
   emptyRecord,
@@ -555,25 +556,86 @@ function PanelStatistik({
 
   if (!stat || stat.dimainkan === 0) return null
 
-  // Angkanya yang jadi isi, bukan kalimatnya: dulu semuanya dirangkai jadi
-  // satu baris mono yang harus dibaca kata per kata untuk menemukan satu
-  // bilangan.
-  const angka: readonly (readonly [string, number])[] = [
-    [kata.dimainkan, stat.dimainkan],
-    [kata.menangA, stat.menangA],
-    [kata.seri, stat.seri],
-    [kata.bankTerbesar, stat.bankTerbesar],
-    [kata.sambungTerpanjang, stat.sambungTerpanjang],
-  ]
-
   return (
-    <dl className="flex flex-wrap items-baseline gap-x-4 gap-y-1" aria-label={kata.statistik}>
-      {angka.map(([label, nilai]) => (
-        <div key={label} className="flex items-baseline gap-1.5">
-          <dt className="font-sans text-2xs text-fg-muted">{label}</dt>
-          <dd className="tnum font-display text-sm font-semibold text-fg">{nilai}</dd>
-        </div>
-      ))}
+    // Angkanya yang jadi isi, bukan kalimatnya: dulu semuanya dirangkai jadi
+    // satu baris mono yang harus dibaca kata per kata untuk menemukan satu
+    // bilangan. Ini masih benar untuk permainan dan bank terbesar — yang
+    // berubah adalah menang/kalah dan sambung, dua angka yang di papan
+    // selalu duduk berdampingan dengan biji sungguhan, bukan sendirian.
+    <dl className="flex flex-col gap-1.5" aria-label={kata.statistik}>
+      <div className="flex items-baseline gap-1.5">
+        <dt className="font-sans text-2xs text-fg-muted">{kata.dimainkan}</dt>
+        <dd className="tnum font-display text-sm font-semibold text-fg">{stat.dimainkan}</dd>
+      </div>
+
+      {/* Menang dan kalah sebagai proporsi di seedA/seedB (DESIGN.md §7).
+          Bukan warnanya saja: tiap angka dipasangi bentuk bijinya sendiri
+          — bulat untuk A, bersegi untuk B — jadi bacaan mana punya siapa
+          tidak pernah bersandar pada warna sendirian (invariant 18). Batang
+          di antaranya cuma mengulang secara visual apa yang angkanya sudah
+          katakan, jadi ia disembunyikan dari pembaca layar. */}
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <dt className="sr-only">{kata.menangA}</dt>
+        <dd className="flex items-center gap-1.5">
+          <Biji owner={PLAYER_A} size={9} />
+          <span className="tnum font-display text-sm font-semibold text-fg">{stat.menangA}</span>
+        </dd>
+
+        <span
+          aria-hidden
+          className="flex h-2 w-10 shrink-0 overflow-hidden rounded-full bg-mat-edge/60"
+        >
+          {stat.menangA + stat.menangB > 0 && (
+            <>
+              <span className="bg-seedA" style={{ flexGrow: stat.menangA }} />
+              <span className="bg-seedB" style={{ flexGrow: stat.menangB }} />
+            </>
+          )}
+        </span>
+
+        <dt className="sr-only">{kata.menangB}</dt>
+        <dd className="flex items-center gap-1.5">
+          <span className="tnum font-display text-sm font-semibold text-fg">{stat.menangB}</span>
+          <Biji owner={PLAYER_B} size={9} />
+        </dd>
+
+        {stat.seri > 0 && (
+          <>
+            <dt className="font-sans text-2xs text-fg-muted">{kata.seri}</dt>
+            <dd className="tnum font-display text-sm font-semibold text-fg">{stat.seri}</dd>
+          </>
+        )}
+      </div>
+
+      <div className="flex items-baseline gap-1.5">
+        <dt className="font-sans text-2xs text-fg-muted">{kata.bankTerbesar}</dt>
+        <dd className="tnum font-display text-sm font-semibold text-fg">{stat.bankTerbesar}</dd>
+      </div>
+
+      {/* Sambung terpanjang sebagai deretan biji, bukan cuma angkanya.
+          TumpukanBiji sudah tahu kapan berhenti menghitung titik dan
+          berganti ke angka (AMBANG_NUMERAL) — rantai yang sangat panjang
+          tetap terbaca alih-alih jadi tumpukan tak terhitung. Pemiliknya
+          di sini bukan klaim: sambung terpanjang bukan milik satu sisi,
+          bentuknya cuma dipinjam supaya baris ini terbaca seperti biji
+          sungguhan, bukan digit sendirian. */}
+      <div className="flex items-center gap-2">
+        <dt className="font-sans text-2xs text-fg-muted">{kata.sambungTerpanjang}</dt>
+        <dd className="tnum font-display text-sm font-semibold text-fg">
+          {stat.sambungTerpanjang > 0 ? (
+            <>
+              {/* Deretannya sendiri aria-hidden (TumpukanBiji, seperti di
+                  papan) — angkanya masih harus terbaca tanpa dia. */}
+              <span aria-hidden>
+                <TumpukanBiji biji={stat.sambungTerpanjang} owner={PLAYER_A} size={8} />
+              </span>
+              <span className="sr-only">{stat.sambungTerpanjang}</span>
+            </>
+          ) : (
+            0
+          )}
+        </dd>
+      </div>
     </dl>
   )
 }
