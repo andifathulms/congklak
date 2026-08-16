@@ -151,6 +151,7 @@ export function TekaTeki({ locale }: { locale: Locale }) {
         cells={frame.cells}
         active={frame.active}
         secondary={frame.secondary}
+        highlight={frame.highlight}
         playable={playable}
         previewed={null}
         onSelect={pilih}

@@ -12,6 +12,8 @@ export interface LubangProps {
   secondary: boolean
   playable: boolean
   previewed: boolean
+  /** Biji ini baru saja jatuh ke lubang ini pada bingkai saat ini. */
+  justLanded?: boolean
   onSelect?: (index: number) => void
   onPreview?: (index: number | null) => void
   label: string
@@ -43,6 +45,7 @@ export function Lubang({
   secondary,
   playable,
   previewed,
+  justLanded,
   onSelect,
   onPreview,
   label,
@@ -85,7 +88,19 @@ export function Lubang({
             : 'cursor-default bg-hollow-deep',
         ].join(' ')}
       >
-        <TumpukanBiji biji={biji} owner={owner} />
+        {/* `settle`: yang paling menandai biji jatuh dalam permainan ini —
+            dan sebelum ini definisinya duduk di tailwind.config.ts tanpa
+            sekalipun dipakai (kelas cacat yang sama dengan tiga jenis huruf
+            yang disebut tapi tak pernah dimuat). key membuat React memasang
+            ulang bungkusnya tiap kali biji ini yang baru saja jatuh, supaya
+            animasinya mulai dari awal, bukan hanya sekali di pemasangan
+            pertama. */}
+        <span
+          key={justLanded ? 'mendarat' : 'diam'}
+          className={justLanded ? 'inline-flex animate-settle' : 'inline-flex'}
+        >
+          <TumpukanBiji biji={biji} owner={owner} />
+        </span>
         {biji === 0 && <span className="sr-only">{kosongLabel}</span>}
       </button>
 

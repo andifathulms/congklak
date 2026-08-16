@@ -2,6 +2,7 @@
 
 import { LUMBUNG_A, LUMBUNG_B, PLAYER_A, PLAYER_B, type Player } from '@/lib/engine/board'
 import { t, type Locale } from '@/lib/i18n'
+import type { Highlight } from '@/components/sow/frames'
 import { Lubang } from './Lubang'
 import { LumbungView } from './Lumbung'
 
@@ -43,6 +44,13 @@ export interface PapanProps {
   /** Lubang yang boleh diklik sekarang. Kosong saat animasi berjalan. */
   playable: readonly number[]
   previewed: number | null
+  /**
+   * Peristiwa bingkai saat ini, untuk lubang mana pun yang aktif — dipakai
+   * hanya untuk memutuskan biji mana yang baru saja mendarat (`settle`).
+   * Papan statis (replay, bukti aturan, banding) tidak mengirimkan ini,
+   * jadi bertahan pada 'none' dan tidak ada yang pernah mendarat di sana.
+   */
+  highlight?: Highlight
   onSelect?: (index: number) => void
   onPreview?: (index: number | null) => void
   namaA: string
@@ -69,6 +77,7 @@ export function Papan({
   namaA,
   namaB,
   locale,
+  highlight = 'none',
 }: PapanProps) {
   const kata = t(locale)
   const canPlay = (index: number) => playable.includes(index)
@@ -85,6 +94,9 @@ export function Papan({
       secondary={secondary === index}
       playable={canPlay(index)}
       previewed={previewed === index}
+      // Satu biji jatuh ke lubang kecil — settle hanya di situ, sekali per
+      // peristiwa 'sow' (invariant 17: hanya membaca event, tidak menghitung).
+      justLanded={highlight === 'sow' && active === index}
       onSelect={onSelect}
       onPreview={onPreview}
       /**
@@ -149,6 +161,8 @@ export function Papan({
             owner={PLAYER_A}
             biji={cells[LUMBUNG_A]}
             active={active === LUMBUNG_A}
+            // Biji terakhir jatuh ke lumbung sendiri — settle di situ.
+            justLanded={highlight === 'bank' && active === LUMBUNG_A}
             name={namaA}
             label={kata.lumbungLabel.replace('{nama}', namaA)}
           />
@@ -176,6 +190,7 @@ export function Papan({
             owner={PLAYER_B}
             biji={cells[LUMBUNG_B]}
             active={active === LUMBUNG_B}
+            justLanded={highlight === 'bank' && active === LUMBUNG_B}
             name={namaB}
             label={kata.lumbungLabel.replace('{nama}', namaB)}
           />

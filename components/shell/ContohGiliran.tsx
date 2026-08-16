@@ -116,6 +116,7 @@ export function ContohGiliran({ locale }: { locale: Locale }) {
           cells={frame.cells}
           active={frame.active}
           secondary={frame.secondary}
+          highlight={frame.highlight}
           // Papan contoh: tidak ada yang bisa diklik di sini, dan langkahnya
           // sudah ditentukan. Yang bergerak adalah tombol di bawahnya.
           playable={[]}

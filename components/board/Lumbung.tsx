@@ -15,12 +15,15 @@ export function LumbungView({
   owner,
   biji,
   active,
+  justLanded,
   name,
   label,
 }: {
   owner: Player
   biji: number
   active: boolean
+  /** Biji baru saja jatuh ke lumbung ini pada bingkai saat ini. */
+  justLanded?: boolean
   name: string
   /** Nama yang dibacakan, sudah dalam bahasa yang benar. */
   label: string
@@ -45,7 +48,13 @@ export function LumbungView({
        */
       aria-label={`${label}: ${biji} biji`}
     >
-      <span className="tnum font-display text-2xl font-bold leading-none text-fg-wood">
+      <span
+        key={justLanded ? 'mendarat' : 'diam'}
+        className={[
+          'tnum inline-block font-display text-2xl font-bold leading-none text-fg-wood',
+          justLanded ? 'animate-settle' : '',
+        ].join(' ')}
+      >
         {biji}
       </span>
       {/* Bentuk biji, bukan hanya warna, yang menandai sisi siapa ini. */}

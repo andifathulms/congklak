@@ -499,6 +499,7 @@ export function Tanding({ locale }: { locale: Locale }) {
             cells={frame.cells}
             active={frame.active}
             secondary={frame.secondary}
+            highlight={frame.highlight}
             playable={giliranku && !player.playing ? legal : []}
             previewed={null}
             onSelect={pilih}

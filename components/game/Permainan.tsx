@@ -319,6 +319,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
         cells={frame.cells}
         active={frame.active}
         secondary={frame.secondary}
+        highlight={frame.highlight}
         playable={playable}
         previewed={previewed}
         onSelect={pilih}
