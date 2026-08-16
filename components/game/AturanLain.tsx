@@ -24,6 +24,20 @@ import { Panel } from '@/components/ui/Panel'
  * same game any more — a "you would have lost 44–54" would be a number
  * traceable to nothing. Where the readings part, and how, is provable.
  */
+
+/**
+ * Whether any other pack would have parted ways with this move list at
+ * all — the same check the component below makes to decide whether it has
+ * anything to say, exposed standalone so the phase gate (DESIGN.md §5,
+ * `setelah`/`selesai`) can decide *before* mounting whether this panel is
+ * one of the wilayah in play, without duplicating the component itself.
+ */
+export function adaSimpang(moves: readonly number[], aktif: Ruleset): boolean {
+  return RULESETS.some(
+    (lain) => lain.id !== aktif.id && compareRulesets(moves, aktif, lain).simpangDi >= 0,
+  )
+}
+
 export function AturanLain({
   record,
   aktif,
@@ -44,7 +58,11 @@ export function AturanLain({
     [record.moves, aktif],
   )
 
-  if (record.moves.length === 0 || hasil.length === 0) return null
+  // "If no pack diverged, it does not appear at all" (DESIGN.md §5) — not
+  // rendered and left to show every reading agreeing, which used to be the
+  // only outcome here whenever nothing had actually diverged.
+  const punyaSimpang = hasil.some(({ banding }) => banding.simpangDi >= 0)
+  if (record.moves.length === 0 || !punyaSimpang) return null
 
   return (
     <Panel judul={kata.aturanLainJudul}>
