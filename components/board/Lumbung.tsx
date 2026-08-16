@@ -16,6 +16,7 @@ export function LumbungView({
   biji,
   active,
   justLanded,
+  simpang,
   name,
   label,
 }: {
@@ -24,6 +25,8 @@ export function LumbungView({
   active: boolean
   /** Biji baru saja jatuh ke lumbung ini pada bingkai saat ini. */
   justLanded?: boolean
+  /** Lumbung ini tempat rantai pack lain berakhir (`PratinjauSimpang`). */
+  simpang?: boolean
   name: string
   /** Nama yang dibacakan, sudah dalam bahasa yang benar. */
   label: string
@@ -38,6 +41,7 @@ export function LumbungView({
         'sm:min-h-[8.5rem] sm:flex-col sm:gap-1.5 sm:px-2 sm:py-6',
         'bg-hollow bg-pit shadow-bank transition-shadow',
         active ? 'ring-[3px] ring-brass ring-offset-2 ring-offset-teak-grain' : 'ring-0',
+        simpang ? 'border-2 border-dashed border-ink' : '',
       ].join(' ')}
       /**
        * Sebuah angka, bukan wilayah status. Dengan role="status" isinya

@@ -51,6 +51,12 @@ export interface PapanProps {
    * jadi bertahan pada 'none' dan tidak ada yang pernah mendarat di sana.
    */
   highlight?: Highlight
+  /**
+   * Lubang tempat rantai *pack lain* berakhir, kalau berbeda dari bacaan
+   * aktif pada langkah yang sedang dipertimbangkan (`PratinjauSimpang`,
+   * DESIGN.md §4). Papan statis tidak mengirimkan ini.
+   */
+  simpangHoles?: readonly number[]
   onSelect?: (index: number) => void
   onPreview?: (index: number | null) => void
   namaA: string
@@ -78,9 +84,11 @@ export function Papan({
   namaB,
   locale,
   highlight = 'none',
+  simpangHoles = [],
 }: PapanProps) {
   const kata = t(locale)
   const canPlay = (index: number) => playable.includes(index)
+  const isSimpang = (index: number) => simpangHoles.includes(index)
 
   const hole = (index: number) => (
     <Lubang
@@ -97,6 +105,7 @@ export function Papan({
       // Satu biji jatuh ke lubang kecil — settle hanya di situ, sekali per
       // peristiwa 'sow' (invariant 17: hanya membaca event, tidak menghitung).
       justLanded={highlight === 'sow' && active === index}
+      simpang={isSimpang(index)}
       onSelect={onSelect}
       onPreview={onPreview}
       /**
@@ -163,6 +172,7 @@ export function Papan({
             active={active === LUMBUNG_A}
             // Biji terakhir jatuh ke lumbung sendiri — settle di situ.
             justLanded={highlight === 'bank' && active === LUMBUNG_A}
+            simpang={isSimpang(LUMBUNG_A)}
             name={namaA}
             label={kata.lumbungLabel.replace('{nama}', namaA)}
           />
@@ -191,6 +201,7 @@ export function Papan({
             biji={cells[LUMBUNG_B]}
             active={active === LUMBUNG_B}
             justLanded={highlight === 'bank' && active === LUMBUNG_B}
+            simpang={isSimpang(LUMBUNG_B)}
             name={namaB}
             label={kata.lumbungLabel.replace('{nama}', namaB)}
           />

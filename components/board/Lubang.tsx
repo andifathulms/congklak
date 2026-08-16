@@ -14,6 +14,14 @@ export interface LubangProps {
   previewed: boolean
   /** Biji ini baru saja jatuh ke lubang ini pada bingkai saat ini. */
   justLanded?: boolean
+  /**
+   * Lubang ini tempat rantai *pack lain* berakhir, kalau berbeda dari
+   * bacaan aktif (`PratinjauSimpang`, DESIGN.md §4.4). Bukan brass — brass
+   * hanya lubang aktif dan tembakan. Garis putus-putus adalah pembawa
+   * keduanya sendiri, terpisah dari warnanya, supaya tetap terbaca tanpa
+   * membedakan warna.
+   */
+  simpang?: boolean
   onSelect?: (index: number) => void
   onPreview?: (index: number | null) => void
   label: string
@@ -46,6 +54,7 @@ export function Lubang({
   playable,
   previewed,
   justLanded,
+  simpang,
   onSelect,
   onPreview,
   label,
@@ -79,6 +88,10 @@ export function Lubang({
           'relative flex aspect-square w-full items-center justify-center rounded-full',
           'bg-pit shadow-recess transition duration-150',
           cincin,
+          // Garis putus-putus tinta: lapisan terpisah dari cincin brass di
+          // atas, jadi keduanya tidak pernah bersaing memakai warna yang
+          // sama untuk dua arti yang berbeda.
+          simpang ? 'border-2 border-dashed border-ink' : '',
           // Lubang yang bisa ditabur duduk sedikit lebih terang dari kayu
           // yang tidak bisa disentuh. Di mode belajar sering hanya dua dari
           // empat belas lubang yang sah, dan tanpa beda ini tidak ada apa

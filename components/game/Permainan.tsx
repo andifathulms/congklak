@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { applyMove, createGame, currentLegalMoves, type GameState } from '@/lib/engine/apply'
 import { PLAYER_B } from '@/lib/engine/board'
@@ -18,11 +19,17 @@ import { Papan } from '@/components/board/Papan'
 import { KECEPATAN, usePenaburan, type Kecepatan } from '@/components/sow/usePenaburan'
 import { TombolSuara } from '@/components/sow/TombolSuara'
 import { pratinjauTeks, ringkasPratinjau } from '@/components/preview/ringkas'
+import {
+  pratinjauSimpang,
+  BATAS_TAMPIL_SIMPANG,
+  type SimpangPratinjau,
+} from '@/components/preview/simpang'
 import { describeEvent, describeHenti } from '@/lib/engine/events'
 import { Panel } from '@/components/ui/Panel'
 import { Salin } from '@/components/ui/Salin'
 import { Segmen } from '@/components/ui/Segmen'
 import { Tombol } from '@/components/ui/Tombol'
+import { Lencana } from '@/components/ui/Lencana'
 import { phaseOf, wilayahDi } from '@/lib/phase'
 import { AturanLain, adaSimpang } from './AturanLain'
 import { aturanUntukOpsi, sumberUntukOpsi } from './rujukan'
@@ -275,6 +282,24 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
     return ringkasPratinjau(state, previewed, ruleset)
   }, [previewed, busy, giliranAi, state, ruleset])
 
+  // Simpang untuk langkah yang sedang dipertimbangkan — sama syaratnya
+  // dengan pratinjau di atas, jadi keduanya tampil dan hilang bersamaan.
+  // Diam kalau tidak ada pack yang benar-benar berbeda di sini (DESIGN.md
+  // §4.3): itu bedanya dengan AturanLain, yang bicara sesudah giliran usai.
+  const simpang = useMemo(() => {
+    if (previewed === null || busy || giliranAi) return null
+    return pratinjauSimpang(state, previewed, ruleset)
+  }, [previewed, busy, giliranAi, state, ruleset])
+  const simpangTampil = simpang?.berbeda.slice(0, BATAS_TAMPIL_SIMPANG) ?? []
+  const simpangLebih = (simpang?.berbeda.length ?? 0) - simpangTampil.length
+  const simpangHoles = Array.from(
+    new Set(
+      simpangTampil
+        .map((s) => s.pratinjau?.berhentiDi)
+        .filter((n): n is number => n !== undefined),
+    ),
+  )
+
   const frame = player.frame
   const skorA = frame.cells[7]
   const skorB = frame.cells[15]
@@ -340,6 +365,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
         highlight={frame.highlight}
         playable={playable}
         previewed={previewed}
+        simpangHoles={simpangHoles}
         onSelect={pilih}
         onPreview={setPreviewed}
         namaA={namaA}
@@ -347,42 +373,56 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
       />
 
       {tampil('pratinjau') && (
-        // Satu baris, dua pekerjaan. Kalau belum ada lubang yang ditunjuk,
+        // Satu blok, dua pekerjaan. Kalau belum ada lubang yang ditunjuk,
         // ia mengatakan apa yang harus dilakukan — dalam kata-kata yang
         // berlaku untuk jari maupun tetikus. Begitu ada, ia berganti jadi
         // pratinjau langkah: ke mana rantai berakhir, berapa yang ditabung,
-        // apakah menembak atau dapat giliran lagi (PRD §8.2).
+        // apakah menembak atau dapat giliran lagi (PRD §8.2) — dan kalau
+        // bacaan lain akan berbuat beda di langkah yang sama, itu juga di
+        // sini, di wilayah live yang sama, supaya terbaca sekali diumumkan
+        // (DESIGN.md §4.7) alih-alih di wilayah terpisah yang diam.
         //
-        // Tingginya tetap, supaya papan tidak melompat naik-turun setiap
-        // kali kursor melewati sebuah lubang.
-        <p
-          className="flex min-h-[3rem] items-center gap-2 rounded-panel bg-mat-low/70 px-3 py-2 font-sans text-fg ring-1 ring-inset ring-mat-edge/50"
+        // Tinggi minimumnya tetap, supaya papan tidak melompat naik-turun
+        // setiap kali kursor melewati sebuah lubang.
+        <div
+          className="flex min-h-[3rem] flex-col gap-2 rounded-panel bg-mat-low/70 px-3 py-2 font-sans text-fg ring-1 ring-inset ring-mat-edge/50"
           aria-live="polite"
         >
-          {pratinjau ? (
-            <>
-              <span className="tnum shrink-0 rounded-md bg-mat-high px-1.5 py-0.5 font-mono text-xs text-fg-muted">
-                {kata.pratinjau} {pratinjau.hole}
+          <p className="flex items-center gap-2">
+            {pratinjau ? (
+              <>
+                <span className="tnum shrink-0 rounded-md bg-mat-high px-1.5 py-0.5 font-mono text-xs text-fg-muted">
+                  {kata.pratinjau} {pratinjau.hole}
+                </span>
+                <span>{pratinjauTeks(pratinjau)}</span>
+              </>
+            ) : player.alasanHenti ? (
+              // Kenapa giliran barusan berhenti tanpa hasil, dan klausa mana
+              // yang memutuskannya. Ini pertanyaan yang dibawa pemain ke layar
+              // saat biji terakhirnya mendarat di lubang kosong sendiri dan
+              // tidak terjadi apa-apa — tanpa jawaban, aplikasinya terbaca
+              // rusak, bukan beraturan lain.
+              <span>
+                {describeHenti(player.alasanHenti)}{' '}
+                {/* Aturan yang memutuskan, dan siapa yang mengatakannya —
+                    di tempat aturannya baru berlaku, bukan di catatan kaki
+                    halaman lain. */}
+                <Rujukan opsi={player.alasanHenti.opsi} ruleset={ruleset} kata={kata} />
               </span>
-              <span>{pratinjauTeks(pratinjau)}</span>
-            </>
-          ) : player.alasanHenti ? (
-            // Kenapa giliran barusan berhenti tanpa hasil, dan klausa mana
-            // yang memutuskannya. Ini pertanyaan yang dibawa pemain ke layar
-            // saat biji terakhirnya mendarat di lubang kosong sendiri dan
-            // tidak terjadi apa-apa — tanpa jawaban, aplikasinya terbaca
-            // rusak, bukan beraturan lain.
-            <span>
-              {describeHenti(player.alasanHenti)}{' '}
-              {/* Aturan yang memutuskan, dan siapa yang mengatakannya —
-                  di tempat aturannya baru berlaku, bukan di catatan kaki
-                  halaman lain. */}
-              <Rujukan opsi={player.alasanHenti.opsi} ruleset={ruleset} kata={kata} />
-            </span>
-          ) : (
-            <span className="font-medium">{ajakan ?? kata.pratinjauPetunjuk}</span>
+            ) : (
+              <span className="font-medium">{ajakan ?? kata.pratinjauPetunjuk}</span>
+            )}
+          </p>
+
+          {simpangTampil.length > 0 && (
+            <PratinjauSimpangDaftar
+              berbeda={simpangTampil}
+              lebih={simpangLebih}
+              locale={locale}
+              kata={kata}
+            />
           )}
-        </p>
+        </div>
       )}
 
       {/* Begitu sebuah langkah selesai — giliran biasa atau yang mengakhiri
@@ -535,6 +575,59 @@ function PanelStatistik({
         </div>
       ))}
     </dl>
+  )
+}
+
+/**
+ * PratinjauSimpang's own text carrier (DESIGN.md §4.4) — the board already
+ * marks the diverging hole with a dashed ring; this names which pack and
+ * says in one line what it would do differently. Never brass (§3.2): the
+ * swatch borrows the board marker's own dashed-ink language instead, so a
+ * reader can connect the two without needing colour to do it.
+ */
+function PratinjauSimpangDaftar({
+  berbeda,
+  lebih,
+  locale,
+  kata,
+}: {
+  berbeda: readonly SimpangPratinjau[]
+  lebih: number
+  locale: Locale
+  kata: ReturnType<typeof t>
+}) {
+  return (
+    <ul className="flex flex-col gap-1 border-t border-mat-edge/60 pt-2">
+      {berbeda.map(({ ruleset, teks }) => {
+        const perluCek = ruleset.sources.filter((s) => s.confidence === 'perlu-cek').length
+        return (
+          <li key={ruleset.id} className="flex flex-wrap items-baseline gap-x-1.5 text-sm">
+            <span
+              aria-hidden
+              className="mr-0.5 h-2 w-2 shrink-0 translate-y-[0.05em] rounded-sm border border-dashed border-ink"
+            />
+            <span className="font-medium">{ruleset.name}</span>
+            {perluCek > 0 && (
+              <Lencana nada="perhatian">
+                {perluCek} {kata.perluCek}
+              </Lencana>
+            )}
+            <span className="text-fg-muted">{teks}</span>
+          </li>
+        )
+      })}
+      {lebih > 0 && (
+        <li className="text-sm text-fg-muted">
+          +{lebih}{' '}
+          <Link
+            href={`/${locale}/banding`}
+            className="rounded text-accent-strong underline decoration-accent/40 underline-offset-4 transition hover:decoration-accent-strong"
+          >
+            {kata.banding} →
+          </Link>
+        </li>
+      )}
+    </ul>
   )
 }
 
