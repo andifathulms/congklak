@@ -93,6 +93,27 @@ const config: Config = {
       /** Sasaran tekan terkecil (WCAG 2.5.8), dari satu variabel. */
       minHeight: { target: 'var(--target-min)' },
       minWidth: { target: 'var(--target-min)' },
+      /**
+       * The rhythm declared in globals.css's `--space-*` — seven steps, the
+       * same count and the same idea as the type scale above. Named rather
+       * than overriding Tailwind's own `1`–`7`: this app's spacing already
+       * leans on that default scale's finer steps (`0.5`, `1.5`, `2.5`,
+       * `w-5`, `gap-6`, and so on) throughout, at their default meanings,
+       * and silently redefining those numerals out from under existing
+       * classes is exactly the kind of change a clean build and a green
+       * test suite would not catch (CLAUDE.md's own "Current state" lists
+       * five UI defects of that shape). `p-space-4` now resolves to the
+       * declared rhythm; `p-4` keeps meaning what it already meant.
+       */
+      spacing: {
+        'space-1': 'var(--space-1)',
+        'space-2': 'var(--space-2)',
+        'space-3': 'var(--space-3)',
+        'space-4': 'var(--space-4)',
+        'space-5': 'var(--space-5)',
+        'space-6': 'var(--space-6)',
+        'space-7': 'var(--space-7)',
+      },
       borderRadius: {
         /** One continuous carved form, not fourteen cards (PRD §11). */
         board: '2.75rem',
