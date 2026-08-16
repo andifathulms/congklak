@@ -205,6 +205,38 @@ The board's own rendered footprint is **168×700px at all three widths** — the
 
 The move-preview line and the controls row (New game / Undo / speed) never clear the fold at any of the three sizes once scrolled to the game section — Skor plus the board alone (101 + 16 gap + 700 = 817px) already exceeds every effective height in the table above. The full stack from Skor's top through the controls row is **≈900–1004px** (101 Skor + 16 gap + 700 board + 16 gap + 48 preview line + 16 gap + up to 107 controls, which wraps to two rows at the narrower widths) against effective heights of 508.5–800.5px — none of the three tested sizes fit it.
 
+#### Sized from the viewport — 2026-08-17
+
+Below `sm:`, `Papan`'s `max-w-[10.5rem]` is replaced with a value derived from `100dvh`. The mobile layout is a fixed linear function of the board's own width — two `min-h-[4.25rem]` (68px) *lumbung*, `p-3` (12px) padding on all four sides, `gap-2` (8px) between the *lumbung* and the seven-hole column and between the seven holes themselves, each hole `aspect-square`:
+
+```
+height(w) = 112 + 3.5w
+```
+
+Verified against the 2026-08-16 measurement itself: at the old fixed 168px width, `112 + 3.5×168 = 700` — exactly the measured board height. Solving for `w` from an available-height budget `H`: `w = (H − 112) / 3.5`.
+
+`H` is `100dvh` minus the chrome that sits above the board specifically in `main`/`setelah` — the sticky header (131.5px) plus `Skor` (101.03125px, re-measured this session, unchanged) plus the 16px gap between them — 248.53125px, rounded up to 249px, plus a further 16px so the board doesn't touch the very bottom of the viewport. 265px total:
+
+```
+w = (100dvh − 265 − 112) / 3.5 = (100dvh − 377) / 3.5
+```
+
+Implemented as `max-w-[max(140px,calc((100dvh_-_377px)/3.5))]` — the `max(140px, …)` floor keeps hole width comfortably above the 24px WCAG 2.5.8 target even when the formula alone would go smaller. Sized from `main`'s chrome specifically, never `siap`'s (which has no `Skor` above the board) — per §5, the board is this size at every phase, and sizing from `siap` would make it grow the moment the first move is played.
+
+Re-measured on the production build, same methodology as 2026-08-16, scrolled to the game section:
+
+| Viewport | Board width | Board height | Board visible | Note |
+|---|---|---|---|---|
+| 360×640 | 140px (floor) | 602px | 65.0% | Formula alone would ask for ~75px — the 140px floor wins, and even the floor doesn't fully fit this viewport's height budget. |
+| 390×844 | 140px (floor) | 602px | 99.0% | Formula alone would ask for ~133px, just under the floor. |
+| 430×932 | 158.5625px | 666.96875px | **100%** | First of the three sizes where the whole board clears the fold. |
+
+430×932 goes from 97.7% to fully visible. 390×844 goes from 85.1% to 99.0%. 360×640 goes from 55.9% to 65.0% — a real improvement, though the 140px floor means it still doesn't fully fit; a viewport this short genuinely cannot hold the sticky header, `Skor`, and a touch-target-legal board all at once, and the floor chooses touch targets over the last fraction of the board rather than shrinking silently past 24px.
+
+One observed side effect at the 140px floor: the *lumbung* name (`PEMAIN A` / `PEMAIN B`) truncates to `PEMAIN…` at 360×640 and 390×844, where it previously fit at the old fixed 168px. The `truncate` fallback already existed for this (`Lumbung.tsx`, written for the wide desktop *lumbung* running out of column width) and the full name stays available in `Skor` above the board and in the hole's own `aria-label` either way, so nothing is unreadable — it just triggers in one more case than before.
+
+Board sizing above `sm:` (`sm:max-w-none`) is untouched — desktop was never the problem this section measures.
+
 ---
 
 ## 7. Token hygiene

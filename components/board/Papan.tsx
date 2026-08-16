@@ -143,7 +143,30 @@ export function Papan({
       // w-full is load-bearing next to mx-auto: as a flex item, an auto
       // cross-axis margin cancels the stretch, and the board collapses to
       // its content width.
-      className="on-teak mx-auto w-full max-w-[10.5rem] rounded-board bg-teak bg-grain p-3 shadow-carve ring-1 ring-teak-rim/40 sm:max-w-none sm:p-6"
+      //
+      // Below `sm:`, width is sized from the viewport's *height*, not a
+      // fixed rem cap (DESIGN.md §6). Below `sm:` the board is a fixed
+      // linear function of its own width: two `min-h-[4.25rem]` (68px)
+      // lumbung, `p-3` (12px) padding on every side, `gap-2` (8px) between
+      // the two lumbung and the seven-hole column, and seven aspect-square
+      // holes stacked with `gap-2` between them —
+      //   height(w) = 112 + 3.5w
+      // Measured on the production build, 2026-08-17, at 360×640 (`Skor`
+      // mounted, DESIGN.md §5 `main`): the sticky header is 131.5px, `Skor`
+      // is 101.03125px, and the gap between them and the board is 16px —
+      // 248.53125px of chrome sits above the board before it can start,
+      // rounded up to 249px, plus 16px so the board doesn't touch the very
+      // bottom of the viewport. Solving height(w) = 100dvh − 265px for w:
+      //   w = (100dvh − 265 − 112) / 3.5 = (100dvh − 377) / 3.5
+      // `max()` keeps a 140px floor — comfortably above the 24px WCAG
+      // 2.5.8 target even at that width — so a very short viewport
+      // shrinks the board rather than pushing it off both bounds at once.
+      // `Skor`'s own height is `main`'s budget precisely because the board
+      // is exactly this size at every phase, never larger and never
+      // smaller (§5): sizing from `siap`, which has no `Skor` above the
+      // board, would make the board grow the moment the first move is
+      // played.
+      className="on-teak mx-auto w-full max-w-[max(140px,calc((100dvh_-_377px)/3.5))] rounded-board bg-teak bg-grain p-3 shadow-carve ring-1 ring-teak-rim/40 sm:max-w-none sm:p-6"
       role="group"
       aria-label={kata.papanLabel}
     >
