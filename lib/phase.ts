@@ -7,6 +7,37 @@
  * own status, whether a move is still animating. Phase is computed fresh
  * from those each render rather than kept as its own `useState`, so it
  * cannot drift out of sync with what it describes.
+ *
+ * Reconciled 2026-08-17 against Chipfire's `lib/phase.ts`, the sibling
+ * project this pattern was meant to come from first (`CLAUDE.md`).
+ * `derivePhase`'s name and `movesPlayed`'s field name now match theirs
+ * exactly — `siap`/`main`/`selesai` and the "an instrument with nothing to
+ * say is not mounted, never greyed" rule were already the same idea
+ * independently. Two things stay genuinely different, both forced by how
+ * each engine updates state relative to its own animation, not by taste:
+ *
+ * - The third phase is content-gated in both apps, but on different
+ *   content: Chipfire's `longsor` asks "was the cascade that just
+ *   resolved big" (`cascadeDepth(lastCascadeEvents) >= 2`); this file's
+ *   `setelah` asks only "did a move just resolve," and leaves whether
+ *   there is anything to show (`AturanLain`, only when a move genuinely
+ *   diverges) to `wilayahDi` below. Congklak has no per-move size to
+ *   threshold on — a menembak or a long sambung is not "bigger" than a
+ *   single quiet sow in the way a cascade's generation count is.
+ * - Chipfire's `derivePhase` takes no animating flag at all: its
+ *   `record.moves.length` and its cascade events update the instant a
+ *   move is chosen, so gating only `winner` on `!animating` at the call
+ *   site is enough. Here `record` (and so `movesPlayed`) is only written
+ *   in `usePenaburan`'s `onDone`, after the sow finishes — so `busy` has
+ *   to win inside `derivePhase` itself, or the very first move would
+ *   render as `siap` for the length of its own animation.
+ *
+ * `wilayahDi` below has no Chipfire counterpart — `PlayScreen.tsx` derives
+ * each region's visibility inline (`phase === 'main' || phase === '…'`)
+ * rather than through a shared, independently testable table. Both are
+ * legitimate; this file keeps the table because `tests/phase/phase.test.ts`
+ * can then assert the exact region set per phase without touching React at
+ * all, which an inline boolean per call site cannot offer on its own.
  */
 import type { Status } from './engine/apply'
 
@@ -27,7 +58,7 @@ export interface PhaseInput {
   readonly busy: boolean
 }
 
-export function phaseOf({ movesPlayed, status, busy }: PhaseInput): Phase {
+export function derivePhase({ movesPlayed, status, busy }: PhaseInput): Phase {
   if (busy) return 'main'
   if (status === 'selesai') return 'selesai'
   if (movesPlayed === 0) return 'siap'

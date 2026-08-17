@@ -31,7 +31,7 @@ import { Salin } from '@/components/ui/Salin'
 import { Segmen } from '@/components/ui/Segmen'
 import { Tombol } from '@/components/ui/Tombol'
 import { Lencana } from '@/components/ui/Lencana'
-import { phaseOf, wilayahDi } from '@/lib/phase'
+import { derivePhase, wilayahDi } from '@/lib/phase'
 import { AturanLain, adaSimpang } from './AturanLain'
 import { aturanUntukOpsi, sumberUntukOpsi } from './rujukan'
 import { PemilihAturan } from './PemilihAturan'
@@ -323,7 +323,7 @@ export function Permainan({ ruleset: awal, locale }: { ruleset: Ruleset; locale:
   // Fase layar (DESIGN.md §5), dihitung ulang tiap render dari state yang
   // sudah ada untuk alasan lain — bukan useState-nya sendiri, jadi tidak
   // bisa melenceng dari apa yang sebenarnya sedang terjadi (lib/phase.ts).
-  const fase = phaseOf({ movesPlayed: record.moves.length, status: state.status, busy })
+  const fase = derivePhase({ movesPlayed: record.moves.length, status: state.status, busy })
   const langkahBersimpang = useMemo(
     () => adaSimpang(record.moves, ruleset),
     [record.moves, ruleset],
